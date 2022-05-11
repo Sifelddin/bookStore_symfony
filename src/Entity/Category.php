@@ -3,62 +3,101 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $categoryName;
+    private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $cat_photo;
+    private $photo;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $categoryParentId;
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
+    private $catParent;
+
+    #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
+    private $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCatName(): ?string
+    public function getName(): ?string
     {
-        return $this->categoryName;
+        return $this->name;
     }
 
-    public function setCatName(string $categoryName): self
+    public function setName(string $name): self
     {
-        $this->categoryName = $categoryName;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getCatPhoto(): ?string
+    public function getPhoto(): ?string
     {
-        return $this->cat_photo;
+        return $this->photo;
     }
 
-    public function setCatPhoto(string $cat_photo): self
+    public function setPhoto(string $photo): self
     {
-        $this->cat_photo = $cat_photo;
+        $this->photo = $photo;
 
         return $this;
     }
 
-    public function getCatParentId(): ?int
+    public function getCatParent(): ?self
     {
-        return $this->categoryParentId;
+        return $this->catParent;
     }
 
-    public function setCatParentId(?int $categoryParentId): self
+    public function setCatParent(?self $catParent): self
     {
-        $this->categoryParentId = $categoryParentId;
+        $this->catParent = $catParent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(self $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setCatParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(self $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getCatParent() === $this) {
+                $category->setCatParent(null);
+            }
+        }
 
         return $this;
     }

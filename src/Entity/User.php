@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -41,6 +43,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 10)]
     private $phone;
+
+    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true)]
+    private $Coef;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $private;
+
+    #[ORM\OneToMany(mappedBy: 'userClient', targetEntity: Order::class)]
+    private $orders;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -216,6 +232,76 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone($phone)
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Coef
+     */
+    public function getCoef()
+    {
+        return $this->Coef;
+    }
+
+    /**
+     * Set the value of Coef
+     *
+     * @return  self
+     */
+    public function setCoef($Coef)
+    {
+        $this->Coef = $Coef;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of private
+     */
+    public function getPrivate()
+    {
+        return $this->private;
+    }
+
+    /**
+     * Set the value of private
+     *
+     * @return  self
+     */
+    public function setPrivate($private)
+    {
+        $this->private = $private;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setUserClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getUserClient() === $this) {
+                $order->setUserClient(null);
+            }
+        }
 
         return $this;
     }

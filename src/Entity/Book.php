@@ -14,156 +14,182 @@ class Book
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $bookTitle;
+    private $title;
 
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
-    private $bookPrice;
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private $slug;
+
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 2, nullable: true)]
+    private $price;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $bookPhoto;
+    private $photo;
 
     #[ORM\Column(type: 'text')]
-    private $bookDescription;
+    private $description;
 
     #[ORM\Column(type: 'integer')]
-    private $bookStock;
+    private $stock;
 
     #[ORM\Column(type: 'integer')]
-    private $bookStockAlert;
+    private $stockAlert;
 
     #[ORM\Column(type: 'date')]
-    private $bookReleaseDate;
+    private $releaseDate;
 
     #[ORM\Column(type: 'boolean')]
-    private $bookPublished;
+    private $published;
 
-    #[ORM\Column(type: 'integer')]
-    private $bookCategoryId;
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $category;
 
-    #[ORM\Column(type: 'integer')]
-    private $bookSupllierId;
+    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'books')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $supplier;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBookTitle(): ?string
+    public function getTitle(): ?string
     {
-        return $this->bookTitle;
+        return $this->title;
     }
 
-    public function setBookTitle(string $bookTitle): self
+    public function setTitle(string $title): self
     {
-        $this->bookTitle = $bookTitle;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getBookPrice(): ?string
+    public function getPrice(): ?string
     {
-        return $this->bookPrice;
+        return $this->price;
     }
 
-    public function setBookPrice(string $bookPrice): self
+    public function setPrice(string $price): self
     {
-        $this->bookPrice = $bookPrice;
+        $this->price = $price;
 
         return $this;
     }
 
-    public function getBookPhoto(): ?string
+    public function getPhoto(): ?string
     {
-        return $this->bookPhoto;
+        return $this->photo;
     }
 
-    public function setBookPhoto(string $bookPhoto): self
+    public function setPhoto(string $photo): self
     {
-        $this->bookPhoto = $bookPhoto;
+        $this->photo = $photo;
 
         return $this;
     }
 
-    public function getBookDescription(): ?string
+    public function getDescription(): ?string
     {
-        return $this->bookDescription;
+        return $this->description;
     }
 
-    public function setBookDescription(string $bookDescription): self
+    public function setDescription(string $description): self
     {
-        $this->bookDescription = $bookDescription;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getBookStock(): ?int
+    public function getStock(): ?int
     {
-        return $this->bookStock;
+        return $this->stock;
     }
 
-    public function setBookStock(int $bookStock): self
+    public function setStock(int $stock): self
     {
-        $this->bookStock = $bookStock;
+        $this->stock = $stock;
 
         return $this;
     }
 
-    public function getBookStockAlert(): ?int
+    public function getStockAlert(): ?int
     {
-        return $this->bookStockAlert;
+        return $this->stockAlert;
     }
 
-    public function setBookStockAlert(int $bookStockAlert): self
+    public function setStockAlert(int $stockAlert): self
     {
-        $this->bookStockAlert = $bookStockAlert;
+        $this->stockAlert = $stockAlert;
 
         return $this;
     }
 
-    public function getBookReleaseDate(): ?\DateTimeInterface
+    public function getReleaseDate(): ?\DateTimeInterface
     {
-        return $this->bookReleaseDate;
+        return $this->releaseDate;
     }
 
-    public function setBookReleaseDate(\DateTimeInterface $bookReleaseDate): self
+    public function setReleaseDate(\DateTimeInterface $releaseDate): self
     {
-        $this->bookReleaseDate = $bookReleaseDate;
+        $this->releaseDate = $releaseDate;
 
         return $this;
     }
 
-    public function getBookPublished(): ?bool
+    public function getPublished(): ?bool
     {
-        return $this->bookPublished;
+        return $this->published;
     }
 
-    public function setBookPublished(bool $bookPublished): self
+    public function setPublished(bool $published): self
     {
-        $this->bookPublished = $bookPublished;
+        $this->published = $published;
 
         return $this;
     }
 
-    public function getBookCategoryId(): ?int
+
+    /**
+     * Get the value of slug
+     */
+    public function getSlug()
     {
-        return $this->bookCategoryId;
+        return $this->slug;
     }
 
-    public function setBookCategoryId(int $bookCategoryId): self
+    /**
+     * Set the value of slug
+     *
+     * @return  self
+     */
+    public function setSlug($slug)
     {
-        $this->bookCategoryId = $bookCategoryId;
+        $this->slug = $slug;
 
         return $this;
     }
 
-    public function getBookSupllierId(): ?int
+    public function getCategory(): ?Category
     {
-        return $this->bookSupllierId;
+        return $this->category;
     }
 
-    public function setBookSupllierId(int $bookSupllierId): self
+    public function setCategory(?Category $category): self
     {
-        $this->bookSupllierId = $bookSupllierId;
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getSupplier(): ?Supplier
+    {
+        return $this->supplier;
+    }
+
+    public function setSupplier(?Supplier $supplier): self
+    {
+        $this->supplier = $supplier;
 
         return $this;
     }
