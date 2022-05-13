@@ -50,13 +50,18 @@ class Book
     #[ORM\JoinColumn(nullable: false)]
     private $supplier;
 
-    #[ORM\ManyToMany(targetEntity: Order::class, inversedBy: 'books')]
-    private $orders;
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookOrder::class)]
+    private $bookOrders;
+
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: DeliveryDetails::class)]
+    private $deliveryDetails;
 
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        $this->bookOrders = new ArrayCollection();
+        $this->deliveryDetails = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -205,25 +210,61 @@ class Book
     }
 
     /**
-     * @return Collection<int, Order>
+     * @return Collection<int, BookOrder>
      */
-    public function getOrders(): Collection
+    public function getBookOrders(): Collection
     {
-        return $this->orders;
+        return $this->bookOrders;
     }
 
-    public function addOrder(Order $order): self
+    public function addBookOrder(BookOrder $bookOrder): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
+        if (!$this->bookOrders->contains($bookOrder)) {
+            $this->bookOrders[] = $bookOrder;
+            $bookOrder->setBook($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeBookOrder(BookOrder $bookOrder): self
     {
-        $this->orders->removeElement($order);
+        if ($this->bookOrders->removeElement($bookOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($bookOrder->getBook() === $this) {
+                $bookOrder->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DeliveryDetails>
+     */
+    public function getDeliveryDetails(): Collection
+    {
+        return $this->deliveryDetails;
+    }
+
+    public function addDeliveryDetail(DeliveryDetails $deliveryDetail): self
+    {
+        if (!$this->deliveryDetails->contains($deliveryDetail)) {
+            $this->deliveryDetails[] = $deliveryDetail;
+            $deliveryDetail->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeliveryDetail(DeliveryDetails $deliveryDetail): self
+    {
+        if ($this->deliveryDetails->removeElement($deliveryDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($deliveryDetail->getBook() === $this) {
+                $deliveryDetail->setBook(null);
+            }
+        }
 
         return $this;
     }

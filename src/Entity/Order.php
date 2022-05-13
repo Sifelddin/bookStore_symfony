@@ -56,12 +56,16 @@ class Order
     #[ORM\Column(type: 'string', length: 50)]
     private $payMethod;
 
-    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'orders')]
-    private $books;
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: BookOrder::class)]
+    private $bookOrders;
+
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: Delivery::class)]
+    private $deliveries;
 
     public function __construct()
     {
-        $this->books = new ArrayCollection();
+        $this->bookOrders = new ArrayCollection();
+        $this->deliveries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -226,31 +230,62 @@ class Order
     }
 
     /**
-     * @return Collection<int, Book>
+     * @return Collection<int, BookOrder>
      */
-    public function getBooks(): Collection
+    public function getBookOrders(): Collection
     {
-        return $this->books;
+        return $this->bookOrders;
     }
 
-    public function addBook(Book $book): self
+    public function addBookOrder(BookOrder $bookOrder): self
     {
-        if (!$this->books->contains($book)) {
-            $this->books[] = $book;
-            $book->addOrder($this);
+        if (!$this->bookOrders->contains($bookOrder)) {
+            $this->bookOrders[] = $bookOrder;
+            $bookOrder->setOrder($this);
         }
 
         return $this;
     }
 
-    public function removeBook(Book $book): self
+    public function removeBookOrder(BookOrder $bookOrder): self
     {
-        if ($this->books->removeElement($book)) {
-            $book->removeOrder($this);
+        if ($this->bookOrders->removeElement($bookOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($bookOrder->getOrder() === $this) {
+                $bookOrder->setOrder(null);
+            }
         }
 
         return $this;
     }
 
-   
+    /**
+     * @return Collection<int, Delivery>
+     */
+    public function getDeliveries(): Collection
+    {
+        return $this->deliveries;
+    }
+
+    public function addDelivery(Delivery $delivery): self
+    {
+        if (!$this->deliveries->contains($delivery)) {
+            $this->deliveries[] = $delivery;
+            $delivery->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDelivery(Delivery $delivery): self
+    {
+        if ($this->deliveries->removeElement($delivery)) {
+            // set the owning side to null (unless already changed)
+            if ($delivery->getOrder() === $this) {
+                $delivery->setOrder(null);
+            }
+        }
+
+        return $this;
+    }
 }
