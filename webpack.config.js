@@ -22,6 +22,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('test', './assets/test.js')
+    .addEntry('react','./assets/react/app.jsx')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -63,7 +64,7 @@ Encore
     //.enableTypeScriptLoader()
 
     // uncomment if you use React
-    //.enableReactPreset()
+    .enableReactPreset()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
@@ -76,6 +77,12 @@ Encore
         options.postcssOptions = {
             config: './postcss.config.js'
         }
+    })
+
+    .copyFiles({
+        from:"./assets/images",
+        to:'images/[path][name].[hash:8].[ext]',
+        pattern:/\.(png|jpg|jpeg)$/
     })
 ;
 
