@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "doctrine/annotations": "^1.13",
         "sensio/framework-extra-bundle": "^6.2",
+        "symfony/asset": "6.0.*",
         "symfony/console": "6.0.*",
         "symfony/dotenv": "6.0.*",
         "symfony/flex": "^2",
@@ -19,6 +20,7 @@
         "symfony/security-csrf": "6.0.*",
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
+        "symfony/webpack-encore-bundle": "^1.14",
         "symfony/yaml": "6.0.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
@@ -63,6 +65,12 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "load-fixtures": [
+            "bin/console doctrine:database:drop --if-exists --force",
+            "bin/console doctrine:database:create",
+            "bin/console doctrine:schema:update --force",
+            "bin/console doctrine:fixtures:load"
         ]
     },
     "conflict": {
@@ -76,6 +84,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.6",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
         "symfony/maker-bundle": "^1.40",
