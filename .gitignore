@@ -25,3 +25,4 @@ yarn-error.log
 /.env
 ###< symfony/framework-bundle ###
 >>>>>>> 4d928f9 (fixture)
+.vscode
