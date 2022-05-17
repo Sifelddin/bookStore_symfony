@@ -7,13 +7,6 @@
 /public/bundles/
 /var/
 /vendor/
-<<<<<<< HEAD
-/.env/
-=======
-<<<<<<< HEAD
-.env
->>>>>>> ab0a8684162076392eb3d986fde35e0e78daa002
-###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
@@ -21,8 +14,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-=======
 /.env
 ###< symfony/framework-bundle ###
->>>>>>> 4d928f9 (fixture)
+
 .vscode
