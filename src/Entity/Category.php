@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
@@ -36,6 +37,7 @@ class Category
         return $this->id;
     }
 
+    
     public function getName(): ?string
     {
         return $this->name;
