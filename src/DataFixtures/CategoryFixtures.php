@@ -2,8 +2,9 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Category;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class CategoryFixtures extends Fixture
 {
@@ -15,12 +16,12 @@ class CategoryFixtures extends Fixture
         $category->setPhoto('/chemin/photo.jpg');
         $manager->persist($category);
 
-        // $category2 = new Category(); 
-        // $category2->setId(12);
-        // $category2->setName('SciFi');
-        // $category2->setPhoto('/chemin/photo2.jpg');
-        // $category2->setCatParent(1);
-        // $manager->persist($category2);
+        $category2 = new Category(); 
+        //$category2->setId(12);
+        $category2->setName('SciFi');
+        $category2->setPhoto('/chemin/photo2.jpg');
+        $category2->setCatParent($category);
+        $manager->persist($category2);
 
         $manager->flush();
 
