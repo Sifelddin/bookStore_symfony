@@ -26,6 +26,11 @@ class Supplier
         $this->books = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->contactName;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

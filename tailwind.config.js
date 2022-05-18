@@ -6,7 +6,9 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 };
 
 //npx tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --watch
