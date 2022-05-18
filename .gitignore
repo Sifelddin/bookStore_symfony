@@ -7,6 +7,11 @@
 /public/bundles/
 /var/
 /vendor/
+<<<<<<< HEAD
+=======
+.env
+###< symfony/framework-bundle ###
+>>>>>>> 7862ed1 (c)
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
@@ -14,7 +19,10 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+<<<<<<< HEAD
 /.env
 ###< symfony/framework-bundle ###
 
 .vscode
+=======
+>>>>>>> 7862ed1 (c)
