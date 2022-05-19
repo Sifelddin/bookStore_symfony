@@ -23,12 +23,7 @@ class UserFixtures extends Fixture
         $user->setCoef(0.9);
         $user->setPrivate(0);
 
-
-
-
-
-
-
+        
         $manager->persist($user);
 
     }

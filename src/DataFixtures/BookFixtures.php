@@ -15,9 +15,7 @@ class BookFixtures extends Fixture {
     {
         $datejour = new DateTime('2000-01-01');
         $cat1 = $manager->getRepository(Category::class)->findOneBy([ "name" => "Roman"]);
-        //$cat1= $this->getReference('cat1');
         $sup1 = $manager->getRepository(Supplier::class)->findOneBy([ "contactName" => "Flammarion"]);
-        //$sup1= $this->getReference('sup1');
         $book = new Book(); 
         $book ->setTitle('Dune');
         $book->setPrice(15);
