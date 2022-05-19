@@ -15,6 +15,8 @@ class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $cat = new Category();
+      
         $builder
             ->add('name', TextType::class, [
                 'attr' => array(
@@ -26,17 +28,17 @@ class CategoryType extends AbstractType
             ->add('catParent', ChoiceType::class, [
                 'attr' => array(
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
-                    'placeholder' => 'Seclect parent category'
+                    'placeholder' => 'Seclect parent category', 
                 ),
-                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-6']
-
-
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-6'],
+                'choices' => $cat->getCategories(),
             ])
             ->add('photo', FileType::class, [
                 'attr' => array(
                     'class' => 'py-8 my-8 mt-6',
                 ),
-                'label' => false
+                'label' => false,
+                'data_class' => null,
             ]);
         // ->add('save', SubmitType::class, [
         //     'attr' => [

@@ -10,7 +10,7 @@
 		<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 			<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 				<div class="p-6 bg-white border-b border-gray-200">
-					<a class="text-xl" href="{{ path('app_book_new') }}">Create new book</a>
+					<a class="flex justify-center items-center px-2 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-fit" href="{{ path('app_book_new') }}">Create new book</a>
 				</div>
 			</div>
 			<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -21,29 +21,27 @@
 								<table class="min-w-full divide-y divide-gray-200">
 									<thead class="bg-gray-50">
 										<tr>
-											<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Photo</th>
-											<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-											<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-											<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-											<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">StockAlert</th>
-											<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ReleaseDate</th>
-											<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Published</th>
-											<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">actions</th>
+											<th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Photo</th>
+											<th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+											<th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+											<th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+											<th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ReleaseDate</th>
+											<th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Published</th>
+											<th scope="col" class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">actions</th>
 										</tr>
 									</thead>
 									<tbody>
 										{% for book in books %}
 											<tr>
-												<td>{{ book.photo }}</td>
-												<td>{{ book.title }}</td>
-												<td>{{ book.price }}</td>
-												<td>{{ book.stock }}</td>
-												<td>{{ book.stockAlert }}</td>
-												<td>{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
-												<td>{{ book.published ? 'Yes' : 'No' }}</td>
-												<td>
-													<a href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
-													<a href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
+												<td class="px-2 py-2">{{ book.photo }}</td>
+												<td class="px-2 py-2">{{ book.title }}</td>
+												<td class="px-2 py-2">{{ book.price }}€</td>
+												<td class="px-2 py-2">{{ book.stock }}</td>
+												<td class="px-2 py-2">{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
+												<td class="px-2 py-2">{{ book.published ? 'Yes' : 'No' }}</td>
+												<td class="flex justify-around px-2 py-2 whitespace-nowrap text-right text-sm font-medium">
+													<a class="text-indigo-600 hover:text-indigo-900 uppercase" href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
+													<a class="text-indigo-600 hover:text-indigo-900 uppercase" href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
 												</td>
 											</tr>
 										{% else %}
