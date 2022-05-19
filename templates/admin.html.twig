@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Welcome!
+			{% block title %}admin!
 			{% endblock %}
 		</title>
 		<link
@@ -13,15 +13,20 @@
 		{% endblock %}
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
-			{{ encore_entry_script_tags('react') }}
 		{% endblock %}
 	</head>
-	<body class='bg-gray-100'>
-		{{ include('components/header.html.twig') }}
-		
-		{% block body %}
+	<body class='bg-gray-100 '>
+		{% block header %}
+			{{ include('components/header.html.twig') }}
 		{% endblock %}
-		{{ include("components/footer.html.twig") }}
+		<main class="grid grid-cols-5 min-h-screen">
+			{% include "components/admin/aside.html.twig" %}
+			{% block body %}{% endblock %}
+		</main>
+		{% block footer %}
+			{{ include("components/footer.html.twig") }}
+		{% endblock %}
+
 
 	</body>
 </html>

@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
 {% block title %}New Category
 {% endblock %}
 
 {% block body %}
-	<h1>Create new Category</h1>
-	<div class="min-h-fit flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+
+	<div class="min-h-fit flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-4">
 		<div class="flex flex-col w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 			{{ include('category/_form.html.twig') }}
 			<a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_category_index') }}">back to list</a>
