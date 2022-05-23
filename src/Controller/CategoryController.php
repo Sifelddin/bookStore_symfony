@@ -89,10 +89,10 @@ class CategoryController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
 
             $oldImage = dirname(__DIR__, 2) . '/public/uploads/categories/' . $category->getPhoto();
+            $categoryRepository->remove($category, true);
             if (file_exists($oldImage)) {
                 unlink(new File($this->getParameter('categories_directory') . '/' . $category->getPhoto()));
             }
-            $categoryRepository->remove($category, true);
         }
 
         return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
