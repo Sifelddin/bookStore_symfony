@@ -6,6 +6,8 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Query\AST\DeleteClause;
+use PhpParser\Node\NullableType;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -22,9 +24,11 @@ class Category
     private $photo;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private $catParent;
 
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
+
     private $categories;
 
     public function __construct()

@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,14 +39,16 @@ class CategoryType extends AbstractType
                 'attr' => array(
                     'class' => 'py-8 my-8 mt-6',
                 ),
-                'label' => false,
-                'mapped' => false
+                'label' => 'Category image',
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => ['image/jpeg', 'image/png',],
+                        'mimeTypesMessage' => 'please upload a valide image'
+                    ])
+                ]
             ]);
-        // ->add('save', SubmitType::class, [
-        //     'attr' => [
-        //         'class' => 'bg-gray-500'
-        //     ]
-        // ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -20,7 +20,7 @@
 									<thead class="bg-gray-50">
 										<tr>
 											<th scope="col" class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Photo</th>
-											<th scope="col" class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Id</th>
+
 											<th scope="col" class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
 											<th scope="col" class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">parent category</th>
 											<th scope="col" class="px-2 py-2 text-center  text-xs font-medium text-gray-500 uppercase tracking-wider">actions</th>
@@ -29,8 +29,9 @@
 									<tbody class="bg-white divide-y divide-gray-200">
 										{% for category in categories %}
 											<tr>
-												<td class="px-2 py-2 whitespace-nowrap">{{ category.photo }}</td>
-												<td class="px-2 py-2 whitespace-nowrap">{{ category.id }}</td>
+												<td class="px-4 py-4 whitespace-nowrap inline-block h-40 w-40 rounded-full ring-2 ring-white "><img class=" h-full object-cover" src={{ asset('uploads/categories/' ~ category.photo)}} alt={{ category.photo }}>
+												</td>
+
 												<td class="px-2 py-2 whitespace-nowrap">{{ category.name }}</td>
 												<td class="px-2 py-2 whitespace-nowrap">{{ category.catParent | default('NULL') }}</td>
 												<td class="flex justify-around px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
