@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Query\AST\DeleteClause;
-use PhpParser\Node\NullableType;
+use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -17,9 +16,12 @@ class Category
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $name;
 
+    // #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
@@ -28,7 +30,7 @@ class Category
     private $catParent;
 
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
-
+    #[Assert\Unique]
     private $categories;
 
     public function __construct()

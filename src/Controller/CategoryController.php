@@ -4,13 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
-use App\Repository\CategoryRepository;
 use App\Service\FileUploader;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints\File as ValidationImage;
+
 
 #[Route('/categories')]
 class CategoryController extends AbstractController
@@ -30,6 +35,7 @@ class CategoryController extends AbstractController
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -54,12 +60,13 @@ class CategoryController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Category $category, CategoryRepository $categoryRepository, FileUploader $fileUploader): Response
+    public function edit(Request $request, Category $category, CategoryRepository $categoryRepository, FileUploader $fileUploader, $id): Response
     {
+
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
-        $oldImage = dirname(__DIR__, 2) . '/public/uploads/categories/' . $category->getPhoto();
+        $oldImage = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public/uploads/categories' . DIRECTORY_SEPARATOR . $category->getPhoto();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -67,11 +74,10 @@ class CategoryController extends AbstractController
             if ($categoryImage) {
                 $originalFileName = $fileUploader->upload($categoryImage);
                 if (file_exists($oldImage)) {
-                    unlink(new File($this->getParameter('categories_directory') . '/' . $category->getPhoto()));
+                    unlink(new File($this->getParameter('categories_directory') . DIRECTORY_SEPARATOR . $category->getPhoto()));
                 }
                 $category->setPhoto($originalFileName);
             }
-
             $categoryRepository->add($category, true);
 
             return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
@@ -88,10 +94,10 @@ class CategoryController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
 
-            $oldImage = dirname(__DIR__, 2) . '/public/uploads/categories/' . $category->getPhoto();
+            $oldImage = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public/uploads/categories' . DIRECTORY_SEPARATOR . $category->getPhoto();
             $categoryRepository->remove($category, true);
             if (file_exists($oldImage)) {
-                unlink(new File($this->getParameter('categories_directory') . '/' . $category->getPhoto()));
+                unlink(new File($this->getParameter('categories_directory') . DIRECTORY_SEPARATOR . $category->getPhoto()));
             }
         }
 

@@ -10,11 +10,17 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CategoryType extends AbstractType
+
 {
+
+    public function __construct()
+    {
+    }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -27,13 +33,22 @@ class CategoryType extends AbstractType
                 ),
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700']
             ])
-            ->add('catParent', null, [
+            ->add('catParent', EntityType::class, [
+                'class' => Category::class,
                 'attr' => array(
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                     'placeholder' => 'Seclect parent category',
-
                 ),
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-6'],
+                'label' => 'category parent',
+                'query_builder' => function (CategoryRepository $catRepo) {
+                    return $catRepo->createQueryBuilder('c')
+                        ->where('c.catParent is null');
+                },
+                'empty_data' => '',
+                'placeholder' => 'select a parent category',
+                'required' => false
+
             ])
             ->add('photo', FileType::class, [
                 'attr' => array(
@@ -47,7 +62,8 @@ class CategoryType extends AbstractType
                         'mimeTypes' => ['image/jpeg', 'image/png',],
                         'mimeTypesMessage' => 'please upload a valide image'
                     ])
-                ]
+                ],
+                'required' => false
             ]);
     }
 
