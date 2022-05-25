@@ -3,16 +3,15 @@
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Repository\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class CategoryType extends AbstractType
+
+class CategoryUpdateType extends AbstractType
 
 {
 
@@ -28,28 +27,13 @@ class CategoryType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'attr' => array(
-                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full my-',
+                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                     'placeholder' => 'Entre title ...'
                 ),
-                'label_attr' => ['class' => 'block font-normal text-base text-gray-700']
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+                'label' => 'Category'
             ])
-            ->add('catParent', EntityType::class, [
-                'class' => Category::class,
-                'attr' => array(
-                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
-                    'placeholder' => 'Seclect parent category',
-                ),
-                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-6'],
-                'label' => 'category parent',
-                'query_builder' => function (CategoryRepository $catRepo) {
-                    return $catRepo->createQueryBuilder('c')
-                        ->where('c.catParent is null');
-                },
-                'empty_data' => '',
-                'placeholder' => 'select a parent category',
-                'required' => false
 
-            ])
             ->add('photo', FileType::class, [
                 'attr' => array(
                     'class' => 'py-8 my-4',
@@ -63,8 +47,9 @@ class CategoryType extends AbstractType
                         'mimeTypesMessage' => 'please upload a valide image'
                     ])
                 ],
-                'required' => true,
+                'required' => false,
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+
             ]);
     }
 

@@ -21,7 +21,6 @@ class Category
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $name;
 
-    // #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 

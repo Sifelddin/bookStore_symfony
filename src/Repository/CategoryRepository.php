@@ -64,15 +64,16 @@ class CategoryRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Category
+    /**
+     * 
+     * @return array[]
+     */
+    public function parentCategoryList($value): array
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->Where('c.catParent is null')
+            ->andWhere("c.id != $value")
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getArrayResult();
     }
-    */
 }
