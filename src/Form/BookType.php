@@ -90,7 +90,7 @@ class BookType extends AbstractType
                     'class' => 'py-8 my-4 cursor-pointer',
                 ),
                 'label' => 'Book Image',
-                'mapped' => true,
+                'mapped' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
