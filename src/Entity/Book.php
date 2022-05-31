@@ -18,29 +18,41 @@ class Book
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5, max: 255, minMessage: 'the title should be more than 3 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $title;
 
+   
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["title"])]
     private $slug;
 
-
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 2, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Positive(message:"the price should be positive")]
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
     private $price;
 
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
+
 
     #[ORM\Column(type: 'text')]
     private $description;
 
+    #[Assert\NotBlank]
+    #[Assert\PositiveOrZero(message:"the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
     private $stock;
 
+    #[Assert\NotBlank]
+    #[Assert\PositiveOrZero(message:"the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
     private $stockAlert;
 
+    
     #[ORM\Column(type: 'date')]
     private $releaseDate;
 

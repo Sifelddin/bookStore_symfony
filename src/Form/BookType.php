@@ -25,13 +25,13 @@ class BookType extends AbstractType
                 ],
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
             ])
-            ->add('slug', TextType::class, [
-                "attr" => [
-                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
-                ],
-                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
-                'required' => false
-            ])
+            // ->add('slug', TextType::class, [
+            //     "attr" => [
+            //         'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
+            //     ],
+            //     'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+            //     'required' => false
+            // ])
             ->add('price', null, [
                 "attr" => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',

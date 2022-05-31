@@ -27,7 +27,9 @@ class BookController extends AbstractController
     public function new(Request $request, BookRepository $bookRepository, FileUploader $fileUploader): Response
     {
         $book = new Book();
-        $form = $this->createForm(BookType::class, $book);
+        $form = $this->createForm(BookType::class, $book, [
+            "mapped" => false
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

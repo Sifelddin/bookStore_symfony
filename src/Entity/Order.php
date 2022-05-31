@@ -6,6 +6,7 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -56,11 +57,16 @@ class Order
     #[ORM\Column(type: 'string', length: 50)]
     private $payMethod;
 
+    #[Gedmo\Timestampable(on: "create")]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $createdAt;
+
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: BookOrder::class)]
     private $bookOrders;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: Delivery::class)]
     private $deliveries;
+
 
     public function __construct()
     {
@@ -287,5 +293,13 @@ class Order
         }
 
         return $this;
+    }
+
+    /**
+     * Get the value of createdAt
+     */ 
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }

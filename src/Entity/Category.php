@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -20,6 +21,10 @@ class Category
     #[Assert\Length(min: 3)]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $name;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ["name"])]
+    private $slug;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
@@ -111,5 +116,13 @@ class Category
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * Get the value of slug
+     */ 
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }
