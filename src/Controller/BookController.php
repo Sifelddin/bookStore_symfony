@@ -57,10 +57,13 @@ class BookController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_book_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Book $book, BookRepository $bookRepository ,FileUploader $fileUploader): Response
+    public function edit(Request $request, Book $book, BookRepository $bookRepository, FileUploader $fileUploader): Response
     {
-       
-        $form = $this->createForm(BookType::class, $book);
+
+        $form = $this->createForm(BookType::class, $book, [
+            "required" => false,
+
+        ]);
         $form->handleRequest($request);
 
         $oldImage = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $book->getPhoto();
@@ -71,8 +74,8 @@ class BookController extends AbstractController
 
             if ($bookImage) {
                 $originalFileName = $fileUploader->upload($bookImage);
-                if(file_exists($oldImage)){
-                    unlink(new File($this->getParameter('image_directory'). DIRECTORY_SEPARATOR . $book->getPhoto()));
+                if (file_exists($oldImage)) {
+                    unlink(new File($this->getParameter('image_directory') . DIRECTORY_SEPARATOR . $book->getPhoto()));
                 }
                 $book->setPhoto($originalFileName);
             }
@@ -90,11 +93,11 @@ class BookController extends AbstractController
     #[Route('/{id}', name: 'app_book_delete', methods: ['POST'])]
     public function delete(Request $request, Book $book, BookRepository $bookRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->request->get('_token'))) {
 
             $oldImage = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $book->getPhoto();
 
-            if(file_exists($oldImage)){
+            if (file_exists($oldImage)) {
                 unlink(new File($this->getParameter('images_directory') . DIRECTORY_SEPARATOR . $book->getPhoto()));
                 $bookRepository->remove($book, true);
                 return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
@@ -102,6 +105,5 @@ class BookController extends AbstractController
             $bookRepository->remove($book, true);
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
         }
-
     }
 }

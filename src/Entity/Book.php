@@ -6,6 +6,7 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
@@ -17,17 +18,17 @@ class Book
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $title;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ["title"])]
     private $slug;
+
 
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2, nullable: true)]
     private $price;
-    
-    
-    #[Assert\NotBlank]
+
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
@@ -60,6 +61,14 @@ class Book
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: DeliveryDetails::class)]
     private $deliveryDetails;
 
+    #[Gedmo\Timestampable(on: "create")]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $createdAt;
+
+    #[Gedmo\Timestampable(on: "update")]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $updatedAt;
+
     public function __construct()
     {
         $this->bookOrders = new ArrayCollection();
@@ -80,7 +89,7 @@ class Book
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -92,7 +101,7 @@ class Book
         return $this->price;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(?string $price): self
     {
         $this->price = $price;
 
@@ -272,6 +281,30 @@ class Book
                 $deliveryDetail->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

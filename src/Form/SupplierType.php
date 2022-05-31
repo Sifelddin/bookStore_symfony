@@ -13,12 +13,12 @@ class SupplierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('contactName',TextType::class,[
+            ->add('contactName', TextType::class, [
                 'attr' => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full my-',
-                ]
-            ])
-        ;
+                ],
+                'required' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

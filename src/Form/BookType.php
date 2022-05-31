@@ -19,32 +19,33 @@ class BookType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class , [
+            ->add('title', TextType::class, [
                 "attr" => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                 ],
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
             ])
-            ->add('slug' , TextType::class , [
+            ->add('slug', TextType::class, [
+                "attr" => [
+                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
+                ],
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+                'required' => false
+            ])
+            ->add('price', null, [
                 "attr" => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                 ],
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
             ])
-            ->add('price',null,[
-                "attr" => [
-                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
-                ],
-                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
-            ])
-          
-            ->add('description', TextareaType::class,[
+
+            ->add('description', TextareaType::class, [
                 'attr' => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                 ],
-                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
             ])
-            ->add('stock',null,[
+            ->add('stock', null, [
                 "attr" => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                 ],
@@ -54,15 +55,15 @@ class BookType extends AbstractType
                 "attr" => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                 ],
-                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
             ])
-            ->add('releaseDate',null,[
+            ->add('releaseDate', null, [
                 "attr" => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50',
                 ],
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
             ])
-            ->add('published', null,[
+            ->add('published', null, [
                 "attr" => [
                     'class' => ' shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ',
                 ],
@@ -74,18 +75,18 @@ class BookType extends AbstractType
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                 ],
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
-                'query_builder' => function (CategoryRepository  $re){
-                 return   $re->createQueryBuilder('c') 
-                       ->where('c.catParent is not null');
+                'query_builder' => function (CategoryRepository  $re) {
+                    return   $re->createQueryBuilder('c')
+                        ->where('c.catParent is not null');
                 }
             ])
-            ->add('supplier',null,[
+            ->add('supplier', null, [
                 "attr" => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
                 ],
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
             ])
-            ->add('photo', FileType::class,[
+            ->add('photo', FileType::class, [
                 'attr' => array(
                     'class' => 'py-8 my-4 cursor-pointer',
                 ),
@@ -98,10 +99,9 @@ class BookType extends AbstractType
                         'mimeTypesMessage' => 'please upload a valide image',
                     ])
                 ],
-                'required' => false,
+                'required' => true,
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
