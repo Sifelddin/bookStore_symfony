@@ -53,6 +53,7 @@ class BookController extends AbstractController
     #[Route('/{id}', name: 'app_book_show', methods: ['GET'])]
     public function show(Book $book): Response
     {
+       
         return $this->render('book/show.html.twig', [
             'book' => $book,
         ]);
@@ -61,7 +62,7 @@ class BookController extends AbstractController
     #[Route('/{id}/edit', name: 'app_book_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Book $book, BookRepository $bookRepository, FileUploader $fileUploader): Response
     {
-
+       
         $form = $this->createForm(BookType::class, $book, [
             "mapped" => false,
         ]);

@@ -33,7 +33,7 @@
 									<tbody>
 										{% for book in books %}
 											<tr>
-												<td class="px-4 py-4 whitespace-nowrap inline-block h-40 w-40 rounded-full ring-2 ring-white "><img class=" h-full object-cover" src={{ asset('uploads/images/' ~ book.photo)}} alt={{ book.photo }}>
+												<td class="px-4 py-4 whitespace-nowrap inline-block h-40 w-40  rounded-full ring-2 ring-white "><img class=" h-full object-cover" src={{ asset('uploads/images/' ~ book.photo)}} alt={{ book.photo }}>
 												</td>
 												<td class="px-2 py-2">{{ book.title }}</td>
 												<td class="px-2 py-2">{{ book.price }}€</td>
@@ -41,7 +41,7 @@
 												<td class="px-2 py-2">{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
 												<td class="px-2 py-2">{{ book.published ? 'Yes' : 'No' }}</td>
 												<td class="flex justify-around px-2 py-2 whitespace-nowrap text-right text-sm font-medium">
-													<a class="text-indigo-600 hover:text-indigo-900 uppercase" href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
+													<a class="text-green-600 hover:text-green-900 uppercase" href="{{ path('app_book_show', {'id': book.id}) }}">details</a>
 													<a class="text-indigo-600 hover:text-indigo-900 uppercase" href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
 												</td>
 											</tr>

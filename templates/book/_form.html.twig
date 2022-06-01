@@ -1,22 +1,25 @@
 {{ form_start(form) }}
-<div class="grid grid-cols-2 w-full gap-3">
-	<div class="col-span-1">
-		{{ form_row(form.title) }}
-		{{ form_row(form.description) }}
-		{{ form_row(form.price) }}
-		{{ form_row(form.category) }}
+<div class="flex flex-col justify-center">
+	<div class="grid grid-cols-2 w-full gap-3">
+		<div class="col-span-1">
+			{{ form_row(form.title) }}
+			{{ form_row(form.description) }}
+			{{ form_row(form.price) }}
+			{{ form_row(form.category) }}
+		</div>
+		<div class="col-span-1">
+			{{ form_row(form.stock) }}
+			{{ form_row(form.stockAlert) }}
+			{{ form_row(form.releaseDate ) }}
+			{{ form_row(form.published) }}
+			{{ form_row(form.supplier) }}
+			{{ form_row(form.photo) }}
+		</div>
 	</div>
-	<div class="col-span-1">
-		{{ form_row(form.stock) }}
-		{{ form_row(form.stockAlert) }}
-		{{ form_row(form.releaseDate ) }}
-		{{ form_row(form.published) }}
-		{{ form_row(form.supplier) }}
-		{{ form_row(form.photo) }}
-	</div>
+	<div class="flex justify-around items-center">
+		<button class='inline-flex justify-center items-center px-4 py-2 mt-4 bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 '>{{ button_label|default('Save') }}</button>
+		<a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_book_index') }}">back to list</a>
 
+	</div>
 </div>
-
-<button class='inline-flex justify-center items-center w-full px-4 py-2 mt-4 bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>{{ button_label|default('Save') }}</button>
-
 {{ form_end(form) }}
