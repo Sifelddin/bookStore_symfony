@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\BookRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BookRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
+#[UniqueEntity('title', message: 'the title should be unique')]
+
 class Book
 {
 
@@ -18,51 +21,53 @@ class Book
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    
+
     #[Assert\NotBlank]
-    #[Assert\Length(min: 5, max: 255, minMessage: 'the title should be more than 3 character long', maxMessage: 'the title should be less than 255 character long')]
+    #[Assert\Length(min: 5, max: 255, minMessage: 'the title should be more than 5 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $title;
 
-   
+
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["title"])]
     private $slug;
 
     #[Assert\NotBlank]
-    #[Assert\Positive(message:"the price should be positive")]
+    #[Assert\Positive(message: "the price should be positive")]
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
     private $price;
 
-    
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
-
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
     private $description;
 
     #[Assert\NotBlank]
-    #[Assert\PositiveOrZero(message:"the price should be positive or zero")]
+    #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
     private $stock;
 
     #[Assert\NotBlank]
-    #[Assert\PositiveOrZero(message:"the price should be positive or zero")]
+    #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
     private $stockAlert;
 
-    
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'date')]
     private $releaseDate;
 
     #[ORM\Column(type: 'boolean')]
     private $published;
 
+    #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $category;
 
+    #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
     private $supplier;
@@ -173,7 +178,7 @@ class Book
         return $this->releaseDate;
     }
 
-    public function setReleaseDate(\DateTimeInterface $releaseDate): self
+    public function setReleaseDate(?\DateTimeInterface $releaseDate): self
     {
         $this->releaseDate = $releaseDate;
 

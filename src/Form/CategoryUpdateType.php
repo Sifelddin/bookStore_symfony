@@ -31,7 +31,9 @@ class CategoryUpdateType extends AbstractType
                     'placeholder' => 'Entre title ...'
                 ),
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
-                'label' => 'Category'
+                'label' => 'Category',
+                'required' => false,
+                'empty_data' => ''
             ])
 
             ->add('photo', FileType::class, [

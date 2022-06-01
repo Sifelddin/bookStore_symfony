@@ -7,9 +7,13 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[UniqueEntity('name', message: 'category name should be unique')]
+
+
 class Category
 {
     #[ORM\Id]
@@ -17,9 +21,9 @@ class Category
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
@@ -27,6 +31,7 @@ class Category
     private $slug;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private $photo;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
@@ -34,7 +39,6 @@ class Category
     private $catParent;
 
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
-    #[Assert\Unique]
     private $categories;
 
     public function __construct()
@@ -120,7 +124,7 @@ class Category
 
     /**
      * Get the value of slug
-     */ 
+     */
     public function getSlug()
     {
         return $this->slug;

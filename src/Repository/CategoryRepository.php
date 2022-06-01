@@ -76,4 +76,18 @@ class CategoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
+
+    //find parent category in the category table depends on the category to update
+
+    /**
+     * @param string
+     * 
+     */
+    public function isParent($value)
+    {
+        return $this->createQueryBuilder('c')
+            ->where("c.catParent = $value")
+            ->getQuery()
+            ->getResult();
+    }
 }

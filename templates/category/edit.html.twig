@@ -10,7 +10,9 @@
 			<div>
 				<img class=" h-full object-cover" src={{ asset('uploads/images/' ~ category.photo)}} alt={{category.name}}>
 			</div>
-			{{ include('category/_form.update.html.twig', {'button_label': 'Update'}) }}
+
+
+			{{ include('category/_form.update.html.twig' ,{'button_label': 'Update'}) }}
 
 
 			<a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_category_index') }}">back to list</a>

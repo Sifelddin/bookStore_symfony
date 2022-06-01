@@ -31,7 +31,8 @@ class CategoryType extends AbstractType
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full my-',
                     'placeholder' => 'Entre title ...'
                 ),
-                'label_attr' => ['class' => 'block font-normal text-base text-gray-700']
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700'],
+                'required' => false
             ])
             ->add('catParent', EntityType::class, [
                 'class' => Category::class,
@@ -55,7 +56,7 @@ class CategoryType extends AbstractType
                     'class' => 'py-8 my-4',
                 ),
                 'label' => 'Category image',
-                'mapped' => false,
+                'mapped' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -63,7 +64,7 @@ class CategoryType extends AbstractType
                         'mimeTypesMessage' => 'please upload a valide image'
                     ])
                 ],
-                'required' => true,
+                'required' => false,
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
             ]);
     }

@@ -60,14 +60,28 @@ class CategoryController extends AbstractController
     public function edit(Request $request, Category $category, CategoryRepository $categoryRepository, FileUploader $fileUploader, $id): Response
     {
 
+
+
+        $parentId = null;
+        $parents = $categoryRepository->isParent($category->getId());
         $parentCategories = $categoryRepository->parentCategoryList($category->getId());
+        if ($category->getCatParent()) {
+            $parentId = $category->getCatParent()->getId();
+        }
+
+
+        
         $form = $this->createForm(CategoryUpdateType::class, $category);
         $form->handleRequest($request);
 
         $oldImage = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $category->getPhoto();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $catParentRequest  = $categoryRepository->find($request->request->get("catParent"));
+
+            $catParentRequest = null;
+            if ($request->request->get("catParent")) {
+                $catParentRequest  = $categoryRepository->find($request->request->get("catParent"));
+            }
 
             $categoryImage = $form->get('photo')->getData();
             if ($categoryImage) {
@@ -87,7 +101,9 @@ class CategoryController extends AbstractController
         return $this->renderForm('category/edit.html.twig', [
             'category' => $category,
             'form' => $form,
-            'parentList' => $parentCategories
+            'parentList' => $parentCategories,
+            'parents' => $parents,
+            'parentID' => $parentId
         ]);
     }
 
@@ -96,7 +112,7 @@ class CategoryController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
 
-            $oldImage = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public'.DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR  .'images' . DIRECTORY_SEPARATOR . $category->getPhoto();
+            $oldImage = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR  . 'images' . DIRECTORY_SEPARATOR . $category->getPhoto();
             if (file_exists($oldImage)) {
                 unlink(new File($this->getParameter('images_directory') . DIRECTORY_SEPARATOR . $category->getPhoto()));
                 $categoryRepository->remove($category, true);
@@ -105,6 +121,5 @@ class CategoryController extends AbstractController
             $categoryRepository->remove($category, true);
             return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
         }
-
     }
 }

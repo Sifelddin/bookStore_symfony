@@ -1,14 +1,27 @@
 {{form_start(form)}}
 {{ form_row(form.name) }}
-<div>
-	<label class="block font-normal text-base text-gray-700 mt-4" for="category_parent">
-		Parent Category</label>
-	<select class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full" name="catParent" id="category_parent">
-		<option class="text-gray-500" value="">-- add parent category --</option>
-		{% for parent in parentList %}
-			<option value={{parent.id}}>{{parent.name}}</option>
-		{% endfor %}
-	</select>
-</div>
+
+
+{% if parents|length > 0 %}
+
+	<p>this category is a parent category
+	</p>
+
+{% else %}
+	<div>
+		<label class="block font-normal text-base text-gray-700 mt-4" for="category_parent">
+			Parent Category</label>
+		<select class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full" name="catParent" id="category_parent">
+			{% if parentID is null %}
+				<option class="text-gray-500" value="">-- select a category --</option>
+			{% else %}
+				<option class="text-gray-500" value={{parentID}}>{{category.catParent}}</option>
+			{% endif %}
+			{% for parent in parentList %}
+				<option value={{parent.id}}>{{parent.name}}</option>
+			{% endfor %}
+		</select>
+	</div>
+{% endif %}
 {{ form_row(form.photo) }}<button class='inline-flex justify-center items-center w-full px-4 py-2 mt-4 bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>{{ button_label|default('Save') }}</button>
 {{form_end(form)}}

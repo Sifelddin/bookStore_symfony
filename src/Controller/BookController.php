@@ -28,7 +28,7 @@ class BookController extends AbstractController
     {
         $book = new Book();
         $form = $this->createForm(BookType::class, $book, [
-            "mapped" => false
+            "mapped" => true,
         ]);
         $form->handleRequest($request);
 
@@ -63,8 +63,7 @@ class BookController extends AbstractController
     {
 
         $form = $this->createForm(BookType::class, $book, [
-            "required" => false,
-
+            "mapped" => false,
         ]);
         $form->handleRequest($request);
 
