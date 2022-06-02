@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!
+{% endblock %}
+
+{% block body %}
+	<div class=" min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 ">
+		<div class="flex flex-col w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+			<form method="post">
+				{% if error %}
+					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+				{% endif %}
+
+				{% if app.user %}
+					<div class="mb-3">
+						You are logged in as
+						{{ app.user.userIdentifier }},
+						<a href="{{ path('app_logout') }}">Logout</a>
+					</div>
+				{% endif %}
+
+				<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+				<label class='block font-normal text-base text-gray-700' for="inputEmail">Email</label>
+				<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full" autocomplete="email" required autofocus>
+				<label class="block font-normal text-base text-gray-700" for="inputPassword">Password</label>
+				<input type="password" name="password" id="inputPassword" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full" autocomplete="current-password" required>
+
+				<input
+				type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+				{#
+																								        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+																								        See https://symfony.com/doc/current/security/remember_me.html
+																								
+																								        <div class="checkbox mb-3">
+																								            <label>
+																								                <input type="checkbox" name="_remember_me"> Remember me
+																								            </label>
+																								        </div>
+																								    #}
+
+				<button class="inline-flex justify-center items-center px-4 py-2 mt-4 bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 " type="submit">
+					Sign in
+				</button>
+			</form>
+		</div>
+	</div>
+{% endblock %}

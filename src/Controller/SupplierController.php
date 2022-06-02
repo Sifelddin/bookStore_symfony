@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-#[Route('/supplier')]
+
+#[Route('/dashboard/supplier')]
 class SupplierController extends AbstractController
 {
     #[Route('/', name: 'app_supplier_index', methods: ['GET'])]

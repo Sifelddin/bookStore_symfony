@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -19,37 +21,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Assert\NotBlank]
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
 
     #[ORM\Column(type: 'json')]
     private $roles = [];
 
+
     #[ORM\Column(type: 'string')]
     private $password;
 
-    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/\d+/', htmlPattern: false, match: false, message: "firstname does not have numbers",)]
+    #[Assert\Length(min: 2, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
+    #[ORM\Column(type: 'string', length: 50)]
     private $firstname;
 
+    #[Assert\NotBlank]
+    #[Assert\Regex('/\d+/', htmlPattern: false, match: false, message: "lastname name does not have numbers")]
+    #[Assert\Length(min: 2, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
     #[ORM\Column(type: 'string', length: 50)]
     private $lastname;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 255)]
     private $address;
 
+    #[Assert\NotBlank(message: 'zipcode field must be filled')]
+    #[Assert\Regex('/^[0-9]{2}0{3}$/', match: true, message: "zipcode is not valid, please insert a valid zipcode ex: 76000",)]
     #[ORM\Column(type: 'string', length: 5)]
     private $zipCode;
 
+    #[Assert\NotBlank]
+    #[Assert\Regex('/\d+/', match: false, htmlPattern: false, message: "city name does not have numbers",)]
+    #[Assert\Length(min: 3, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
     #[ORM\Column(type: 'string', length: 50)]
     private $city;
 
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^0{1}[0-9]{9}$/', match: true, message: "phone numbre is not valid, please insert a valid phone number ex: 066001097",)]
     #[ORM\Column(type: 'string', length: 10)]
     private $phone;
 
-    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true)]
+
+    #[Assert\Positive(message: "the coefficient should be positive")]
+    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ["default" => 0])]
     private $Coef;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(type: 'boolean', nullable: true, options: ["default" => true])]
     private $private;
 
     #[ORM\OneToMany(mappedBy: 'userClient', targetEntity: Order::class)]

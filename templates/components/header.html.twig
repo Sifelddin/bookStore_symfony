@@ -42,14 +42,25 @@
 						<span>Contact</span>
 					</button>
 				</div>
+				<div
+					class="relative">
+					<!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
+					<button type="button" class="text-gray-500 group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
+						<span>Dashboard</span>
+					</button>
+				</div>
 			</nav>
 			<div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-				<a href="#" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
-					Sign in
+				<a href="{{ app.user ? path('app_logout') : path('app_login')}}" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+					{{ app.user ? 'Logout' :  'Sign in'}}
 				</a>
-				<a href="{{path('app_register')}}" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-					Sign up
-				</a>
+				{% if app.user %}
+					{% else %}
+						<a href="{{path('app_register')}}" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+							Sign up
+						</a>
+				{% endif %}
+
 			</div>
 		</div>
 	</div>
@@ -88,6 +99,9 @@
 						Docs
 					</a>
 					<a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
+						Contact
+					</a>
+					<a href="" class="text-base font-medium text-gray-900 hover:text-gray-700">
 						Contact
 					</a>
 

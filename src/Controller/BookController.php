@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/book')]
+#[Route('/dashboard/book')]
 class BookController extends AbstractController
 {
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
