@@ -10,8 +10,8 @@ class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $user = new User(); 
-        $user->setEmail('');
+        $user = new User();
+        $user->setEmail('gerard@gmail.com');
         $user->setFirstName('gerard');
         $user->setRoles(['client']);
         $user->setPassword('test');
@@ -23,8 +23,7 @@ class UserFixtures extends Fixture
         $user->setCoef(0.9);
         $user->setPrivate(0);
 
-        
-        $manager->persist($user);
 
+        $manager->persist($user);
     }
 }
