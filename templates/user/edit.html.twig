@@ -1,9 +1,79 @@
 {% extends 'admin.html.twig' %}
 
+{% block title %}Book
+{% endblock %}
+
 {% block body %}
-	<div class="min-h-fit flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-4">
+	<div class="min-h-fit  sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-4">
+		<div class="flex flex-col  mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg m-10">
+			<div class="grid grid-cols-2 gap-2">
+				<table class="divide-y divide-gray-200 col-span-1">
+					<tbody>
+						<tr>
+							<th class='text-left uppercase'>Id :</th>
+							<td class='text-left'>{{ user.id }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Email :</th>
+							<td class='text-left'>{{ user.email }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>FirstName :</th>
+							<td class='text-left'>{{ user.firstname }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>
+								LastName :</th>
+							<td class='text-left'>{{ user.lastname }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Address :</th>
+							<td class='text-left'>{{ user.address }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>City :</th>
+							<td class='text-left'>{{ user.city }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Zipcode :</th>
+							<td class='text-left'>{{ user.zipcode }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Phone :</th>
+							<td class='text-left'>{{ user.phone }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Coefficient :</th>
+							<td class='text-left'>{{ user.coef }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Private :</th>
+							<td class='text-left'>{{ user.private ? "yes" : user.private == false ? "no" : "" }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Roles :</th>
+							<td class='text-left'>
+								{% for role in user.roles %}
+									<span>{{role}}</span><br>
+								{% endfor %}
+
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+			<div class="min-h-fit flex sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-1">
 		<div class="flex flex-col w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 			{{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+		</div>
+	</div>
+	
+			</div>
+			<div class='flex justify-around items-center mt-10'>
+				<a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_user_index') }}">back to list</a>
+
+				
+			</div>
 		</div>
 	</div>
 {% endblock %}
