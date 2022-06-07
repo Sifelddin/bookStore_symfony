@@ -21,13 +21,16 @@ class UserType extends AbstractType
 
             ])
             ->add('private', ChoiceType::class, [
+                'label' => 'status(private,professionnel,employe)',
+                'attr' => [
+                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full',
+                ],
                 'choices' => [
                     'employ' => null,
                     'yes' => true,
                     'no' => false
                 ]
             ]);
-        // ->add('roles')
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -52,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $address;
 
     #[Assert\NotBlank(message: 'zipcode field must be filled')]
-    #[Assert\Regex('/^[0-9]{2}0{3}$/', match: true, message: "zipcode is not valid, please insert a valid zipcode ex: 76000",)]
+    #[Assert\Regex('/^[0-9]{4}0{1}$/', match: true, message: "zipcode is not valid, please insert a valid zipcode ex: 76000",)]
     #[ORM\Column(type: 'string', length: 5)]
     private $zipCode;
 
