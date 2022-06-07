@@ -63,12 +63,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $city;
 
     #[Assert\NotBlank]
-    #[Assert\Regex('/^0{1}[0-9]{9}$/', match: true, message: "phone numbre is not valid, please insert a valid phone number ex: 066001097",)]
+    #[Assert\Regex('/^0{1}[0-9]{9}$/', match: true, message: "phone numbre is not valid, please insert a valid phone number ex: 0660801097",)]
     #[ORM\Column(type: 'string', length: 10)]
     private $phone;
 
 
-    #[Assert\Positive(message: "the coefficient should be positive")]
+    #[Assert\PositiveOrZero(message: "the coefficient should be positive")]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ["default" => 0])]
     private $Coef;
 
