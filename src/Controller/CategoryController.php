@@ -60,8 +60,6 @@ class CategoryController extends AbstractController
     public function edit(Request $request, Category $category, CategoryRepository $categoryRepository, FileUploader $fileUploader, $id): Response
     {
 
-
-
         $parentId = null;
         $parents = $categoryRepository->isParent($category->getId());
         $parentCategories = $categoryRepository->parentCategoryList($category->getId());
@@ -70,7 +68,6 @@ class CategoryController extends AbstractController
         }
 
 
-        
         $form = $this->createForm(CategoryUpdateType::class, $category);
         $form->handleRequest($request);
 

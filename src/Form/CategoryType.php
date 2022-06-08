@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CategoryType extends AbstractType
 
@@ -62,7 +63,8 @@ class CategoryType extends AbstractType
                         'maxSize' => '1024k',
                         'mimeTypes' => ['image/jpeg', 'image/png',],
                         'mimeTypesMessage' => 'please upload a valide image'
-                    ])
+                    ]),
+                    new NotBlank()
                 ],
                 'required' => false,
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],

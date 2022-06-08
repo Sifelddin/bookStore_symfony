@@ -5,44 +5,58 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[UniqueEntity('title', message: 'the title should be unique')]
-
+#[ApiResource(
+    collectionOperations: ["get" => ['normalization_context' => ['groups' => 'book:list']]],
+    itemOperations: [
+        "get" =>  ['normalization_context' => ['groups' => ['book:item', 'book:full:item']]],
+    ]
+)]
 class Book
 {
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['book:list', 'book:item'])]
     private $id;
 
 
     #[Assert\NotBlank]
     #[Assert\Length(min: 5, max: 255, minMessage: 'the title should be more than 5 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Groups(['book:list', 'book:item'])]
     private $title;
 
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["title"])]
+    #[Groups(['book:list', 'book:item'])]
     private $slug;
 
     #[Assert\NotBlank]
     #[Assert\Positive(message: "the price should be positive")]
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
+    #[Groups(['book:list', 'book:item'])]
     private $price;
 
-    #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['book:list', 'book:item'])]
     private $photo;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
+    #[Groups(['book:list', 'book:item'])]
     private $description;
 
     #[Assert\NotBlank]
@@ -57,14 +71,18 @@ class Book
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'date')]
+    #[Groups(['book:list', 'book:item'])]
     private $releaseDate;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(['book:list', 'book:item'])]
+    #[ApiFilter(BooleanFilter::class)]
     private $published;
 
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['book:full:item'])]
     private $category;
 
     #[Assert\NotBlank]

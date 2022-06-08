@@ -4,15 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CategoryRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[UniqueEntity('name', message: 'category name should be unique')]
-
+#[ApiResource(
+    attributes: ["pagination_items_per_page" => 8],
+    collectionOperations: ["get"],
+    itemOperations: ["get"]
+)]
 
 class Category
 {
@@ -24,6 +30,7 @@ class Category
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
+    #[Groups(['book:full:item'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
@@ -31,15 +38,15 @@ class Category
     private $slug;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank]
     private $photo;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategories')]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Groups(['book:full:item'])]
     private $catParent;
 
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
-    private $categories;
+    private $subCategories;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
     private $books;
@@ -48,6 +55,7 @@ class Category
     {
         $this->categories = new ArrayCollection();
         $this->books = new ArrayCollection();
+        $this->subCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,15 +103,15 @@ class Category
     /**
      * @return Collection<int, self>
      */
-    public function getCategories(): Collection
+    public function getSubCategories(): Collection
     {
-        return $this->categories;
+        return $this->subCategories;
     }
 
     public function addCategory(self $category): self
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
+        if (!$this->subCategories->contains($category)) {
+            $this->subCategories[] = $category;
             $category->setCatParent($this);
         }
 
@@ -112,7 +120,7 @@ class Category
 
     public function removeCategory(self $category): self
     {
-        if ($this->categories->removeElement($category)) {
+        if ($this->subCategories->removeElement($category)) {
             // set the owning side to null (unless already changed)
             if ($category->getCatParent() === $this) {
                 $category->setCatParent(null);
