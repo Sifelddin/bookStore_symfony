@@ -53,7 +53,6 @@ class Category
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->books = new ArrayCollection();
         $this->subCategories = new ArrayCollection();
     }
