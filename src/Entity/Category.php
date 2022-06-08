@@ -5,19 +5,21 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CategoryRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[UniqueEntity('name', message: 'category name should be unique')]
 #[ApiResource(
     attributes: ["pagination_items_per_page" => 8],
-    collectionOperations: ["get"],
-    itemOperations: ["get"]
+    collectionOperations: ["get" => ['normalization_context' => ['groups' => ['cat:list']]]],
+    itemOperations: ["get" => ['normalization_context' => ['groups' => ['cat:full:books']]]]
 )]
 
 class Category
@@ -30,25 +32,28 @@ class Category
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[Groups(['book:full:item'])]
+    #[Groups(['book:full:item' , 'cat:list'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["name"])]
     private $slug;
 
+    #[Groups(['cat:list'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategories')]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
-    #[Groups(['book:full:item'])]
+    #[Groups(['cat:list'])]
     private $catParent;
 
+    #[Groups(['cat:list'])]
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
     private $subCategories;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
+    #[Groups(['cat:full:books'])]
     private $books;
 
     public function __construct()
