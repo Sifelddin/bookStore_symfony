@@ -41,9 +41,13 @@ class Category
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
     private $categories;
 
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
+    private $books;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,5 +132,35 @@ class Category
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * @return Collection<int, Book>
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getCategory() === $this) {
+                $book->setCategory(null);
+            }
+        }
+
+        return $this;
     }
 }

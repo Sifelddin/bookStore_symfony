@@ -77,6 +77,19 @@ class CategoryRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    /**
+     * 
+     * @return array[]
+     */
+    public function allParentCategory(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.catParent is null')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+
     //find parent category in the category table depends on the category to update
 
     /**

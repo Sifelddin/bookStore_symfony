@@ -1,0 +1,83 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Book
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-fit  sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-4">
+		<div class="flex flex-col  mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg m-10">
+			<div class="grid grid-cols-2">
+				<table class="divide-y divide-gray-200 col-span-1">
+					<tbody>
+						<tr>
+							<th class='text-left uppercase'>Id :</th>
+							<td class='text-left'>{{ book.id }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Title :</th>
+							<td class='text-left'>{{ book.title }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Slug :</th>
+							<td class='text-left'>{{ book.slug }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>
+								Parent Category:</th>
+							<td class='text-left'>{{ book.category.catParent }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Category :</th>
+							<td class='text-left'>{{ book.category }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Supplier :</th>
+							<td class='text-left'>{{ book.supplier }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Price :</th>
+							<td class='text-left'>{{ book.price ? book.price : '' }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Stock :</th>
+							<td class='text-left'>{{ book.stock }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>StockAlert :</th>
+							<td class='text-left'>{{ book.stockAlert }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>ReleaseDate :</th>
+							<td class='text-left'>{{ book.releaseDate ? book.releaseDate|date('d-m-Y') : '' }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Published :</th>
+							<td class='text-left'>{{ book.published ? 'Yes' : 'No' }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Updated At :</th>
+							<td class='text-left'>{{ book.updatedAt.format('d/m/Y') }}</td>
+						</tr>
+						<tr>
+							<th class='text-left uppercase'>Created At :</th>
+							<td class='text-left'>{{ book.createdAt.format('d/m/Y') }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="flex flex-col col-span-1">
+					<img src={{ asset('uploads/images/' ~ book.photo)}} alt={{ book.photo }}>
+					<p>Description :
+						<span>{{book.Description}}</span>
+					</p>
+				</div>
+			</div>
+			<div class='flex justify-around items-center mt-10'>
+				<a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_book_index') }}">back to list</a>
+
+				{# <a class='flex justify-center items-center px-4 py-2 mt-4 bg-blue-400 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150' href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a> #}
+
+				{# {{ include('book/_delete_form.html.twig') }} #}
+			</div>
+		</div>
+	</div>
+{% endblock %}
