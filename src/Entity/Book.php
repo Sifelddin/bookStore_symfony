@@ -35,7 +35,7 @@ class Book
     #[Assert\NotBlank]
     #[Assert\Length(min: 4, max: 255, minMessage: 'the title should be more than 4 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', 'cat:full:books'])]
     private $title;
 
 
@@ -47,11 +47,11 @@ class Book
     #[Assert\NotBlank]
     #[Assert\Positive(message: "the price should be positive")]
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', 'cat:full:books'])]
     private $price;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item' , 'cat:full:books'])]
     private $photo;
 
     #[Assert\NotBlank]
@@ -80,7 +80,7 @@ class Book
     private $published;
 
     #[Assert\NotBlank]
-    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy:'books')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['book:full:item'])]
     private $category;

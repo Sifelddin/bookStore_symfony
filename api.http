@@ -1,4 +1,6 @@
+
 http://localhost:8000/api/books?published=true
+
 
 ###
 
@@ -7,3 +9,6 @@ http://localhost:8000/api/books/1
 ###
 
 http://localhost:8000/api/categories
+
+### 
+https://localhost:8000/api/categories
