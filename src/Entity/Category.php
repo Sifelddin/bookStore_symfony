@@ -16,23 +16,27 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[UniqueEntity('name', message: 'category name should be unique')]
-#[ApiResource(
-    attributes: ["pagination_items_per_page" => 8],
-    collectionOperations: ["get" => ['normalization_context' => ['groups' => ['cat:list']]]],
-    itemOperations: ["get" => ['normalization_context' => ['groups' => ['cat:full:books']]]]
-)]
+#[
+    ApiResource(
+        attributes: ["pagination_items_per_page" => 8],
+        collectionOperations: ["get" => ['normalization_context' => ['groups' => ['cat:list', 'cat:full:books']]]],
+        itemOperations: ["get"]
+    ),
+    ApiFilter(SearchFilter::class, properties: ['catParent' => 'exact'])
+]
 
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['cat:list'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[Groups(['book:full:item' , 'cat:list'])]
+    #[Groups(['book:full:item', 'cat:list'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]

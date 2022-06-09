@@ -17,7 +17,7 @@ class BookFixtures extends Fixture {
         $cat1 = $manager->getRepository(Category::class)->findOneBy([ "name" => "SciFi"]);
         $sup1 = $manager->getRepository(Supplier::class)->findOneBy([ "contactName" => "Flammarion"]);
         $book = new Book(); 
-        $book ->setTitle('Dune');
+        $book->setTitle('Dune');
         $book->setPrice(15);
         $book->setPhoto('/chemin/photo.jpg');
         $book->setDescription("Sur Dune, planète désertique, monde des sables, germe l'épice qui donne longévité et préscience.
