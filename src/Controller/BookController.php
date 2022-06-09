@@ -78,7 +78,7 @@ class BookController extends AbstractController
             if ($bookImage) {
                 $originalFileName = $fileUploader->upload($bookImage);
                 if (file_exists($oldImage)) {
-                    unlink(new File($this->getParameter('image_directory') . DIRECTORY_SEPARATOR . $book->getPhoto()));
+                    unlink(new File($this->getParameter('images_directory') . DIRECTORY_SEPARATOR . $book->getPhoto()));
                 }
                 $book->setPhoto($originalFileName);
             }
