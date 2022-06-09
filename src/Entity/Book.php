@@ -28,7 +28,7 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', 'cat:full:books'])]
     private $id;
 
 
@@ -56,7 +56,7 @@ class Book
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', 'cat:full:books'])]
     private $description;
 
     #[Assert\NotBlank]
@@ -71,7 +71,7 @@ class Book
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'date')]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', 'cat:full:books'])]
     private $releaseDate;
 
     #[ORM\Column(type: 'boolean')]
