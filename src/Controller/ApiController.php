@@ -24,18 +24,6 @@ class ApiController extends AbstractController
     #[Route('/react', name: 'app_react')]
     public function index(): Response
     {
-
         return $this->render("api/index.html.twig");
-    }
-
-
-    #[Route('/react_test', name: 'app_react', methods: ["post"])]
-    public function index2(Request $req): Response
-    {
-
-        print_r(json_decode($req->getContent()));
-
-        return new Response("ok");
-        //return $this->render("api/index.html.twig");
     }
 }
