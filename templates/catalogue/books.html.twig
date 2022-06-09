@@ -1,6 +1,6 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}Hello CatalogueController!{% endblock %}
+{% block title %}Books{% endblock %}
 
 {% block body %}
 <style>
@@ -12,9 +12,9 @@
 
         {% for book in cat.books %}
 
-            {# <a  href='{{path('subCatalogue',{"slug":category.slug})}}'>   #}
+            <a  href='{{path('book',{"slug":book.slug})}}'>  
                 <h1 class=' text-blue-400 underline hover:text-blue-800'>{{book.title}}</h1>
-            {# </a> #}
+            </a>
      
 
         {% endfor %}

@@ -23,7 +23,7 @@ class Book
 
 
     #[Assert\NotBlank]
-    #[Assert\Length(min: 5, max: 255, minMessage: 'the title should be more than 5 character long', maxMessage: 'the title should be less than 255 character long')]
+    #[Assert\Length(min: 4, max: 255, minMessage: 'the title should be more than 4 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $title;
 

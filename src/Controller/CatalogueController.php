@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Entity\Category;
-use App\Repository\BookRepository;
 use Gedmo\Mapping\Annotation\Slug;
 use App\Repository\CategoryRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,8 +47,8 @@ class CatalogueController extends AbstractController
     }
 
     
-    #[Route('/{slug}/books/', name: 'book')]
-    public function book(ManagerRegistry $doctrine, Category $cat): Response
+    #[Route('/{slug}/books/', name: 'books')]
+    public function books(Category $cat): Response
     {
         // $category = $doctrine->getRepository(Category::class)->find($cat);
 
@@ -65,8 +63,30 @@ class CatalogueController extends AbstractController
         // $books= $bookRepository->findAll();
 
 
-        return $this->render("catalogue/book.html.twig",[
+        return $this->render("catalogue/books.html.twig",[
             'cat' => $cat
+           
+        ]);
+    }
+
+    #[Route('/book/{slug}', name: 'book')]
+    public function book(Book $book): Response
+    {
+        // $category = $doctrine->getRepository(Category::class)->find($cat);
+
+       //dd($book->getTitle());
+
+        // }
+         //dd($book);
+       
+        // $id = $book->getId();
+
+        //dd(  $categories= $categoriesRepository->isParent($id));
+        // $books= $bookRepository->findAll();
+
+
+        return $this->render("catalogue/show.html.twig",[
+            'book' => $book
            
         ]);
     }
