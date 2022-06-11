@@ -10,14 +10,14 @@ import { Header } from './header';
 const App = () => {
 
   
-const [categories, setCategories] = useState([])
+
 const [subCategories, setSubCategories] = useState([])
-const [books, setBooks] = useState([])
-const [posts,setPosts] = useState([])
+const [catBooks, setCatBooks] = useState([])
+const [categories,setCategories] = useState([])
 const [book,setBook] = useState(false)
 
 useEffect(()=>{
-    axios.get('api/categories?page=1&catParent=null').then((res) => setPosts(res.data)).catch(e=>console.log(e))
+    axios.get('api/categories?page=1&catParent=null').then((res) => setCategories(res.data)).catch(e=>console.log(e))
     
 },[])
 
@@ -26,7 +26,7 @@ const selectCat = (e) => {
   }
   
   const selectBooks = (e) => {
-      setBooks(e)
+    setCatBooks(e)
   }
 
   const selectBook = (e) => {
@@ -35,7 +35,6 @@ const selectCat = (e) => {
 
   if (book) {
 
-    console.log(book);
     return (
       <div className="min-h-fit flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
 		<div className="flex flex-col items-center w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
@@ -53,13 +52,13 @@ const selectCat = (e) => {
   return (
       <>
       <Header/>
-    <div className='grid grid-cols-3 gap-3'>
+    <div className='grid grid-cols-3 gap-3 w-10/12 mx-auto '>
       <div className='col-span-1'>
-          <Cats cats={posts['hydra:member']} select={selectCat} />
+          <Cats cats={categories['hydra:member']} select={selectCat} />
         </div>
       <div className='col-span-2 flex flex-col'>
           <SubCats subCategories={subCategories} select={selectBooks}/>
-          <Books books={books} select={selectBook}/>
+          <Books catBooks={catBooks} select={selectBook}/>
       </div>
     </div>
  </>
