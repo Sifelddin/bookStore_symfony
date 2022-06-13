@@ -5,7 +5,8 @@ import { Cats } from './cats';
 import { SubCats } from './subCats';
 import { Books } from './books';
 import { Header } from './header';
-
+import {Book} from './Book';
+import {Cart} from './cart'
 
 const App = () => {
 
@@ -15,43 +16,53 @@ const [subCategories, setSubCategories] = useState([])
 const [catBooks, setCatBooks] = useState([])
 const [categories,setCategories] = useState([])
 const [book,setBook] = useState(false)
+const [showCart, setShowCart] = useState(false)
+const [cartList, setCartList] = useState([])
+
 
 useEffect(()=>{
     axios.get('api/categories?page=1&catParent=null').then((res) => setCategories(res.data)).catch(e=>console.log(e))
     
 },[])
 
-const selectCat = (e) => {
-   setSubCategories(e) 
+const selectCat = (e) => setSubCategories(e) 
+   
+  const selectBooks = (e) => setCatBooks(e)
+    
+  const selectBook = (e) => setBook(e)
+     
+  const onAdd = (book) => {
+    const exist = cartList.find((item) => item.id === book.id )
+    if(exist){
+      setCartList(cartList.map((item)=> item.id === book.id ? {...exist, qty: exist.qty + 1}: item))
+    }else{
+      setCartList([...cartList, {...book, qty: 1}])
+    }
   }
-  
-  const selectBooks = (e) => {
-    setCatBooks(e)
-  }
-
-  const selectBook = (e) => {
-     setBook(e)
+  const onRemove = (book) => {
+    const exist = cartList.find((item) => item.id === book.id )
+    if(exist.qty === 1){
+      setCartList(cartList.filter((item)=> item.id !== book.id))
+    }else{
+    setCartList(cartList.map(item => item.id === book.id ? { ...exist, qty: exist.qty - 1} : item))
+    }
   }
 
   if (book) {
-
-    return (
-      <div className="min-h-fit flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-		<div className="flex flex-col items-center w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-        <h1>{book.title}</h1>
-        <img className="w-40 h-40" src={"uploads/images/" + book.photo} alt={book.photo} />
-        <span>{book.price}€</span>
-        <p>{book.description}</p>
-        <button onClick={() => setBook(false)}>Back To List</button>
-        <button>add to cart</button>
-        </div>
-        </div>
-    )
+    return <> 
+    <Header show={setShowCart} showBook={selectBook} cartList={cartList}/>
+    <Book book={book} show={selectBook} onAdd={onAdd} cartList={cartList} ></Book>
+    </>
   }
+
+  if(showCart){
+    return <Cart cartList={cartList} showCart={setShowCart} onAdd={onAdd} onRemove={onRemove}></Cart>
+  }
+
 
   return (
       <>
-      <Header/>
+      <Header show={setShowCart} showBook={selectBook} cartList={cartList}/>
     <div className='grid grid-cols-3 gap-3 w-10/12 mx-auto '>
       <div className='col-span-1'>
           <Cats cats={categories['hydra:member']} select={selectCat} />
@@ -64,6 +75,7 @@ const selectCat = (e) => {
  </>
   )
 }
+
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript

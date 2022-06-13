@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[
     ApiResource(
         attributes: ["pagination_items_per_page" => 8],
-        collectionOperations: ["get" => ['normalization_context' => ['groups' => ['cat:list', 'cat:full:books']]]],
+        collectionOperations: ["get" => ['normalization_context' => ['groups' => ['cat:list']]]],
         itemOperations: ["get"]
     ),
     ApiFilter(SearchFilter::class, properties: ['catParent' => 'exact'])
@@ -57,7 +57,6 @@ class Category
     private $subCategories;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
-    #[Groups(['cat:full:books'])]
     private $books;
 
     public function __construct()
