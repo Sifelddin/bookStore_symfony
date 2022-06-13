@@ -1,0 +1,75 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Book
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-fit  sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-4">
+		<div class="flex flex-col  mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg m-10">
+			<div class="grid">
+				<table class="divide-y divide-gray-200 col-span-1">
+                <thead>
+                    <tr>
+                        
+                        <th class='text-center'>Title</th>
+                        <th class='text-center'>Editeur</th>
+                        <th class='text-center'>Price</th>
+                        <th class='text-center'>Quantité</th>
+                        <th></th>
+                    </tr>
+                </thead>
+				<tbody>
+
+                    {% if items |length > 0 %}
+                        {% for item in items %}
+                            <tr>
+                                {# <td><div class="flex flex-col col-span-1">
+                                    <img src={{ asset('uploads/images/' ~ item.products.photo)}} alt={{ item.products.photo }}></div>
+                                </td> #}
+                                <td class='text-center'>{{ item.products.title }}</td>  
+                                <td class='text-center'>{{ item.products.supplier }}</td>
+                                <td class='text-center'>{{ item.products.price * 1.20 }}</td>
+                               
+                                    <td class='text-center'>
+                                    <a href="{{path('minus_panier',{'id': item.products.id})}}" class="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">-</a>
+                            {{ item.quantity}}
+                                    <a href="{{path('plus_panier',{'id': item.products.id})}}" class="ml-3 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">+</a>
+                                    
+                                </td>
+                                <td class="w-5"> <!-- Delete button -->
+                                    <a href="{{path('remove_panier',{'id': item.products.id})}}" class="flex space-x-2 items-center px-3 py-2 bg-red-600 hover:bg-red-800  rounded-md drop-shadow-md">
+                                        <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 5.8925781 20.263672 C 6.0245781 21.253672 6.877 22 7.875 22 L 16.123047 22 C 17.121047 22 17.974422 21.254859 18.107422 20.255859 L 19.634766 7 L 4.3652344 7 z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                
+                         {% endfor %}
+
+       
+                        
+                    {% else %}
+                        
+                    {% endif %}
+                </tbody>
+
+
+
+						
+                    
+				</table>
+				
+			</div>
+			<div class='flex mt-10'>
+				{# <a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_book_index') }}">back to list</a> #}
+
+
+				{# {{ include('book/_delete_form.html.twig') }} #}
+			</div>
+		</div>
+	</div>
+{% endblock %}

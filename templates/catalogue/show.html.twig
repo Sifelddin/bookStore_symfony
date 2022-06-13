@@ -39,7 +39,7 @@
 							<td class='text-left'>{{ book.price ? book.price : '' }}</td>
 						</tr>
 						<tr>
-							<td colspan='2' class='flex justify-center items-center mt-10'><a class='px-4 py-2 mt-4 bg-blue-400 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150' href="{{ path('app_book_edit', {'id': book.id}) }}">add to cart</a></td>
+							<td colspan='2' class='flex justify-center items-center mt-10'><a class='px-4 py-2 mt-4 bg-blue-400 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150' href="{{ path('add_panier', {'id': book.id}) }}">add to cart</a></td>
 						</tr>
 						
 					</tbody>
