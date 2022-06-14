@@ -20,11 +20,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[
     ApiResource(
         collectionOperations: ["get" => ['normalization_context' => ['groups' => 'book:list']]],
-        itemOperations: [
-            "get" =>  ['normalization_context' => ['groups' => ['book:item', 'book:full:item']]],
-        ]
+        itemOperations: ["get"]
     ),
-    ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])
 ]
 class Book
 {
@@ -32,7 +29,7 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['book:list', 'book:item', 'cat:full:books'])]
+    #[Groups(['book:list'])]
     private $id;
 
 
@@ -45,22 +42,20 @@ class Book
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["title"])]
-    #[Groups(['book:item'])]
     private $slug;
 
     #[Assert\NotBlank]
     #[Assert\Positive(message: "the price should be positive")]
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list'])]
     private $price;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list'])]
     private $photo;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
-    #[Groups(['book:item'])]
     private $description;
 
     #[Assert\NotBlank]
@@ -75,18 +70,17 @@ class Book
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'date')]
-    #[Groups(['book:list', 'book:item', 'cat:full:books'])]
+    #[Groups(['book:list'])]
     private $releaseDate;
 
     #[ORM\Column(type: 'boolean')]
-    #[Groups(['book:list', 'book:item'])]
     #[ApiFilter(BooleanFilter::class)]
     private $published;
 
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['book:list', 'book:cat:full'])]
+    #[Groups(['book:list'])]
     private $category;
 
     #[Assert\NotBlank]

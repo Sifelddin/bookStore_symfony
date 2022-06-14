@@ -11,7 +11,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -22,9 +22,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         collectionOperations: ["get" => ['normalization_context' => ['groups' => ['cat:list']]]],
         itemOperations: ["get"]
     ),
-    ApiFilter(SearchFilter::class, properties: ['catParent' => 'exact'])
 ]
-
+// #[ApiFilter(SearchFilter::class, properties: ['catParent' => 'exact'])]
+#[ApiFilter(ExistsFilter::class, properties: ['catParent'])]
 class Category
 {
     #[ORM\Id]
@@ -36,7 +36,7 @@ class Category
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[Groups(['book:full:item', 'cat:list'])]
+    #[Groups(['cat:list'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
@@ -47,15 +47,16 @@ class Category
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
+    #[Groups(['cat:list'])]
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategories')]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
-    #[Groups(['cat:list'])]
     private $catParent;
 
     #[Groups(['cat:list'])]
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
     private $subCategories;
 
+    #[Groups(['cat:list'])]
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
     private $books;
 

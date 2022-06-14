@@ -18,12 +18,35 @@ const [categories,setCategories] = useState([])
 const [book,setBook] = useState(false)
 const [showCart, setShowCart] = useState(false)
 const [cartList, setCartList] = useState([])
+const [sendData,setSendData] = useState(false)
+
+
 
 
 useEffect(()=>{
-    axios.get('api/categories?page=1&catParent=null').then((res) => setCategories(res.data)).catch(e=>console.log(e))
-    
+  axios.get('/api/categories?page=1&exists%5BcatParent%5D=false').then((res) => setCategories(res.data)).catch(e=>console.log(e))
 },[])
+useEffect(()=>{
+
+   if(sendData && cartList.length > 0){ 
+  const data = cartList.map((a) => {
+    for(let property in a){
+      if(property !== 'id' && property !== "price" && property !== "qty") {
+        delete a[property]
+      }
+    }
+  return a
+  })
+ //console.log(JSON.parse(JSON.stringify(data)));
+    axios.post('/checkout',data)
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+},[sendData])
 
 const selectCat = (e) => setSubCategories(e) 
    
@@ -56,9 +79,8 @@ const selectCat = (e) => setSubCategories(e)
   }
 
   if(showCart){
-    return <Cart cartList={cartList} showCart={setShowCart} onAdd={onAdd} onRemove={onRemove}></Cart>
+    return <Cart cartList={cartList} showCart={setShowCart} onAdd={onAdd} onRemove={onRemove} setSendData={setSendData} sendData={sendData}></Cart>
   }
-
 
   return (
       <>

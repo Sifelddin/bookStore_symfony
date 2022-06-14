@@ -2,23 +2,27 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\OrderRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
+#[ApiResource(
+    collectionOperations: [
+        'post',
+    ],
+)]
 class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-
-    #[ORM\Column(type: 'date')]
-    private $orderDate;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $shippedDate;
@@ -59,7 +63,7 @@ class Order
 
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;
+    private $orderDate;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: BookOrder::class)]
     private $bookOrders;
@@ -82,13 +86,6 @@ class Order
     public function getOrderDate(): ?\DateTimeInterface
     {
         return $this->orderDate;
-    }
-
-    public function setOrderDate(\DateTimeInterface $orderDate): self
-    {
-        $this->orderDate = $orderDate;
-
-        return $this;
     }
 
     public function getShippedDate(): ?\DateTimeInterface
@@ -293,13 +290,5 @@ class Order
         }
 
         return $this;
-    }
-
-    /**
-     * Get the value of createdAt
-     */ 
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
     }
 }

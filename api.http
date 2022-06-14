@@ -12,3 +12,11 @@ http://localhost:8000/api/categories
 
 ### 
 https://localhost:8000/api/categories
+
+###
+POST https://localhost:8000/checkout HTTP/1.1 
+content-type: application/json
+
+{
+   "first":"test"
+}
