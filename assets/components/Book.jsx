@@ -6,20 +6,6 @@ import MDate from 'mini-date-format'
 export const Book = ({book , show, onAdd}) => {
 
 
-    // const checkCartItems = (book, cartList, addToCart) => {
-
-    //     if(!cartList.includes(book)){
-    //         book.qty = 1;
-    //         addToCart(book)
-    //     }else{
-    //         book.qty += 1
-    //     }
-     
-    // }
-    
-
-
-
   return ( 
    <div>
     <div className="min-h-fit  sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-4">
@@ -42,16 +28,13 @@ export const Book = ({book , show, onAdd}) => {
                         <td className='text-left'>{ book.releaseDate ? MDate('YYYY-MM-DD',book.releaseDate.replace(/[a-zA-Z]/g,' '))  : '' }</td>
                     </tr>
                     <tr>
-                        <th className='text-left uppercase'>Published :</th>
-                        <td className='text-left'>{ book.published ? 'Yes' : 'No' }</td>
+                        <th className='text-left uppercase'>Description :</th>
+                        <td className='text-left'>{ book.Description }</td>
                     </tr>
                 </tbody>
             </table>
-            <div className="flex flex-col col-span-1">
-    <img className=" w-60" src={"uploads/images/" + book.photo} />
-                <p>Description :
-                    <span>{book.Description}</span>
-                </p>
+            <div className="mx-auto col-span-1">
+    <img className="w-60" src={"uploads/images/" + book.photo} />
             </div>
         </div>
         <div className='flex justify-around items-center mt-10'>

@@ -18,27 +18,24 @@ const [categories,setCategories] = useState([])
 const [book,setBook] = useState(false)
 const [showCart, setShowCart] = useState(false)
 const [cartList, setCartList] = useState([])
-const [sendData,setSendData] = useState(false)
-
-
 
 
 useEffect(()=>{
-  axios.get('/api/categories?page=1&exists%5BcatParent%5D=false').then((res) => setCategories(res.data)).catch(e=>console.log(e))
+  axios.get('api/categories?page=1&exists%5BcatParent%5D=false&exists%5BsubCategories%5D=true').then((res) => setCategories(res.data)).catch(e=>console.log(e))
 },[])
 useEffect(()=>{
 
-   if(sendData && cartList.length > 0){ 
+   if( cartList.length > 0){ 
   const data = cartList.map((a) => {
     for(let property in a){
-      if(property !== 'id' && property !== "price" && property !== "qty") {
+      if(property !== 'id' && property !== "price" && property !== "qty" && property !== "photo") {
         delete a[property]
       }
     }
-  return a
+    console.log({...a});
+  return {...a}
   })
- //console.log(JSON.parse(JSON.stringify(data)));
-    axios.post('/checkout',data,{headers: {
+    axios.post('/checkout',cartList,{headers: {
       'X-Requested-With': 'XMLHttpRequest',
       'content-type': 'application/json'
     }})
@@ -48,8 +45,17 @@ useEffect(()=>{
     .catch(function (error) {
       console.log(error);
     });
+   
   }
-},[sendData])
+},[cartList])
+
+useEffect(() => {
+  axios.get('/api/cart').then(res =>{
+   return res.data ? setCartList(res.data) : console.log(res.data + " data empty!");
+  }).catch(e => console.log(e))
+},[])
+
+
 
 const selectCat = (e) => setSubCategories(e) 
    
@@ -76,26 +82,30 @@ const selectCat = (e) => setSubCategories(e)
 
   if (book) {
     return <> 
+    <div className='w-10/12 mx-auto'>
     <Header show={setShowCart} showBook={selectBook} cartList={cartList}/>
     <Book book={book} show={selectBook} onAdd={onAdd} cartList={cartList} ></Book>
+    </div>
     </>
   }
 
   if(showCart){
-    return <Cart cartList={cartList} showCart={setShowCart} onAdd={onAdd} onRemove={onRemove} setSendData={setSendData} sendData={sendData}></Cart>
+    return (<div className='w-10/12 mx-auto'><Cart cartList={cartList} showCart={setShowCart} onAdd={onAdd} onRemove={onRemove} setCartList={setCartList} ></Cart></div>) 
   }
 
   return (
       <>
+      <div className='w-10/12 mx-auto'>
       <Header show={setShowCart} showBook={selectBook} cartList={cartList}/>
-    <div className='grid grid-cols-3 gap-3 w-10/12 mx-auto '>
+    <div className='grid grid-cols-3 gap-3  mx-auto '>
       <div className='col-span-1'>
           <Cats cats={categories['hydra:member']} select={selectCat} />
         </div>
-      <div className='col-span-2 flex flex-col'>
+      <div className='col-span-2 flex flex-col p-2 m-2'>
           <SubCats subCategories={subCategories} select={selectBooks}/>
-          <Books catBooks={catBooks} select={selectBook}/>
+          <Books catBooks={catBooks} select={selectBook} onAdd={onAdd}/>
       </div>
+    </div>
     </div>
  </>
   )

@@ -1,8 +1,0 @@
-POST http://127.0.0.1:8000/react_test
-Content-Type: application/json
-
-{
-    "name": "toto",
-    "client": [1, 5, 4]
-}
-

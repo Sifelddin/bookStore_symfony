@@ -24,7 +24,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     ),
 ]
 // #[ApiFilter(SearchFilter::class, properties: ['catParent' => 'exact'])]
-#[ApiFilter(ExistsFilter::class, properties: ['catParent'])]
+#[ApiFilter(ExistsFilter::class, properties: ['catParent', 'subCategories'])]
 class Category
 {
     #[ORM\Id]

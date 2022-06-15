@@ -12,11 +12,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
-#[ApiResource(
-    collectionOperations: [
-        'post',
-    ],
-)]
+
 class Order
 {
     #[ORM\Id]

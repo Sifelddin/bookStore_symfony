@@ -1,6 +1,11 @@
-import React from 'react'
+import axios from 'axios'
+import React,{useEffect,useState} from 'react'
 
-export const Cart = ({cartList, showCart, onAdd, onRemove, setSendData, sendData}) => {
+export const Cart = ({setCartList,cartList, showCart, onAdd, onRemove}) => {
+
+
+
+
 
   const globalTotal = cartList && cartList.reduce((a, c) => a + ((c.qty * c.price) * (1 + 10/100)), 0)
   const bookTotal = (book) =>  (book.qty * book.price) * (1 + 10/100)
@@ -55,7 +60,7 @@ export const Cart = ({cartList, showCart, onAdd, onRemove, setSendData, sendData
               </div>
         
           <div className="p-4 flex justify-around items-center bg-white border-b border-gray-200">
-          {cartList.length > 0 && <button onClick={() => setSendData(!sendData)} className="flex  justify-center items-center px-2 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-fit">
+          {cartList.length > 0 && <button className="flex  justify-center items-center px-2 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-fit">
           <a href="/checkout">  Checkout</a> </button> }
             <button onClick={() => showCart(false)} className="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">back to list</button>
           </div>
