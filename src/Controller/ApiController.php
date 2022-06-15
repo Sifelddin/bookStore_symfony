@@ -13,17 +13,29 @@ class ApiController extends AbstractController
 {
 
     #[Route('/react', name: 'app_react')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        if ($request->isXmlHttpRequest()) {
+            $data = $request->getContent();
+            dd($data);
+            return new JsonResponse($data);
+        }
         return $this->render("api/index.html.twig");
     }
 
-    #[Route('/checkout', name: 'app_api', methods: ["POST", "GET"])]
+    #[Route('/checkout', name: 'app_api')]
     public function checkout(Request $request, SessionInterface $session): Response
     {
-        $data = $request->toArray();
-        //dd($data);
-        return new JsonResponse($data);
+        if (!$request->isXmlHttpRequest()) {
+            $cart = $session->get('cart');
+            dd($cart);
+            return $this->json(['data' => 'empty']);
+        } else {
+            $data = $request->toArray();
+            $session->set('cart', $data);
+            return new JsonResponse($data);
+        }
+
         //return  new JsonResponse(['data' => 123]);
     }
 }

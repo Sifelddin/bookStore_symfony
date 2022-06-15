@@ -38,9 +38,12 @@ useEffect(()=>{
   return a
   })
  //console.log(JSON.parse(JSON.stringify(data)));
-    axios.post('/checkout',data)
+    axios.post('/checkout',data,{headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+      'content-type': 'application/json'
+    }})
     .then(function (response) {
-      console.log(response.data);
+      console.log(response);
     })
     .catch(function (error) {
       console.log(error);

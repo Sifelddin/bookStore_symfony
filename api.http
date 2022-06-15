@@ -16,7 +16,8 @@ https://localhost:8000/api/categories
 ###
 POST https://localhost:8000/checkout HTTP/1.1 
 content-type: application/json
+X-Requested-With: XMLHttpRequest
 
 {
-   "first":"test"
+   "first":"test"   
 }
