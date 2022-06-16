@@ -24,7 +24,8 @@ class OrderController extends AbstractController
         }
         return $this->json(null);
     }
-    #[Route('/', name: 'app_react')]
+    
+    #[Route('/{reactRouting}', name :'app_react', priority:"-1", defaults :["reactRouting" => null] , requirements :["reactRouting"=>".+"])]
     public function index(): Response
     {
         return $this->render("api/index.html.twig");

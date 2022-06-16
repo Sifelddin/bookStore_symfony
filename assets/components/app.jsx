@@ -1,5 +1,4 @@
 import  React,{useState,useEffect} from 'react';
-import { createRoot } from 'react-dom/client';
 import axios from 'axios';
 import { Cats } from './cats';
 import { SubCats } from './subCats';
@@ -111,7 +110,8 @@ const selectCat = (e) => setSubCategories(e)
   )
 }
 
+export default App;
 
-const container = document.getElementById('root');
-const root = createRoot(container); // createRoot(container!) if you use TypeScript
-root.render(<App/>);
+
+
+
