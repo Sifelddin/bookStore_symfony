@@ -36,6 +36,8 @@ class PanierController extends AbstractController
     #[Route('/panier/add/{id}', name: 'add_panier')]
     public function add($id, Request $request){
         $session = $request->getSession();
+        $test = $request->attributes->get('_route');
+        dd($test);
         $panier = $session->get('panier',[]);
 
         if(!empty($panier[$id])){
@@ -45,7 +47,9 @@ class PanierController extends AbstractController
         }
     
         $session->set('panier',$panier);
-        dd($session->get('panier'));
+       // dd($session->get('panier'));
+
+       return $this->redirectToRoute("app_panier");
     }
 
     #[Route('/panier/remove/{id}', name: 'remove_panier')]
@@ -57,7 +61,7 @@ class PanierController extends AbstractController
             unset($panier[$id]);
         }
         $session->set('panier',$panier);
-        dd($session->get('panier'));
+        //dd($session->get('panier'));
 
         return $this->redirectToRoute("app_panier");
     }
