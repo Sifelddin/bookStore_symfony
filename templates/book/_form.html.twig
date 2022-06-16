@@ -3,11 +3,14 @@
 	<div class="grid grid-cols-2 w-full gap-3">
 		<div class="col-span-1">
 			{{ form_row(form.title) }}
+			{{ form_row(form.author) }}
+			{{ form_row(form.editor) }}
 			{{ form_row(form.description) }}
 			{{ form_row(form.price) }}
-			{{ form_row(form.category) }}
 		</div>
 		<div class="col-span-1">
+			{{ form_row(form.category) }}
+
 			{{ form_row(form.stock) }}
 			{{ form_row(form.stockAlert) }}
 			{{ form_row(form.releaseDate ) }}

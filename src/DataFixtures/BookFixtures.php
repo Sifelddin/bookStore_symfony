@@ -36,6 +36,9 @@ class BookFixtures extends Fixture {
         $book->setReleaseDate($datejour);
         $book->setCategory($cat1);
         $book->setSupplier($sup1);
+        $book->setEditor($sup1);
+        $book->setAuthor('J.J.R');
+
        
         $manager->persist($book);
 

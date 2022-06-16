@@ -72,17 +72,6 @@ class CatalogueController extends AbstractController
     #[Route('/book/{slug}', name: 'book')]
     public function book(Book $book): Response
     {
-        // $category = $doctrine->getRepository(Category::class)->find($cat);
-
-       //dd($book->getTitle());
-
-        // }
-         //dd($book);
-       
-        // $id = $book->getId();
-
-        //dd(  $categories= $categoriesRepository->isParent($id));
-        // $books= $bookRepository->findAll();
 
 
         return $this->render("catalogue/show.html.twig",[

@@ -32,13 +32,11 @@ class Book
     #[Groups(['book:list'])]
     private $id;
 
-
     #[Assert\NotBlank]
     #[Assert\Length(min: 4, max: 255, minMessage: 'the title should be more than 4 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Groups(['book:list', 'book:item', 'cat:full:books'])]
     private $title;
-
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["title"])]
@@ -102,6 +100,12 @@ class Book
     #[ORM\Column(type: 'datetime_immutable')]
     private $updatedAt;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $editor;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $author;
+
     public function __construct()
     {
         $this->bookOrders = new ArrayCollection();
@@ -128,6 +132,7 @@ class Book
 
         return $this;
     }
+
 
     public function getPrice(): ?string
     {
@@ -338,6 +343,30 @@ class Book
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getEditor(): ?string
+    {
+        return $this->editor;
+    }
+
+    public function setEditor(string $editor): self
+    {
+        $this->editor = $editor;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

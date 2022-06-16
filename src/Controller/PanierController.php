@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
+use App\Entity\BookOrder;
 use App\Repository\BookRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PanierController extends AbstractController
 {
@@ -34,10 +36,14 @@ class PanierController extends AbstractController
     }
 
     #[Route('/panier/add/{id}', name: 'add_panier')]
-    public function add($id, Request $request){
+    public function add($id, Request $request, Book $book){
         $session = $request->getSession();
-        $test = $request->attributes->get('_route');
-        dd($test);
+
+
+      //  $test = $request->attributes->get('_route');
+        //dd($book);
+
+
         $panier = $session->get('panier',[]);
 
         if(!empty($panier[$id])){
@@ -49,7 +55,7 @@ class PanierController extends AbstractController
         $session->set('panier',$panier);
        // dd($session->get('panier'));
 
-       return $this->redirectToRoute("app_panier");
+       return $this->redirectToRoute("book",['slug'=>$book->getSlug()]);
     }
 
     #[Route('/panier/remove/{id}', name: 'remove_panier')]

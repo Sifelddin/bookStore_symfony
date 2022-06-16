@@ -30,6 +30,22 @@ class BookType extends AbstractType
                 'empty_data' => '',
                 'required' => false
             ])
+            ->add('author', TextType::class, [
+                "attr" => [
+                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
+                ],
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+                'empty_data' => '',
+                'required' => false
+            ])
+            ->add('editor', TextType::class, [
+                "attr" => [
+                    'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
+                ],
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+                'empty_data' => '',
+                'required' => false
+            ])
             // ->add('slug', TextType::class, [
             //     "attr" => [
             //         'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
@@ -49,7 +65,7 @@ class BookType extends AbstractType
             ->add('description', TextareaType::class, [
                 'attr' => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
-                ],
+                'rows' => '6'],
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
                 'empty_data' => '',
                 'required' => false
@@ -81,9 +97,9 @@ class BookType extends AbstractType
             ])
             ->add('published', null, [
                 "attr" => [
-                    'class' => ' shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ',
+                    'class' => ' shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mt-4 mr-10 ',
                 ],
-                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+                'label_attr' => ['class' => 'block font-normal text-base text-gray-700 ml-4 mt-4'],
                 'required' => false
             ])
             ->add('category', EntityType::class, [
