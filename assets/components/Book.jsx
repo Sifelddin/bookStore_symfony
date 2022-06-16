@@ -5,36 +5,23 @@ import MDate from 'mini-date-format'
 
 export const Book = ({book , show, onAdd}) => {
 
-
   return ( 
-   <div>
-    <div className="min-h-fit  sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-4">
+  
       <div className="flex flex-col  mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg m-10">
-        <div className="grid grid-cols-2">
-            <table className="divide-y divide-gray-200 col-span-1">
-                <tbody>
-            
-                    <tr>
-                        <th className='text-left uppercase'>Title :</th>
-                        <td className='text-left'> {book.title} </td>
-                    </tr>
+        <div className="grid grid-cols-2 items-center">
+            <div className="divide-y divide-gray-200 col-span-1 self-center">
 
-                    <tr>
-                        <th className='text-left uppercase'>Price :</th>
-                        <td className='text-left'>{ book.price ? book.price : '' }</td>
-                    </tr>
-                    <tr>
-                        <th className='text-left uppercase'>ReleaseDate :</th>
-                        <td className='text-left'>{ book.releaseDate ? MDate('YYYY-MM-DD',book.releaseDate.replace(/[a-zA-Z]/g,' '))  : '' }</td>
-                    </tr>
-                    <tr>
-                        <th className='text-left uppercase'>Description :</th>
-                        <td className='text-left'>{ book.Description }</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div className="mx-auto col-span-1">
-    <img className="w-60" src={"uploads/images/" + book.photo} />
+                        <img className="w-60 h-auto" src={"uploads/images/" + book.photo} />
+                    <div    className='p-2 my-4 border-none'>
+                        <h2 className='text-left text-2xl '> {book.title} </h2>
+                        <p className='text-left uppercase'>Price : { book.price}€</p>
+                        <p className='text-left'>Released : { book.releaseDate ? MDate('YYYY-MM-DD',book.releaseDate.replace(/[a-zA-Z]/g,' '))  : '' }</p>
+                    </div>
+               
+            </div>
+            <div className="mx-auto col-span-1 text-center self-center">
+    <strong className='text-xl my-2'>Description </strong>
+    <p className='text-left'>{ book.description }</p>
             </div>
         </div>
         <div className='flex justify-around items-center mt-10'>
@@ -43,8 +30,7 @@ export const Book = ({book , show, onAdd}) => {
             <button onClick={() => onAdd(book)} className=' flex justify-center items-center px-4 py-2 mt-4 bg-green-400 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>Add To Cart</button>
         </div>
     </div>
-   </div>
-   </div>
+  
   )
 }
 
