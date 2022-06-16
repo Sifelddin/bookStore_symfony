@@ -23,6 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         itemOperations: ["get"]
     ),
 ]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
 class Book
 {
 
@@ -54,6 +55,7 @@ class Book
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
+    #[Groups(['book:list'])]
     private $description;
 
     #[Assert\NotBlank]
@@ -103,6 +105,7 @@ class Book
     #[ORM\Column(type: 'string', length: 255)]
     private $editor;
 
+    #[Groups(['book:list'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $author;
 

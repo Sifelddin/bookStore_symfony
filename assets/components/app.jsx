@@ -13,7 +13,7 @@ const App = () => {
   
 
 const [subCategories, setSubCategories] = useState([])
-const [catBooks, setCatBooks] = useState([])
+const [catBooks, setCatBooks] = useState(null)
 const [categories,setCategories] = useState([])
 const [book,setBook] = useState(false)
 const [showCart, setShowCart] = useState(false)
