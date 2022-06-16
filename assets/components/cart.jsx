@@ -1,10 +1,7 @@
-import axios from 'axios'
-import React,{useEffect,useState} from 'react'
+
+import React from 'react'
 
 export const Cart = ({setCartList,cartList, showCart, onAdd, onRemove}) => {
-
-
-
 
 
   const globalTotal = cartList && cartList.reduce((a, c) => a + ((c.qty * c.price) * (1 + 10/100)), 0)
@@ -31,7 +28,7 @@ export const Cart = ({setCartList,cartList, showCart, onAdd, onRemove}) => {
                         <th scope="col" className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
                         <th scope="col" className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                         <th scope="col" className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tax Price</th>
-                        <th scope="col" className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">actions</th>
+                        <th scope="col" className="px-2 pyonRemove-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -60,7 +57,7 @@ export const Cart = ({setCartList,cartList, showCart, onAdd, onRemove}) => {
               </div>
         
           <div className="p-4 flex justify-around items-center bg-white border-b border-gray-200">
-          {cartList.length > 0 && <button className="flex  justify-center items-center px-2 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-fit">
+          {cartList.length > 0 && <button className="flex  justify-center items-center px-2 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit">
           <a href="/checkout">  Checkout</a> </button> }
             <button onClick={() => showCart(false)} className="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">back to list</button>
           </div>
