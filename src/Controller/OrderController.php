@@ -18,27 +18,29 @@ class OrderController extends AbstractController
     public function apiCart(Request $request, SessionInterface $session): Response
     {
 
-        $cart = $session->get('cart');
-        if ($cart) {
-            return $this->json($cart);
+        if ($request->isXmlHttpRequest()) {
+            if ($request->isMethod("POST")) {
+                $data = $request->toArray();
+                $session->set('cart', $data);
+                return $this->json('data sended');
+            }
         }
-        return $this->json(null);
+        return $this->json($session->get('cart'));
     }
-    
-    #[Route('/{reactRouting}', name :'app_react', priority:"-1", defaults :["reactRouting" => null] , requirements :["reactRouting"=>".+"])]
-    public function index(): Response
+
+    #[Route('/{reactRouting}', name: 'app_react', priority: "-1", defaults: ["reactRouting" => null], requirements: ["reactRouting" => ".+"])]
+    public function index(Request $request): Response
     {
+        if ($request->isXmlHttpRequest() && $request->isMethod('GET')) {
+            $user = $this->getUser();
+            return  $this->json($user);
+        }
         return $this->render("api/index.html.twig");
     }
 
     #[Route('/checkout', name: 'app_api')]
-    public function checkout(Request $request, SessionInterface $session, OrderRepository $orderRepository): Response
+    public function checkout(Request $request, OrderRepository $orderRepository): Response
     {
-        if ($request->isXmlHttpRequest()) {
-            $data = $request->toArray();
-            $cart = $session->set('cart', $data);
-            return $this->json($cart);
-        }
         $user = $this->getUser();
 
         $order = new Order();

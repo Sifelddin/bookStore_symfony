@@ -26,7 +26,7 @@ export const Books = ({catBooks,select, onAdd}) => {
         return (
           <div className='flex  items-center p-3 m-3 bg-white rounded-md' key={book.id}>
             <div className='mr-2'>
-            <img className="cursor-pointer w-24 h-24" src={"uploads/images/" + book.photo} alt={book.photo} onClick={() => select(book)} />
+            <img className="cursor-pointer w-24 h-auto" src={"uploads/images/" + book.photo} alt={book.photo} onClick={() => select(book)} />
             </div>
             <div className='ml-2'> 
             <h3 onClick={() => select(book)} className='text-lg text-blue-500 hover:text-blue-800 duration-150 cursor-pointer'>{book.title}</h3>

@@ -18,23 +18,25 @@ const [book,setBook] = useState(false)
 const [showCart, setShowCart] = useState(false)
 const [cartList, setCartList] = useState([])
 
-
 useEffect(()=>{
   axios.get('api/categories?page=1&exists%5BcatParent%5D=false&exists%5BsubCategories%5D=true').then((res) => setCategories(res.data)).catch(e=>console.log(e))
+  axios.get('/api/cart').then(res =>{
+    return res.data ? setCartList(res.data) : console.log(res.data + " data empty!");
+   }).catch(e => console.log(e))
 },[])
 useEffect(()=>{
-
-   if( cartList.length > 0){ 
-  const data = cartList.map((a) => {
+   if(cartList.length > 0){ 
+     cartList.map((a) => {
+    
     for(let property in a){
       if(property !== 'id' && property !== "price" && property !== "qty" && property !== "photo") {
         delete a[property]
       }
     }
-    console.log({...a});
   return {...a}
   })
-    axios.post('/checkout',cartList,{headers: {
+
+    axios.post('/api/cart',cartList,{headers: {
       'X-Requested-With': 'XMLHttpRequest',
       'content-type': 'application/json'
     }})
@@ -46,15 +48,10 @@ useEffect(()=>{
     });
    
   }
+ 
 },[cartList])
 
-useEffect(() => {
-  axios.get('/api/cart').then(res =>{
-   return res.data ? setCartList(res.data) : console.log(res.data + " data empty!");
-  }).catch(e => console.log(e))
-},[])
-
-
+console.log(cartList);
 
 const selectCat = (e) => setSubCategories(e) 
    
