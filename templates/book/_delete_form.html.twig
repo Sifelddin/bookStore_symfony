@@ -1,4 +1,4 @@
-<form class="flex justify-center items-center px-4 py-2 mt-4 bg-red-400 border border-transparent rounded-md  text-white  tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-gray-red focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 " method="post" action="{{ path('app_book_delete', {'id': book.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+<form class=" cursor-pointer flex justify-center items-center px-4 py-2 mt-4 bg-red-400 border border-transparent rounded-md  text-white  tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-gray-red focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 " method="post" action="{{ path('app_book_delete', {'id': book.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
 	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ book.id) }}">
 	<button class="uppercase font-semibold text-sm">Delete</button>
 </form>

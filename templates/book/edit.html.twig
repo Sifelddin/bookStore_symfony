@@ -9,7 +9,7 @@
 			<img class="max-h-72 object-cover mx-auto" src={{ asset('uploads/images/' ~ book.photo)}} alt={{ book.photo }}>
 
 			{{ include('book/_form.html.twig', {'button_label': 'Update'}) }}
-			<div class='flex justify-around items-center '>
+			<div class='flex justify-around items-center'>
 				{{ include('book/_delete_form.html.twig') }}
 			</div>
 		</div>

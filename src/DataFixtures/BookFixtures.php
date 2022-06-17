@@ -14,7 +14,7 @@ class BookFixtures extends Fixture {
     public function load(ObjectManager $manager): void
     {
         $datejour = new DateTime('2000-01-01');
-        $cat1 = $manager->getRepository(Category::class)->findOneBy([ "name" => "SciFi"]);
+        $cat1 = $manager->getRepository(Category::class)->findOneBy([ "name" => "Science Fiction"]);
         $sup1 = $manager->getRepository(Supplier::class)->findOneBy([ "contactName" => "Flammarion"]);
         $book = new Book(); 
         $book->setTitle('Dune');
