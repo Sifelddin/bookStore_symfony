@@ -17,8 +17,9 @@
 
 			<a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_category_index') }}">back to list</a>
 
-
-			{{ include('category/_delete_form.html.twig') }}</div>
+			<div class="w-full mt-4 bg-red-700 hover:bg-red-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest disabled:opacity-25 transition ease-in-out duration-150">
+			{{ include('category/_delete_form.html.twig') }}</div></div>
+			{# {{ include('category/_delete_form.html.twig') }}</div> #}
 
 	</div>
 {% endblock %}
