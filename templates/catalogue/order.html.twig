@@ -8,8 +8,13 @@
 				<div class='mr-10 col-span-1 '>
 					<p class="flex justify-center items-center ">Adresse de livraison</p>
 					<div class="border-double border-8 px-10 pb-5">
-					{{ form_row(form.ShipAddress) }}
-					{{ form_row(form.shipCity) }}
+					{{ form_row(form.ShipAddress, {
+                    	attr: { value: user.address }
+                	})}}
+
+					{{ form_row(form.shipCity, {
+                    	attr: { value: user.city }
+                	})}}
 					{{ form_row(form.shipZipCode) }}
 					</div>
 
@@ -17,12 +22,16 @@
 				<div class='col-span-1'>
 					<p class=" flex justify-center items-center" >Adresse de facturation</p>
 					<div class="border-double border-8 px-10 pb-5">
-						{{ form_row(form.billAddress) }}
+						{{ form_row(form.billAddress, {
+                    	attr: { value: user.address }
+                	})}}
 						{{ form_row(form.billZipCode) }}
-						{{ form_row(form.billCity) }}
+						{{ form_row(form.billCity, {
+                    	attr: { value: user.city }
+                	})}}
 					</div>
 				</div>
-						{{ form_row(form.paymentDate) }}
+						{# {{ form_row(form.paymentDate) }} #}
 						{{ form_row(form.payMethod) }}
 			</div>
 					<button class='inline-flex justify-center items-center w-full px-4 py-2 mt-4 bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>{{ button_label|default('Comfirm') }}</button>

@@ -43,6 +43,8 @@ class OrderController extends AbstractController
     {
         $user = $this->getUser();
 
+        // dd($user);
+
         $order = new Order();
         $form = $this->createForm(OrderType::class, $order);
 
