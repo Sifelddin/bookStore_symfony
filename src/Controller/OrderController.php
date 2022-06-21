@@ -41,9 +41,18 @@ class OrderController extends AbstractController
     #[Route('/checkout', name: 'app_api')]
     public function checkout(Request $request, OrderRepository $orderRepository): Response
     {
+<<<<<<< HEAD
         $user = $this->getUser();
+=======
 
-        // dd($user);
+        if ($request->isXmlHttpRequest()) {
+            $data = $request->toArray();
+            $cart = $session->set('cart', $data);
+            return $this->json($cart);
+        }
+>>>>>>> 463a2d4 (20220621_summary)
+
+        $user = $this->getUser();
 
         $order = new Order();
         $form = $this->createForm(OrderType::class, $order);
@@ -51,7 +60,36 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $order->setUserClient($user);
+            $orderRepository->add($order, true);
+            return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
+        }
 
+        return $this->render('catalogue/order.html.twig', [
+            'order' => $order,
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
+    }
+
+    #[Route('/summary', name: 'app_summary')]
+    public function summary(Request $request, SessionInterface $session, OrderRepository $orderRepository): Response
+    {
+
+        if ($request->isXmlHttpRequest()) {
+            $data = $request->toArray();
+            $cart = $session->set('cart', $data);
+            return $this->json($cart);
+        }
+
+        $user = $this->getUser();
+        
+        $order = new Order();
+        $form = $this->createForm(OrderType::class, $order);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $order->setUserClient($user);
             $orderRepository->add($order, true);
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);

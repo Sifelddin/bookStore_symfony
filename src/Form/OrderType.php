@@ -6,6 +6,7 @@ use App\Entity\Order;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class OrderType extends AbstractType
 
@@ -54,6 +55,15 @@ class OrderType extends AbstractType
                 'label_attr' => ['class' => $this->classLabel],
                 'required' => false
             ])
+            ->add('coef', null, [
+                'empty_data' => '',
+                "attr" => [
+                    'class' => $this->classInput,
+                ],
+                'label'=> 'ZipCode',
+                'label_attr' => ['class' => $this->classLabel],
+                'required' => false
+            ])
             // ->add('paymentDate', null, [
             //     'empty_data' => '',
             //     'widget' => 'single_text',
@@ -91,97 +101,18 @@ class OrderType extends AbstractType
                 'required' => false,
                 
             ])
-            ->add('payMethod', null, [
-                'empty_data' => '',
-                "attr" => [
-                    'class' => $this->classInput,
-                ],
-                'label_attr' => ['class' => $this->classLabel],
-                'required' => false
-            ]);
+            ->add('payMethod', ChoiceType::class, [
+                    'choices' => [
+                        'Bank check' => 'check',
+                        'bank transfer' => 'transfer',
+                    ],
+                'expanded' => true,
+                'data'=> 'check'
+                ]
+            );
     }
 
-    // public function buildForm(FormBuilderInterface $builder, array $options): void
-    // {
-    //     $builder
-    //         ->add('shippedDate', null, [
-    //             'empty_data' => '',
-    //             'widget' => 'single_text',
-    //             "attr" => [
-    //                 'class' => $this->classInput
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false
-    //         ])
-    //         ->add('ShipAddress', null, [
-    //             'empty_data' => '',
-    //             "attr" => [
-    //                 'class' => $this->classInput,
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false
-    //         ])
-    //         ->add('shipCity', null, [
-    //             'empty_data' => '',
-    //             "attr" => [
-    //                 'class' => $this->classInput,
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false
-    //         ])
-    //         ->add('shipZipCode', null, [
-    //             'empty_data' => '',
-    //             "attr" => [
-    //                 'class' => $this->classInput,
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false
-    //         ])
-    //         ->add('paymentDate', null, [
-    //             'empty_data' => '',
-    //             'widget' => 'single_text',
-    //             "attr" => [
-    //                 'class' => $this->classInput
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false
-    //         ])
-    //         ->add('billAddress', null, [
-    //             'empty_data' => '',
-    //             "attr" => [
-    //                 'class' => $this->classInput,
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false
-    //         ])
-    //         ->add('billZipCode', null, [
-    //             'empty_data' => '',
-    //             "attr" => [
-    //                 'class' => $this->classInput,
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false
-    //         ])
-    //         ->add('billCity', null, [
-    //             'empty_data' => '',
-    //             "attr" => [
-    //                 'class' => $this->classInput,
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false,
-                
-    //         ])
-    //         ->add('payMethod', null, [
-    //             'empty_data' => '',
-    //             "attr" => [
-    //                 'class' => $this->classInput,
-    //             ],
-    //             'label_attr' => ['class' => $this->classLabel],
-    //             'required' => false
-    //         ]);
-    // }
-
-    public function configureOptions(OptionsResolver $resolver): void
+     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
