@@ -83,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $address;
 
     #[Assert\NotBlank(message: 'zipcode field must be filled')]
-    #[Assert\Regex('/^[0-9]{4}0{1}$/', match: true, message: "zipcode is not valid, please insert a valid zipcode ex: 76000",)]
+    #[Assert\Regex('/^[0-9]{5}$/', match: true, message: "zipcode is not valid, please insert a valid zipcode ex: 76000",)]
     #[ORM\Column(type: 'string', length: 5)]
     #[Groups(["read:User"])]
     private $zipCode;
@@ -104,9 +104,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\PositiveOrZero(message: "the coefficient should be positive")]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ["default" => 0])]
+    #[Groups(["read:User"])]
     private $Coef;
 
     #[ORM\Column(type: 'boolean', nullable: true, options: ["default" => true])]
+    #[Groups(["read:User"])]
     private $private;
 
     #[ORM\OneToMany(mappedBy: 'userClient', targetEntity: Order::class)]

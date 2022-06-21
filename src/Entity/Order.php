@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -9,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -32,9 +34,10 @@ class Order
     #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $shipZipCode;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date', nullable: true)]
     private $paymentDate;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
     private $coef;
 
@@ -50,11 +53,12 @@ class Order
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2, nullable: true)]
     private $discount;
 
+    #[Assert\NotBlank()]
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
     private $userClient;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $payMethod;
 
     #[Gedmo\Timestampable(on: "create")]
