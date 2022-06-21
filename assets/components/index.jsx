@@ -6,8 +6,8 @@ import {
   Route,
 } from "react-router-dom";
 
-import App from './app.jsx';
-import Test from './test.jsx';
+import App from './app';
+import Checkout from './Checkout';
  
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
@@ -17,8 +17,7 @@ root.render(
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<App />}></Route>
-             <Route path='test' element={<Test/>} />   
-           
+             <Route path='/test' element={<Checkout/>} />   
         </Routes>
     </BrowserRouter>
 );
