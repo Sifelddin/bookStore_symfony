@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Cart = ({ cartList, showCart, onAdd, onRemove }) => {
+export const Cart = ({ cartList, showCart, onAdd, onRemove, storeData }) => {
   const globalTotal =
     cartList &&
     cartList.reduce((a, c) => a + c.qty * c.price * (1 + 10 / 100), 0);
@@ -112,7 +112,9 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove }) => {
 
               <div className='p-4 flex justify-around items-center bg-white border-b border-gray-200'>
                 {cartList.length > 0 && (
-                  <button className='flex  justify-center items-center px-2 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'>
+                  <button
+                    className='flex  justify-center items-center px-2 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'
+                    onClick={storeData}>
                     <a href='/shipping'> Checkout</a>{' '}
                   </button>
                 )}
