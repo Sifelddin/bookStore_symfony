@@ -11,13 +11,12 @@ import Checkout from './Checkout';
  
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
-// root.render(<App></App>)
 
 root.render(
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<App />}></Route>
-             <Route path='/shipping' element={<Checkout/>} />   
+            <Route path='/shipping' element={<Checkout/>} />   
         </Routes>
     </BrowserRouter>
 );
