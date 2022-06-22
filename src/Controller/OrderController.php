@@ -41,17 +41,6 @@ class OrderController extends AbstractController
     #[Route('/checkout', name: 'app_api')]
     public function checkout(Request $request, OrderRepository $orderRepository): Response
     {
-<<<<<<< HEAD
-        $user = $this->getUser();
-=======
-
-        if ($request->isXmlHttpRequest()) {
-            $data = $request->toArray();
-            $cart = $session->set('cart', $data);
-            return $this->json($cart);
-        }
->>>>>>> 463a2d4 (20220621_summary)
-
         $user = $this->getUser();
 
         $order = new Order();
