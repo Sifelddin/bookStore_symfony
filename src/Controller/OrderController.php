@@ -41,16 +41,34 @@ class OrderController extends AbstractController
     #[Route('/checkout', name: 'app_api')]
     public function checkout(Request $request, OrderRepository $orderRepository): Response
     {
+
+//dd($request);
+
         $user = $this->getUser();
 
-        $order = new Order();
-        $form = $this->createForm(OrderType::class, $order);
+        $coef = $this->getUser()->getCoef();
 
+//dd($coef);
+//dd($user);
+        $order = new Order();
+        
+//dd($order);
+
+        $form = $this->createForm(OrderType::class, $order);
+    
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //dd($form);
+            //dd($coef);
             $order->setUserClient($user);
-            $orderRepository->add($order, true);
+            $order->setCoef($coef);
+            $orderRepository->add($order, false);
+            //dd($order);
+
+            $session = $request->getSession();
+            $session->set('order',$order);
+            //dd($session->get('order'));
             return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -65,29 +83,39 @@ class OrderController extends AbstractController
     public function summary(Request $request, SessionInterface $session, OrderRepository $orderRepository): Response
     {
 
-        if ($request->isXmlHttpRequest()) {
-            $data = $request->toArray();
-            $cart = $session->set('cart', $data);
-            return $this->json($cart);
-        }
-
-        $user = $this->getUser();
+        dd($session->get('order'));
         
-        $order = new Order();
-        $form = $this->createForm(OrderType::class, $order);
+                $user = $this->getUser();
+                $coef = $this->getUser()->getCoef();
 
-        $form->handleRequest($request);
+                $order->setUserClient($user);
+                $order->setCoef($coef);
+        
+        //dd($coef);
+        //dd($user);
+                $order = new Order();
+                
+        //dd($order);
+        
+                $form = $this->createForm(OrderType::class, $order);
+        
+        //dd($form);
+        
+                $form->handleRequest($request);
+        
+                if ($form->isSubmitted() && $form->isValid()) {
+                    //dd($form);
+                    //dd($coef);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $order->setUserClient($user);
-            $orderRepository->add($order, true);
-            return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('catalogue/order.html.twig', [
-            'order' => $order,
-            'form' => $form->createView(),
-            'user' => $user
-        ]);
-    }
+                    $orderRepository->add($order, false);
+                    return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
+                }
+        
+                return $this->render('catalogue/summary.html.twig', [
+                    'order' => $order,
+                    'form' => $form->createView(),
+                    'user' => $user
+                ]);
+            }
+        
 }

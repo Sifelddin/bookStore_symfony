@@ -55,24 +55,16 @@ class OrderType extends AbstractType
                 'label_attr' => ['class' => $this->classLabel],
                 'required' => false
             ])
-            ->add('coef', null, [
-                'empty_data' => '',
-                "attr" => [
-                    'class' => $this->classInput,
-                ],
-                'label'=> 'ZipCode',
-                'label_attr' => ['class' => $this->classLabel],
-                'required' => false
-            ])
-            // ->add('paymentDate', null, [
+            // ->add('coef', null, [
             //     'empty_data' => '',
-            //     'widget' => 'single_text',
             //     "attr" => [
-            //         'class' => $this->classInput
+            //         'class' => $this->classInput,
             //     ],
+            //     'label'=> 'coeffient',
             //     'label_attr' => ['class' => $this->classLabel],
             //     'required' => false
             // ])
+
             ->add('billAddress', null, [
                 'empty_data' => '',
                 "attr" => [

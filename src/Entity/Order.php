@@ -37,7 +37,7 @@ class Order
     #[ORM\Column(type: 'date', nullable: true)]
     private $paymentDate;
 
-    #[Assert\NotBlank()]
+    
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
     private $coef;
 
@@ -53,7 +53,6 @@ class Order
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2, nullable: true)]
     private $discount;
 
-    #[Assert\NotBlank()]
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
     private $userClient;

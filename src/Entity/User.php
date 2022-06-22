@@ -166,6 +166,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -299,11 +300,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Get the value of Coef
+     * 
+     * 
      */
-    public function getCoef()
+    public function getCoef(): string
     {
+    
         return $this->Coef;
     }
+
 
     /**
      * Set the value of Coef
