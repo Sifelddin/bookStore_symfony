@@ -15,7 +15,6 @@ export const Books = ({catBooks,select, onAdd}) => {
     }else{
       axios.get(`api/books?page=1&published=true`).then((res) => setBooks(res.data)).catch((err) => console.log(err));
     }
-    console.log('render');
   },[catBooks])
   
   return (

@@ -13,13 +13,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class OrderController extends AbstractController
 {
 
+
     #[Route('/{reactRouting}', name: 'app_react', priority: "-1", defaults: ["reactRouting" => null], requirements: ["reactRouting" => ".+"])]
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        if ($request->isXmlHttpRequest() && $request->isMethod('GET')) {
-            $user = $this->getUser();
-            return  $this->json($user);
-        }
         return $this->render("api/index.html.twig");
     }
 
