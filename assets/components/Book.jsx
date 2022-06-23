@@ -2,6 +2,8 @@ import React from 'react';
 import MDate from 'mini-date-format';
 
 export const Book = ({ book, show, onAdd }) => {
+
+  
   return (
     <div className='flex flex-col  mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg m-10'>
       <div className='grid grid-cols-2 items-center'>

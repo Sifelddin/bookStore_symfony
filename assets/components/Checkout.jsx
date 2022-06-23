@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 
 const Checkout = () => {
 
+  const localStorageOrder = localStorage.getItem('ORDER') 
+  console.log(localStorageOrder);
 
-  const [user, setUser] = useState(null);
-
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     axios
@@ -16,13 +17,14 @@ const Checkout = () => {
       .catch((err) => console.log(err));
 
   }, []);
-console.log(user);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) =>{
+    console.log(data);
     localStorage.setItem('ORDER', JSON.stringify(data))
     location.assign('/placeorder')
   };
@@ -44,13 +46,16 @@ console.log(user);
   const labelClasses = 'block text-md font-medium text-gray-700';
 
 
-
   return (
     <>
-      <Link to={'/'}> back </Link>
+     
 
       {user && (
-        <div className=' h-screen w-full flex justify-center items-center'>
+        <div className=' h-screen w-full flex flex-col justify-center items-center'> 
+        <div className='flex justify-start flex-start xl:w-3/5 md:w-4/5'>
+        <Link to={'/'} className="underline text-gray-700 hover:text-black mx-2 p-1 uppercase"> {"<<"}Store</Link>
+        {localStorageOrder && <Link to={'/placeorder'} className="underline text-gray-700 hover:text-black mx-2 p-1 uppercase">Place Order{">>"}</Link>}
+        </div>
           <div className=' xl:w-3/5 md:w-4/5 p-3 bg-white rounded-md shadow-md'>
             <h2 className='text-2xl uppercase my-3 border-b-gray-200 border-solid border-b-2'>
               {user.firstname + ' ' + user.lastname}

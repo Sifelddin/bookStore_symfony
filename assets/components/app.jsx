@@ -15,6 +15,9 @@ const App = () => {
   const [showCart, setShowCart] = useState(false);
   const [cartList, setCartList] = useState([]);
 
+  const deleteBook = (book , cartList) =>  {
+    setCartList(cartList.filter((item) => item.id !== book));
+    }
 
   useEffect(() => {
     axios
@@ -46,10 +49,12 @@ useEffect(() => {
     //     return { ...a };
     //   });
     // }
-    localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList))
+  
+   localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList))
+   JSON.parse(localStorage.getItem('SHOPPING-CART')).length > 0 || localStorage.removeItem('SHOPPING-CART')
+  
   }, [cartList])
 
-  
   const selectCat = (e) => setSubCategories(e);
 
   const selectBooks = (e) => setCatBooks(e);
@@ -104,6 +109,7 @@ useEffect(() => {
     return (
       <div className='w-10/12 mx-auto'>
         <Cart
+        deleteBook={deleteBook}
         cartList={cartList}
           showCart={setShowCart}
           onAdd={onAdd}
