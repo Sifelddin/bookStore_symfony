@@ -3,8 +3,16 @@
 namespace App\DataFixtures;
 
 
+use App\DataFixtures\BookFixtures;
+use App\DataFixtures\UserFixtures;
+use App\DataFixtures\OrderFixtures;
+use App\DataFixtures\CategoryFixtures;
+use App\DataFixtures\DeliveryFixtures;
+use App\DataFixtures\SupplierFixtures;
+use App\DataFixtures\BookOrderFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\DataFixtures\DeliveryDetailsFixtures;
 
 class AppFixtures extends Fixture
 {
@@ -42,7 +50,5 @@ class AppFixtures extends Fixture
 
          $deliveryDetails ->load($manager);
          $manager->flush();
-
-
     }
 }
