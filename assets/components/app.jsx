@@ -15,10 +15,6 @@ const App = () => {
   const [showCart, setShowCart] = useState(false);
   const [cartList, setCartList] = useState([]);
 
-  const deleteBook = (book , cartList) =>  {
-    setCartList(cartList.filter((item) => item.id !== book));
-    }
-
   useEffect(() => {
     axios
       .get(
@@ -26,14 +22,14 @@ const App = () => {
       )
       .then((res) => setCategories(res.data))
       .catch((e) => console.log(e));
-        
-      const parsJson = JSON.parse(localStorage.getItem('SHOPPING-CART'))
-        if(parsJson !== null) {
-          setCartList(parsJson);
-        }
+
+    const parsJson = JSON.parse(localStorage.getItem('SHOPPING-CART'));
+    if (parsJson !== null) {
+      setCartList(parsJson);
+    }
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     // if (cartList.length > 0) {
     //   cartList.map((a) => {
     //     for (let property in a) {
@@ -49,11 +45,11 @@ useEffect(() => {
     //     return { ...a };
     //   });
     // }
-  
-   localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList))
-   JSON.parse(localStorage.getItem('SHOPPING-CART')).length > 0 || localStorage.removeItem('SHOPPING-CART')
-  
-  }, [cartList])
+
+    localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList));
+    JSON.parse(localStorage.getItem('SHOPPING-CART')).length > 0 ||
+      localStorage.removeItem('SHOPPING-CART');
+  }, [cartList]);
 
   const selectCat = (e) => setSubCategories(e);
 
@@ -86,6 +82,10 @@ useEffect(() => {
     }
   };
 
+  const deleteBook = (book, cartList) => {
+    setCartList(cartList.filter((item) => item.id !== book));
+  };
+
   if (book) {
     return (
       <>
@@ -109,8 +109,8 @@ useEffect(() => {
     return (
       <div className='w-10/12 mx-auto'>
         <Cart
-        deleteBook={deleteBook}
-        cartList={cartList}
+          deleteBook={deleteBook}
+          cartList={cartList}
           showCart={setShowCart}
           onAdd={onAdd}
           onRemove={onRemove}
@@ -122,7 +122,7 @@ useEffect(() => {
   return (
     <>
       <div className='w-10/12 mx-auto'>
-        <Header show={setShowCart} showBook={selectBook} cartList={cartList}/>
+        <Header show={setShowCart} showBook={selectBook} cartList={cartList} />
         <div className='grid grid-cols-3 gap-3  mx-auto '>
           <div className='col-span-1'>
             <Cats cats={categories['hydra:member']} select={selectCat} />
