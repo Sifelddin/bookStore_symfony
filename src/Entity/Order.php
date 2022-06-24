@@ -9,12 +9,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
+#[ApiResource(
 
+    denormalizationContext: ['groups' => ["write:post"]]
+)]
 class Order
 {
     #[ORM\Id]
@@ -25,39 +28,48 @@ class Order
     #[ORM\Column(type: 'date', nullable: true)]
     private $shippedDate;
 
+    #[Groups(['write:post'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $ShipAddress;
 
+    #[Groups(['write:post'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $shipCity;
 
+    #[Groups(['write:post'])]
     #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $shipZipCode;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $paymentDate;
 
+    #[Groups(['write:post'])]
     #[Assert\NotBlank()]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
     private $coef;
 
+    #[Groups(['write:post'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $billAddress;
 
+    #[Groups(['write:post'])]
     #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $billZipCode;
 
+    #[Groups(['write:post'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $billCity;
 
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2, nullable: true)]
     private $discount;
 
+    #[Groups(['write:post'])]
     #[Assert\NotBlank()]
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
     private $userClient;
 
+    #[Groups(['write:post'])]
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $payMethod;
 

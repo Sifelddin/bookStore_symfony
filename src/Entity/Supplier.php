@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\SupplierRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SupplierRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    denormalizationContext: ['groups' => ['write:post']]
+)]
 #[ORM\Entity(repositoryClass: SupplierRepository::class)]
 class Supplier
 {
@@ -16,11 +21,10 @@ class Supplier
     #[ORM\Column(type: 'integer')]
     private $id;
 
-
-    #[Assert\NotNull]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 255, minMessage: 'contactName should be more than 3 character long', maxMessage: 'contactName should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Groups(['write:post'])]
     private $contactName;
 
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Book::class)]

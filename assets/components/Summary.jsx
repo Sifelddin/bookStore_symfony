@@ -1,17 +1,41 @@
-import React ,{useState} from 'react'
+import axios from 'axios';
+import React ,{useState, useEffect} from 'react'
 import { Link } from 'react-router-dom';
 
 const Summary = () => {
   
-   if(localStorage.getItem('SHOPPING-CART') || localStorage.getItem('ORDER')){
+  const [send, setSend] = useState(false)
+
+   if(localStorage.getItem('SHOPPING-CART') === null  || localStorage.getItem('ORDER') === null){
       location.assign('/')
    } 
+
+
+   useEffect(()=> {
+if(order){
+if(send){
+  axios.post('https://localhost:8000/api/orders',order).then(res => {
+    res.data['@id']
+  books.map(book =>{
+      axios.post('https://localhost:8000/api/book_orders', {quantity : book.qty, unitPrice : book.price , book : book['@id'] , order : res.data['@id'] }).then(res => console.log(res.data)).catch(err => console.log(err))
+       })
+    localStorage.removeItem('ORDER')
+    localStorage.removeItem('SHOPPING-CART')
+    // location.assign('/')
+  }).catch(err => console.log(err))
+
+}
+}
+
+   },[send])
 
     const [currentPage, setCurrentPage] = useState(1)
     const [booksPerPage, setBooksPerPage] = useState(5)
 
     const books = JSON.parse(localStorage.getItem('SHOPPING-CART'))
     const order = JSON.parse(localStorage.getItem('ORDER'))
+
+    console.log(books , {order});
 
     const indexOfLastBook =  currentPage * booksPerPage 
     const indexOfFirstBook = indexOfLastBook - booksPerPage
@@ -129,7 +153,7 @@ const Summary = () => {
                 </tr>
                 </tfoot>
               </table>
-                  <button className="flex justify-center items-center px-4 py-2 mt-4 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-800  focus:outline-none  focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 w-full">Place Order</button>
+                  <button onClick={() => setSend(true)} className="flex justify-center items-center px-4 py-2 mt-4 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-800  focus:outline-none  focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 w-full">Place Order</button>
             </div>
         </div>
         </div>
