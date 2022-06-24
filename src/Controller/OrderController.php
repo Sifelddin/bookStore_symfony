@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Form\OrderType;
+use App\Repository\BookRepository;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,79 +25,99 @@ class OrderController extends AbstractController
     public function checkout(Request $request, OrderRepository $orderRepository): Response
     {
 
-//dd($request);
-
-        $user = $this->getUser();
-
-        $coef = $this->getUser()->getCoef();
-
-//dd($coef);
-//dd($user);
-        $order = new Order();
+        $session = $request->getSession();
+     
+        if($session->get('order')){
+            
+            $user = $this->getUser();
+            $order = $session->get('order');
+            $form = $this->createForm(OrderType::class, $order);
         
-//dd($order);
+            $form->handleRequest($request);
 
-        $form = $this->createForm(OrderType::class, $order);
-    
-        $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $orderRepository->add($order, false);
+                $session->set('order',$order);
+                return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
+            }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            //dd($form);
-            //dd($coef);
-            $order->setUserClient($user);
-            $order->setCoef($coef);
-            $orderRepository->add($order, false);
-            //dd($order);
+            return $this->render('catalogue/order.html.twig', [
+                'order' => $order,
+                'form' => $form->createView(),
+                'user' => $user
+            ]);
+                
 
-            $session = $request->getSession();
-            $session->set('order',$order);
-            //dd($session->get('order'));
-            return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
         }
+        else {
+     
+            $user = $this->getUser();
+            $order = new Order();
 
-        return $this->render('catalogue/order.html.twig', [
-            'order' => $order,
-            'form' => $form->createView(),
-            'user' => $user
-        ]);
+
+            // $Address = $this->getUser()->getAddress();
+            // $ZipCode = $this->getUser()->getZipCode();
+            // $City = $this->getUser()->getCity();
+
+            // $order->setUserClient($user);
+            // $order->setCoef($this->getUser()->getCoef());
+            // $order->setBillAddress($Address);
+            // $order->setBillZipCode($ZipCode);
+            // $order->setBillCity($City);
+
+            // $order->setShipAddress($Address);
+            // $order->setShipZipCode($ZipCode);
+            // $order->setShipCity($City);
+            //dd($order);
+            $form = $this->createForm(OrderType::class, $order);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted()) {
+                $orderRepository->add($order, false);
+                $session->set('order',$order);
+                return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
+            }
+
+    
+         
+            return $this->render('catalogue/order.html.twig', [
+                'order' => $order,
+                'form' => $form->createView(),
+                //'user' => $user
+            ]);
+        }
     }
 
+
+
+
+
+
+
     #[Route('/summary', name: 'app_summary')]
-    public function summary(Request $request, SessionInterface $session, OrderRepository $orderRepository): Response
+    public function summary(Request $request, SessionInterface $session, BookRepository $bookRepository): Response
     {
 
-        dd($session->get('order'));
         
-                $user = $this->getUser();
-                $coef = $this->getUser()->getCoef();
+        $order = $session->get('order'); 
+        $user = $this->getUser();
 
-                $order->setUserClient($user);
-                $order->setCoef($coef);
-        
-        //dd($coef);
-        //dd($user);
-                $order = new Order();
-                
-        //dd($order);
-        
-                $form = $this->createForm(OrderType::class, $order);
-        
-        //dd($form);
-        
-                $form->handleRequest($request);
-        
-                if ($form->isSubmitted() && $form->isValid()) {
-                    //dd($form);
-                    //dd($coef);
+        $panier= $session->get('panier',[]);
 
-                    $orderRepository->add($order, false);
-                    return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
-                }
-        
+        $panier2=[];
+
+        foreach ($panier as $id => $quantity){
+            $panier2 []= [
+                'products'=>$bookRepository->find($id),
+                'quantity'=> $quantity
+            ];
+
+        }
+
                 return $this->render('catalogue/summary.html.twig', [
                     'order' => $order,
-                    'form' => $form->createView(),
-                    'user' => $user
+                    'user' => $user,
+                   'items'=>$panier2
                 ]);
             }
         

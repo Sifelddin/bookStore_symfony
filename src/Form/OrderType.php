@@ -95,11 +95,11 @@ class OrderType extends AbstractType
             ])
             ->add('payMethod', ChoiceType::class, [
                     'choices' => [
-                        'Bank check' => 'check',
-                        'bank transfer' => 'transfer',
+                        'Bank check' => 'Bank check',
+                        'Bank transfer' => 'Bank transfer',
                     ],
                 'expanded' => true,
-                'data'=> 'check'
+                'data'=> 'Bank check'
                 ]
             );
     }

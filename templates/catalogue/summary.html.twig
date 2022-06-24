@@ -2,48 +2,90 @@
 
 {% block body %}
 	<div class=" h-screen w-full flex justify-center items-center">
-		<div class=" w-3/5 p-3 bg-white rounded-md shadow-md">
+		<div class=" w-4/5 p-3 bg-white rounded-md shadow-md">
+            <h5 class="flex justify-around items-center text-3xl mb-2 pb-2 border-b-2">Détails de la commande</h5>
+			<div class="mx-auto mt-3 grid grid-cols-7 gap-2 items-center">
+				<div class='col-span-2 border-r-2 '>
+					<p class="flex items-center  pb-5">Adresse de livraison :</p>
+                    <p>{{order.ShipAddress}}</p>
+                    <p>{{ order.shipZipCode}}</p>
+                    <p>{{ order.shipCity }}</p>
+                    <hr class="mx-10 mt-5 pb-5 border-t-2">
+                    <p class=" flex items-center pb-5 " >Adresse de facturation :</p>
+                    <p>{{order.billAddress}}</p>
+                    <p>{{order.billZipCode}}</p>
+                    <p>{{order.billCity}}</p>
+                    
 
-			<div class="mx-auto grid grid-cols-2 gap-2 items-center">
-				<div class='mr-10 col-span-1 '>
-					<p class="flex justify-center items-center ">Adresse de livraison</p>
-					<div class="border-double border-8 px-10 pb-5">
-						{{order}}
+                    <hr class="mx-10 mt-5 pb-5 border-t-2">
+                    <p class="flex items-center  pb-5">payment system:</p>
+                    <div class="hidden">{{order.coef}}</div>
 
-						{{  user.city }}
-						{{ form_row(form.shipZipCode, {
-							attr: { value: user.zipcode }
-						})}}
-					</div>
+                {% if user.private == 1 %} 
+                    {{order.payMethod }} 
+                {% else %} 
+                    <div class="hidden">{{order.payMethod}}</div> 
+                {% endif %}
+			    </div>
+                <div class="grid col-span-5 ">
+				<table class="divide-y divide-gray-200 col-span-1">
+                <thead class='mb-2'>
+                    <tr class=''>
+                        
+                        <th class='text-center col-span-1'>Titre</th>
+                        <th class='text-center col-span-1'>Editeur</th>
+                        <th class='text-center col-span-1'>Prix unitaire</th>
+                        <th class='text-center col-span-1'>Quantité</th>
+                        <th class='text-center col-span-1'>Prix</th>
+                        <th class="col-span-1"></th>
+                    </tr>
+                </thead>
+				<tbody>
 
-				</div>
-				<div class='col-span-1'>
-					<p class=" flex justify-center items-center" >Adresse de facturation</p>
-					<div class="border-double border-8 px-10 pb-5">
-						{{ form_row(form.billAddress, {
-							attr: { value: user.address }
-						})}}
-						{{ form_row(form.billCity, {
-							attr: { value: user.city }
-						})}}
-						{{ form_row(form.billZipCode, {
-                    		attr: { value: user.zipcode }
-                		})}}
-					</div>
-				</div>
-				{# <div class="hidden">{{ form_row(form.coef, {
-							attr: { value: user.coef }
-						})}}</div> #}
 
-				{% if user.private == 1 %}
-						{# {{ form_row(form.paymentDate) }} #}
-							{{ form_row(form.payMethod) }}
-				{% else %}
-						<div class="hidden">{{ form_row(form.payMethod) }}</div>
-				{% endif %}
+                {% set totalHT = 0 %} 
+                    {% set TVA = 0 %} 
+                {% for item in items %}
+                    <tr class=''>
+                        {# <td><div class="flex flex-col col-span-1">
+                            <img src={{ asset('uploads/images/' ~ item.products.photo)}} alt={{ item.products.photo }}></div>
+                        </td> #}
+                        <td class='text-center col-span-1'>{{ item.products.title }}</td>  
+                        <td class='text-center col-span-1'>{{ item.products.supplier }}</td>
+                        <td class='text-center col-span-1'>{{ item.products.price * 1.20 }} $</td>
+                        <td class='text-center col-span-1'>   {{ item.quantity}}</td>
+                        <td class='text-center col-span-1'>{{ (item.products.price * 1.20) * item.quantity}} $</td>
+                    </tr>
+                {% set TVA = TVA + ((item.products.price * 0.20) * item.quantity) %}    
+                {% set totalHT = totalHT + (item.products.price * item.quantity) %}                             
+                {% endfor %}
 
+                </tbody>
+                <tfoot class=" pt-10 mt-10">
+                    <tr class='mt-2'>
+                    
+                        <td colspan='4' class="text-center col-span-1">prix total HT :</td>
+                        <td   class="text-center col-span-1">{{totalHT}} $ </td>
+                    </tr>
+                    <tr class='mt-2'>
+                        <td colspan='4' class="text-center col-span-1">TVA :</td>
+                        <td class="text-center col-span-1">{{TVA}}</td>
+                    </tr>
+                        <tr class='mt-2'>
+                        <td colspan='4' class="text-center col-span-1">prix total :</td>
+                        <td class="text-center col-span-1">{{totalHT + TVA}} $</td>
+                    </tr>
+                </tfoot> 
+                </table>
+    
+		  
+		    </div>
+            </div>
+            <hr class=" mt-3 pb-5 border-t-2">
+            <div class="flex justify-around items-center mb-5 ">
+		        <a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_api') }}">CHANGE ADDRESS</a>
+                <button class='px-4 py-2 mt-4  bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>Comfirm</button>
+		        <a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_catalogue') }}">CHANGE BOOKS</a>
 			</div>
-					<button class='inline-flex justify-center items-center px-4 py-2 mt-4 bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>Comfirm</button>
-		</div>
-	</div>
-{% endblock %}
+        </div>
+    {% endblock %}
