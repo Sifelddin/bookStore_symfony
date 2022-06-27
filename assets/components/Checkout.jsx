@@ -8,8 +8,8 @@ const Checkout = () => {
   const localStorageOrder = localStorage.getItem('ORDER') 
   console.log(localStorageOrder);
 
-  const [user, setUser] = useState({});
-
+  const [user, setUser] = useState(null);
+console.log(user);
   useEffect(() => {
     axios
       .get('api/me')
@@ -30,7 +30,7 @@ const Checkout = () => {
   };
 
   // functions contain some validation rules
-  const userClient = (userClient) => userClient == user.id;
+  const userClient = (userClient) => userClient == user['@id'];
   const userCoef = (coef) => coef == user.Coef;
   const exactZipCode = (zipCode) => {
     const regExp = /^[0-9]{5}$/;
@@ -64,7 +64,7 @@ const Checkout = () => {
               <div className='mt-1 relative rounded-md shadow-sm'>
                 <input
                   type='hidden'
-                  defaultValue={user.id}
+                  defaultValue={user['@id']}
                   {...register('userClient', {
                     required: true,
                     validate: userClient,

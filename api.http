@@ -21,3 +21,21 @@ X-Requested-With: XMLHttpRequest
 {
    "first":"test"   
 }
+
+###
+
+POST https://localhost:8000/api/orders 
+content-type: application/json
+X-Requested-With: XMLHttpRequest
+
+{
+"shipAddress": "26 rue",
+"shipCity": "city",
+"shipZipCode": "80000",
+"coef": "0.00",
+"billAddress": "26 rue",
+"billZipCode": "80000",
+"billCity": "city",
+"userClient": "2",
+"payMethod": "Bank Transfer"
+}
