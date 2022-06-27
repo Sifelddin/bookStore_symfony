@@ -8,6 +8,7 @@ import {
 
 import App from './app';
 import Checkout from './Checkout';
+import Summary from './Summary';
  
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
@@ -15,8 +16,9 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
     <BrowserRouter>
         <Routes>
-            <Route path="/" element={<App />}></Route>
+            <Route path='/' element={<App />}/>
             <Route path='/shipping' element={<Checkout/>} />   
+            <Route path='/placeorder' element={<Summary/>} />   
         </Routes>
     </BrowserRouter>
 );

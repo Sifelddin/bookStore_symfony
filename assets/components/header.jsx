@@ -1,9 +1,9 @@
-import  React,{useState,useEffect} from 'react';
+import  React from 'react';
 import {BsCart4} from 'react-icons/bs'
 import {BsSearch} from 'react-icons/bs'
 
 
-export const Header = ({show , showBook, cartList}) => {
+export const Header = ({show , showBook , cartList}) => {
 
 
   return (

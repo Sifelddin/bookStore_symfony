@@ -1,11 +1,8 @@
-import  React,{useState,useEffect} from 'react';
+import  React from 'react';
 
 
 
 export const SubCats = ({subCategories , select}) => {
-console.log(subCategories.subCategories);
-
-  
 
   return (
     <div className=''>

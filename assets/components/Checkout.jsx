@@ -4,34 +4,30 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 const Checkout = () => {
-  const [user, setUser] = useState(null);
-  const [order, setOrder] = useState(null);
 
-  if (order) {
-    localStorage.setItem('order', JSON.stringify(order));
-    console.log(JSON.parse(localStorage.getItem('order')));
-  }
+
+  const [user, setUser] = useState(null);
+
 
   useEffect(() => {
     axios
       .get('api/me')
       .then((res) => setUser(res.data))
       .catch((err) => console.log(err));
-  }, []);
 
+  }, []);
+console.log(user);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => setOrder(data);
-
-  const cart = JSON.parse(localStorage.getItem('cart'));
-
-  console.log(cart);
+  const onSubmit = (data) =>{
+    localStorage.setItem('ORDER', JSON.stringify(data))
+    location.assign('/placeorder')
+  };
 
   // functions contain some validation rules
-
   const userClient = (userClient) => userClient == user.id;
   const userCoef = (coef) => coef == user.Coef;
   const exactZipCode = (zipCode) => {
@@ -47,7 +43,7 @@ const Checkout = () => {
     'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md';
   const labelClasses = 'block text-md font-medium text-gray-700';
 
-  console.log(order);
+
 
   return (
     <>

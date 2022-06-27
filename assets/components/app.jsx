@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Cats } from './cats';
 import { SubCats } from './subCats';
@@ -15,6 +15,7 @@ const App = () => {
   const [showCart, setShowCart] = useState(false);
   const [cartList, setCartList] = useState([]);
 
+
   useEffect(() => {
     axios
       .get(
@@ -22,28 +23,33 @@ const App = () => {
       )
       .then((res) => setCategories(res.data))
       .catch((e) => console.log(e));
+        
+      const parsJson = JSON.parse(localStorage.getItem('SHOPPING-CART'))
+        if(parsJson !== null) {
+          setCartList(parsJson);
+        }
   }, []);
 
-  const storeData = () => {
-    if (cartList.length > 0) {
-      cartList.map((a) => {
-        for (let property in a) {
-          if (
-            property !== 'id' &&
-            property !== 'price' &&
-            property !== 'qty' &&
-            property !== 'photo'
-          ) {
-            delete a[property];
-          }
-        }
-        return { ...a };
-      });
+useEffect(() => {
+    // if (cartList.length > 0) {
+    //   cartList.map((a) => {
+    //     for (let property in a) {
+    //       if (
+    //         property !== 'id' &&
+    //         property !== 'price' &&
+    //         property !== 'qty' &&
+    //         property !== 'photo'
+    //       ) {
+    //         delete a[property];
+    //       }
+    //     }
+    //     return { ...a };
+    //   });
+    // }
+    localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList))
+  }, [cartList])
 
-      localStorage.setItem('cart', JSON.stringify(cartList));
-    }
-  };
-
+  
   const selectCat = (e) => setSubCategories(e);
 
   const selectBooks = (e) => setCatBooks(e);
@@ -98,8 +104,7 @@ const App = () => {
     return (
       <div className='w-10/12 mx-auto'>
         <Cart
-          storeData={storeData}
-          cartList={cartList}
+        cartList={cartList}
           showCart={setShowCart}
           onAdd={onAdd}
           onRemove={onRemove}
@@ -111,7 +116,7 @@ const App = () => {
   return (
     <>
       <div className='w-10/12 mx-auto'>
-        <Header show={setShowCart} showBook={selectBook} cartList={cartList} />
+        <Header show={setShowCart} showBook={selectBook} cartList={cartList}/>
         <div className='grid grid-cols-3 gap-3  mx-auto '>
           <div className='col-span-1'>
             <Cats cats={categories['hydra:member']} select={selectCat} />
