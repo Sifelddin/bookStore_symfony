@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Cats } from './cats';
 import { SubCats } from './subCats';
@@ -8,17 +8,18 @@ import { Book } from './Book';
 import { Cart } from './cart';
 
 const App = () => {
-  const [subCategories, setSubCategories] = useState([]);
+  const [catParent, setCatParent] = useState(null)
   const [catBooks, setCatBooks] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(null);
   const [book, setBook] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [cartList, setCartList] = useState([]);
-
+  const [pageUrl, setPageUrl] = useState('/api/categories?exists%5BcatParent%5D=false&exists%5BsubCategories%5D=true&page=1');
+ 
   useEffect(() => {
     axios
       .get(
-        'api/categories?page=1&exists%5BcatParent%5D=false&exists%5BsubCategories%5D=true',
+        pageUrl,
       )
       .then((res) => setCategories(res.data))
       .catch((e) => console.log(e));
@@ -27,31 +28,15 @@ const App = () => {
     if (parsJson !== null) {
       setCartList(parsJson);
     }
-  }, []);
+  }, [pageUrl]);
 
   useEffect(() => {
-    // if (cartList.length > 0) {
-    //   cartList.map((a) => {
-    //     for (let property in a) {
-    //       if (
-    //         property !== 'id' &&
-    //         property !== 'price' &&
-    //         property !== 'qty' &&
-    //         property !== 'photo'
-    //       ) {
-    //         delete a[property];
-    //       }
-    //     }
-    //     return { ...a };
-    //   });
-    // }
-
     localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList));
     JSON.parse(localStorage.getItem('SHOPPING-CART')).length > 0 ||
       localStorage.removeItem('SHOPPING-CART');
   }, [cartList]);
 
-  const selectCat = (e) => setSubCategories(e);
+  const selectCat = (e) => setCatParent(e);
 
   const selectBooks = (e) => setCatBooks(e);
 
@@ -121,14 +106,14 @@ const App = () => {
 
   return (
     <>
-      <div className='w-10/12 mx-auto'>
+      <div className='xl:w-10/12 w-11/12 mx-auto'>
         <Header show={setShowCart} showBook={selectBook} cartList={cartList} />
-        <div className='grid grid-cols-3 gap-3  mx-auto '>
-          <div className='col-span-1'>
-            <Cats cats={categories['hydra:member']} select={selectCat} />
+        <div className='flex flex-col md:grid md:grid-cols-3 md:gap-1  mx-auto '>
+          <div className='md:col-span-1'>
+            <Cats setPageUrl={setPageUrl} cats={categories} select={selectCat} />
           </div>
-          <div className='col-span-2 flex flex-col p-2 m-2'>
-            <SubCats subCategories={subCategories} select={selectBooks} />
+          <div className='md:col-span-2 flex flex-col p-2 m-2'>
+            <SubCats catParent={catParent}  select={selectBooks} />
             <Books catBooks={catBooks} select={selectBook} onAdd={onAdd} />
           </div>
         </div>

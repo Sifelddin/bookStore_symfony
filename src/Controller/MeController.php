@@ -16,4 +16,5 @@ class MeController extends AbstractController
         $user = $this->security->getUser();
         return $user;
     }
+   
 }

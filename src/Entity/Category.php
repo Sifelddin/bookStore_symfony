@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -25,6 +26,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 ]
 // #[ApiFilter(SearchFilter::class, properties: ['catParent' => 'exact'])]
 #[ApiFilter(ExistsFilter::class, properties: ['catParent', 'subCategories'])]
+#[ApiFilter(SearchFilter::class, properties: ['catParent.name' => 'exact'])]
 class Category
 {
     #[ORM\Id]
@@ -52,11 +54,10 @@ class Category
     #[ORM\JoinColumn(onDelete: "SET NULL")]
     private $catParent;
 
-    #[Groups(['cat:list'])]
+
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
     private $subCategories;
 
-    #[Groups(['cat:list'])]
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
     private $books;
 

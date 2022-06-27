@@ -12,3 +12,13 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 
+const openMenuBtn = document.getElementById('open_menu')
+const closeMenuBtn = document.getElementById('close_menu')
+const nav = document.getElementById('nav')
+
+openMenuBtn.addEventListener('click',() => {
+    nav.classList.toggle('hidden')
+})
+closeMenuBtn.addEventListener('click',() => {
+   nav.classList.toggle('hidden')
+})
