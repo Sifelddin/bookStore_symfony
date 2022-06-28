@@ -4,18 +4,16 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 const Checkout = () => {
-
-  const localStorageOrder = localStorage.getItem('ORDER') 
+  const localStorageOrder = localStorage.getItem('ORDER');
   console.log(localStorageOrder);
 
   const [user, setUser] = useState(null);
-console.log(user);
+  console.log(user);
   useEffect(() => {
     axios
       .get('api/me')
       .then((res) => setUser(res.data))
       .catch((err) => console.log(err));
-
   }, []);
 
   const {
@@ -23,10 +21,10 @@ console.log(user);
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) =>{
+  const onSubmit = (data) => {
     console.log(data);
-    localStorage.setItem('ORDER', JSON.stringify(data))
-    location.assign('/placeorder')
+    localStorage.setItem('ORDER', JSON.stringify(data));
+    location.assign('/placeorder');
   };
 
   // functions contain some validation rules
@@ -45,17 +43,25 @@ console.log(user);
     'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md';
   const labelClasses = 'block text-md font-medium text-gray-700';
 
-
   return (
     <>
-     
-
       {user && (
-        <div className=' h-screen w-full flex flex-col justify-center items-center'> 
-        <div className='flex justify-start flex-start xl:w-3/5 md:w-4/5'>
-        <Link to={'/'} className="underline text-gray-700 hover:text-black mx-2 p-1 uppercase"> {"<<"}Store</Link>
-        {localStorageOrder && <Link to={'/placeorder'} className="underline text-gray-700 hover:text-black mx-2 p-1 uppercase">Place Order{">>"}</Link>}
-        </div>
+        <div className=' h-screen w-full flex flex-col justify-center items-center'>
+          <div className='flex justify-start flex-start xl:w-3/5 md:w-4/5'>
+            <Link
+              to={'/'}
+              className='underline text-gray-700 hover:text-black mx-2 p-1 uppercase'>
+              {' '}
+              {'<<'}Store
+            </Link>
+            {localStorageOrder && (
+              <Link
+                to={'/placeorder'}
+                className='underline text-gray-700 hover:text-black mx-2 p-1 uppercase'>
+                Place Order{'>>'}
+              </Link>
+            )}
+          </div>
           <div className=' xl:w-3/5 md:w-4/5 p-3 bg-white rounded-md shadow-md'>
             <h2 className='text-2xl uppercase my-3 border-b-gray-200 border-solid border-b-2'>
               {user.firstname + ' ' + user.lastname}

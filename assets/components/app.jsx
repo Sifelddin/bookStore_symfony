@@ -2,27 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Cats } from './cats';
 import { SubCats } from './subCats';
 import { Books } from './books';
-import { Header } from './header';
-import Book  from './Book';
+import Header from './header';
 import { Cart } from './cart';
 
 const App = () => {
-
-  function Test(name){
-    this.name = name,
-     method = function(){
-      console.log(this.name);
-    }
-  }
-  let test = new Test('ali')
- 
-
-  const [catParent, setCatParent] = useState(null)
+  const [catParent, setCatParent] = useState(null);
   const [catBooks, setCatBooks] = useState(null);
   const [showCart, setShowCart] = useState(false);
-  const [cartList, setCartList] = useState([]);
-
-
+  const [cartList, setCartList] = useState(
+    JSON.parse(localStorage.getItem('SHOPPING-CART')) || [],
+  );
 
   useEffect(() => {
     localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList));
@@ -30,7 +19,9 @@ const App = () => {
       localStorage.removeItem('SHOPPING-CART');
   }, [cartList]);
 
-  const selectCat = (e) => {setCatParent(e) , setCatBooks(null)};
+  const selectCat = (e) => {
+    setCatParent(e), setCatBooks(null);
+  };
 
   const selectBooks = (e) => setCatBooks(e);
 
@@ -86,7 +77,7 @@ const App = () => {
             <Cats select={selectCat} />
           </div>
           <div className='md:col-span-2 flex flex-col'>
-            <SubCats catParent={catParent}  select={selectBooks} />
+            <SubCats catParent={catParent} select={selectBooks} />
             <Books catBooks={catBooks} onAdd={onAdd} />
           </div>
         </div>
