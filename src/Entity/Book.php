@@ -20,42 +20,46 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[
     ApiResource(
         collectionOperations: ["get" => ['normalization_context' => ['groups' => 'book:list']]],
-        itemOperations: ["get"]
+        itemOperations: ["get" => [
+            'normalization_context' => ['groups' => 'book:item']
+        ]]
     ),
 ]
 #[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['slug' => 'exact'])]
 class Book
 {
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['book:list'])]
+    #[Groups(['book:list', 'book:item'])]
     private $id;
 
     #[Assert\NotBlank]
     #[Assert\Length(min: 4, max: 255, minMessage: 'the title should be more than 4 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Groups(['book:list', 'book:item', 'cat:full:books'])]
+    #[Groups(['book:list', 'book:item'])]
     private $title;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["title"])]
+    #[Groups(['book:list', 'book:item'])]
     private $slug;
 
     #[Assert\NotBlank]
     #[Assert\Positive(message: "the price should be positive")]
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
-    #[Groups(['book:list'])]
+    #[Groups(['book:list', 'book:item'])]
     private $price;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['book:list'])]
+    #[Groups(['book:list', 'book:item'])]
     private $photo;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
-    #[Groups(['book:list'])]
+    #[Groups(['book:item'])]
     private $description;
 
     #[Assert\NotBlank]
@@ -70,7 +74,7 @@ class Book
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'date')]
-    #[Groups(['book:list'])]
+    #[Groups(['book:list', 'book:item'])]
     private $releaseDate;
 
     #[ORM\Column(type: 'boolean')]
@@ -80,7 +84,6 @@ class Book
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['book:list'])]
     private $category;
 
     #[Assert\NotBlank]
@@ -102,10 +105,11 @@ class Book
     #[ORM\Column(type: 'datetime_immutable')]
     private $updatedAt;
 
+    #[Groups(['book:item'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $editor;
 
-    #[Groups(['book:list'])]
+    #[Groups(['book:list', 'book:item'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $author;
 

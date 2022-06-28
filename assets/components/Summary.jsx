@@ -15,7 +15,6 @@ const Summary = () => {
 if(order){
 if(send){
   axios.post('https://localhost:8000/api/orders',order).then(res => {
-    res.data['@id']
   books.map(book =>{
       axios.post('https://localhost:8000/api/book_orders', {quantity : book.qty, unitPrice : book.price , book : book['@id'] , order : res.data['@id'] }).then(res => console.log(res.data)).catch(err => console.log(err))
        })
