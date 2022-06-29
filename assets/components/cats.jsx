@@ -34,7 +34,7 @@ export const Cats = ({ select }) => {
   };
 
   const addStyles = (cat) => {
-    let styles = ['border-green-400'];
+    let styles = ['border-green-400','shadow-green-300'];
     elements.current.map((el) => {
       cat.target.id === el.id
         ? el.classList.add(...styles)
@@ -49,7 +49,7 @@ export const Cats = ({ select }) => {
       </div>
     );
   } else {
-    let catsClasses = 'grid xl:grid-cols-2 xl:gap-2 p-2 w-full';
+    let catsClasses = 'mt-2 p-2 w-full';
     if (data['hydra:totalItems'] > 8) {
       catsClasses += ' border-b-2';
     }
@@ -63,16 +63,14 @@ export const Cats = ({ select }) => {
           {data['hydra:member'].map((cat) => {
             return (
               <div
-                className='flex items-center cursor-pointer'
+                className='flex items-center m-1'
                 key={cat.id}
-                onClick={() => {
-                  select(cat);
-                }}>
+                >
                 <img
                   id={cat.id}
-                  className='w-16 h-16 rounded-full m-0 border-4 border-white shadow-md '
+                  className='w-16 h-16 rounded-full m-0 border-4 border-white shadow-md cursor-pointer'
                   ref={addToRefs}
-                  onClick={(e) => addStyles(e)}
+                  onClick={(e) => {addStyles(e),select(cat)}}
                   src={'uploads/images/' + cat.photo}
                   alt={cat.title}
                 />

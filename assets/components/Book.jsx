@@ -49,20 +49,21 @@ const Book = () => {
       </div>
     );
   } else {
-    console.log(data.photo);
+    console.log(data);
     return (
       <>
-        <div className='flex flex-col  mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg m-10'>
-          <div className='grid grid-cols-2 items-center'>
-            <div className='divide-y divide-gray-200 col-span-1 self-center'>
+      <div className='flex items-center justify-center w-full h-screen'>
+        <div className='flex flex-col justify-center mt-6 p-8 bg-white shadow-md sm:rounded-lg w-5/6 2xl:w-3/5'>
+          <div className='md:grid md:grid-cols-2 md:gap-3 flex-col items-start justify-end'>
+            <div className='col-span-1 grid grid-cols-2 gap-3 md:block'>
               <img
-                className=' border-white object-center'
+                className=' object-center h-auto md:w-4/6  shadow-md'
                 src={'/uploads/images/' + data.photo}
               />
-              <div className='p-2 my-4 border-none'>
-                <h2 className='text-left text-2xl '> {data.title} </h2>
-                <p className='text-left uppercase'>Price : {data.price}€</p>
-                <p className='text-left'>
+              <div>
+              <p className='mt-5 text-gray-700'>Author : {data.author}</p> 
+              
+               <p className='text-left text-gray-700'>
                   Released :{' '}
                   {data.releaseDate
                     ? MDate(
@@ -71,11 +72,19 @@ const Book = () => {
                       )
                     : ''}
                 </p>
-              </div>
+               
+                <p className='text-left text-gray-700'>Price : {data.price}€</p>
+                </div>
             </div>
-            <div className='mx-auto col-span-1 text-center self-center'>
-              <strong className='text-xl my-2'>Description </strong>
-              <p className='text-left'>{data.description}</p>
+            <div className='mx-auto col-span-1 text-center'>
+             
+              <div className='p-2  border-none'>
+                <h2 className='text-center text-2xl font-semibold'> {data.title} </h2>
+                <br />
+                
+              
+              </div> 
+              <p className='text-left'>{data.description}</p> 
             </div>
           </div>
           <div className='flex justify-around items-center mt-10'>
@@ -91,6 +100,7 @@ const Book = () => {
               Add To Cart
             </button>
           </div>
+        </div>
         </div>
       </>
     );

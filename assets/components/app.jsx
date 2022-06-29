@@ -53,35 +53,31 @@ const App = () => {
   const deleteBook = (book, cartList) => {
     setCartList(cartList.filter((item) => item.id !== book));
   };
-
-  if (showCart) {
-    return (
-      <div className='w-10/12 mx-auto'>
-        <Cart
-          deleteBook={deleteBook}
-          cartList={cartList}
-          showCart={setShowCart}
-          onAdd={onAdd}
-          onRemove={onRemove}
-          setCartList={setCartList}></Cart>
-      </div>
-    );
-  }
-
+  console.log(showCart);
   return (
     <>
       <div className='xl:w-10/12 w-11/12 mx-auto'>
         <Header show={setShowCart} cartList={cartList} />
-        <div className='flex flex-col md:grid md:grid-cols-3 md:gap-3  mx-auto '>
+        <div className='flex flex-col lg:grid lg:grid-cols-4 md:gap-3  mx-auto '>
           <div className='md:col-span-1'>
             <Cats select={selectCat} />
           </div>
-          <div className='md:col-span-2 flex flex-col'>
+          <div className='md:col-span-3 flex flex-col'>
             <SubCats catParent={catParent} select={selectBooks} />
             <Books catBooks={catBooks} onAdd={onAdd} />
           </div>
         </div>
-      </div>
+          
+          <Cart
+            deleteBook={deleteBook}
+            cartList={cartList}
+            setShowCart={setShowCart}
+            showCart={showCart}
+            onAdd={onAdd}
+            onRemove={onRemove}
+            setCartList={setCartList}></Cart>
+        </div>
+     
     </>
   );
 };

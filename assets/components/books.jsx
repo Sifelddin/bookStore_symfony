@@ -12,6 +12,7 @@ export const Books = ({ catBooks, onAdd }) => {
 
   useEffect(() => {
     if (catBooks) {
+      setBooks({LoadBooks: true, data})
       axios
         .get(`/api/books?page=1&category=${catBooks.id}&published=true`)
         .then((res) => setBooks({ LoadBooks: false, data: res.data }))
@@ -44,6 +45,7 @@ export const Books = ({ catBooks, onAdd }) => {
       </div>
     );
   } else {
+    console.log(data);
     let catsClasses = 'p-2 m-2';
     if (data['hydra:totalItems'] > 5) {
       catsClasses += ' border-b-2';

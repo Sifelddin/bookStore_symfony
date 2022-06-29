@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 
 import { TiDeleteOutline } from 'react-icons/ti';
 
-export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook }) => {
+export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowCart }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(5);
 
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentList = cartList.slice(indexOfFirstBook, indexOfLastBook);
+
+  console.log(indexOfLastBook , 'indexOfLastBook');
+  console.log(indexOfFirstBook , 'indexOfFirstBook');;
 
   const globalTotal = cartList.reduce(
     (a, c) => a + c.qty * c.price * (1 + 10 / 100),
@@ -17,22 +20,26 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook }) => {
   const bookTotal = (book) => book.qty * book.price * (1 + 10 / 100);
   const taxTotal = (book) => (book.qty * book.price * 10) / 100;
 
+  let bg = 'fixed top-0 right-0 left-0 bottom-0 h-screen w-screen bg-gray-700/75 transition-all ease-in-out duration-300'
+  let cartClasses = 'bg-white sm:rounded-lg p-6 z-50 w-5/6 lg:w-4/6 transtion-all duration-500 mx-auto';
+    console.log(showCart);
+  showCart ? (bg += " z-20" ,cartClasses += ' translate-y-20') : (bg += " -z-20" , cartClasses += ' transtale-y-0')
+  
+
+
   return (
-    <div className='py-12 col-span-4 self-center'>
-      <div className='max-w-7xl mx-auto sm:px-6 lg:px-8'>
-        <div className='bg-white overflow-hidden shadow-sm sm:rounded-lg'>
+    <div onClick={(e) => { setShowCart(false) ; e.stopPropagation() }} className={bg}>
+        <div onClick={(e) => { e.stopPropagation()}} className={cartClasses}>
           <div className='flex flex-col'>
-            <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
-              <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-                <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
+                <div className=' sm:rounded-lg z-50'>
                   {cartList.length == 0 && (
                     <h1 className='text-center text-xl'>
                       {' '}
                       shopping cart is empty{' '}
                     </h1>
                   )}
-                  {cartList.length > 0 && (
-                    <table className='w-full divide-y divide-gray-200'>
+                  {cartList.length > 0 && ( <>
+                    <table className='w-full divide-y divide-gray-200 opacity-100 z-50'>
                       <thead className='bg-gray-50'>
                         <tr>
                           <th
@@ -111,18 +118,21 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook }) => {
                             </tr>
                           );
                         })}
-                        <tr className='flex justify-between items-center w-full my-2'>
-                          <th scope='row' className='uppercase text-lg w-full'>
-                            Total :
-                          </th>
-                          <td className=' py-2 my-2 text-xl'>
-                            {globalTotal.toFixed(2)}€
-                          </td>
-                        </tr>
                       </tbody>
                     </table>
+                    <div className='mt-4 px-5 border-t-2 border-gray-200 flex justify-between items-center' >
+                    
+                          <span scope='row' className='uppercase text-lg w-full'>
+                            Total :
+                          </span>
+                          <span className=' py-2 my-2 text-xl'>
+                            {globalTotal.toFixed(2)}€
+                          </span>
+                      
+                      </div>
+                      </>
                   )}
-                  <div className='flex justify-around m-2 p-2 '>
+                  <div className='flex justify-around '>
                     {cartList[indexOfFirstBook - 1] && (
                       <button
                         className='bg-blue-500 text-white rounded-md p-2'
@@ -131,7 +141,7 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook }) => {
                         {'<<'} previous{' '}
                       </button>
                     )}
-                    {cartList[indexOfLastBook - 1] && (
+                    {cartList[indexOfLastBook] && (
                       <button
                         className='bg-blue-500 text-white rounded-md p-2'
                         onClick={() => setCurrentPage(currentPage + 1)}>
@@ -149,15 +159,12 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook }) => {
                   </button>
                 )}
                 <button
-                  onClick={() => showCart(false)}
+                  onClick={(e) =>{ e.stopPropagation(); setShowCart(false)}}
                   className='flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
                   back to list
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

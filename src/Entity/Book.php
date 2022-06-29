@@ -25,8 +25,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         ]]
     ),
 ]
-#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
-#[ApiFilter(SearchFilter::class, properties: ['slug' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'slug' => 'exact'])]
+
 class Book
 {
 
