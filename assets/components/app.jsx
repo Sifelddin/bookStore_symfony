@@ -67,17 +67,16 @@ const App = () => {
             <Books catBooks={catBooks} onAdd={onAdd} />
           </div>
         </div>
-          
-          <Cart
-            deleteBook={deleteBook}
-            cartList={cartList}
-            setShowCart={setShowCart}
-            showCart={showCart}
-            onAdd={onAdd}
-            onRemove={onRemove}
-            setCartList={setCartList}></Cart>
-        </div>
-     
+
+        <Cart
+          deleteBook={deleteBook}
+          cartList={cartList}
+          setShowCart={setShowCart}
+          showCart={showCart}
+          onAdd={onAdd}
+          onRemove={onRemove}
+          setCartList={setCartList}></Cart>
+      </div>
     </>
   );
 };

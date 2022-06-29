@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 
 const Summary = () => {
@@ -12,29 +12,31 @@ const Summary = () => {
     location.assign('/');
   }
 
+  const register = () => setSend(confirm('you confirm you registration ?'));
+
+
   useEffect(() => {
-    if (order) {
-      if (send) {
-        axios
-          .post('https://localhost:8000/api/orders', order)
-          .then((res) => {
-            books.map((book) => {
-              axios
-                .post('https://localhost:8000/api/book_orders', {
-                  quantity: book.qty,
-                  unitPrice: book.price,
-                  book: book['@id'],
-                  order: res.data['@id'],
-                })
-                .then((res) => console.log(res.data))
-                .catch((err) => console.log(err));
-            });
-            localStorage.removeItem('ORDER');
-            localStorage.removeItem('SHOPPING-CART');
-            // location.assign('/')
-          })
-          .catch((err) => console.log(err));
-      }
+    if (send) {
+      axios
+        .post('https://localhost:8000/api/orders', order)
+        .then((res) => {
+          books.map((book) => {
+            axios
+              .post('https://localhost:8000/api/book_orders', {
+                quantity: book.qty,
+                unitPrice: book.price,
+                book: book['@id'],
+                order: res.data['@id'],
+              })
+              .then((res) => console.log(res.data))
+              .catch((err) => console.log(err));
+          });
+          localStorage.removeItem('ORDER');
+          localStorage.removeItem('SHOPPING-CART');
+          alert('your order has been registered');
+          location.assign('/');
+        })
+        .catch((err) => console.log(err));
     }
   }, [send]);
 
@@ -43,8 +45,6 @@ const Summary = () => {
 
   const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
   const order = JSON.parse(localStorage.getItem('ORDER'));
-
-  console.log(books, { order });
 
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
@@ -191,7 +191,7 @@ const Summary = () => {
                   {'<<'} previous{' '}
                 </button>
               )}
-              {books[indexOfLastBook - 1] && (
+              {books[indexOfLastBook] && (
                 <button
                   className='bg-blue-500 text-white rounded-md p-2'
                   onClick={() => setCurrentPage(currentPage + 1)}>
@@ -226,7 +226,7 @@ const Summary = () => {
               </tfoot>
             </table>
             <button
-              onClick={() => setSend(true)}
+              onClick={() => register()}
               className='flex justify-center items-center px-4 py-2 mt-4 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-800  focus:outline-none  focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 w-full'>
               Place Order
             </button>
