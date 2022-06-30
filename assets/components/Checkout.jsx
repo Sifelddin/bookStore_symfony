@@ -5,10 +5,9 @@ import { Link } from 'react-router-dom';
 
 const Checkout = () => {
   const localStorageOrder = localStorage.getItem('ORDER');
-  console.log(localStorageOrder);
-
+ 
   const [user, setUser] = useState(null);
-  console.log(user);
+ 
   useEffect(() => {
     axios
       .get('api/me')
@@ -22,14 +21,14 @@ const Checkout = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    console.log(data);
+    data.isPrivate = user.private
+    data.coef = user.Coef 
+    data.userClient = user['@id']
     localStorage.setItem('ORDER', JSON.stringify(data));
     location.assign('/placeorder');
   };
 
   // functions contain some validation rules
-  const userClient = (userClient) => userClient == user['@id'];
-  const userCoef = (coef) => coef == user.Coef;
   const exactZipCode = (zipCode) => {
     const regExp = /^[0-9]{5}$/;
     return regExp.test(zipCode);
@@ -67,45 +66,7 @@ const Checkout = () => {
               {user.firstname + ' ' + user.lastname}
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className='mt-1 relative rounded-md shadow-sm'>
-                <input
-                  type='hidden'
-                  defaultValue={user['@id']}
-                  {...register('userClient', {
-                    required: true,
-                    validate: userClient,
-                  })}
-                />
-                {errors.userClient && errors.userClient.type === 'validate' && (
-                  <span className='text-red-600 text-sm'>
-                    please don't change the value of this feild{' '}
-                  </span>
-                )}
-                {errors.userClient && errors.userClient.type === 'required' && (
-                  <span className='text-red-600 text-sm'>
-                    {' '}
-                    this field is required
-                  </span>
-                )}
-              </div>
-              <div className='mt-1 relative rounded-md shadow-sm'>
-                <input
-                  type='hidden'
-                  defaultValue={user.Coef}
-                  {...register('coef', { required: true, validate: userCoef })}
-                />
-                {errors.coef && errors.coef.type === 'validate' && (
-                  <span className='text-red-600 text-sm'>
-                    please don't change the value of this feild{' '}
-                  </span>
-                )}
-                {errors.coef && errors.coef.type === 'required' && (
-                  <span className='text-red-600 text-sm'>
-                    {' '}
-                    this field is required
-                  </span>
-                )}
-              </div>
+          
               <div className='mx-auto sm:grid sm:grid-cols-2 sm:gap-10  items-center'>
                 <div className='col-span-1 '>
                   <div className='w-full'>

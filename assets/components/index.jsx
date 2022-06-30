@@ -6,6 +6,8 @@ import App from './app';
 import Checkout from './Checkout';
 import Summary from './Summary';
 import Book from './Book';
+import Payment from './Payment';
+
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
@@ -17,6 +19,7 @@ root.render(
       <Route path='/shipping' element={<Checkout />} />
       <Route path='/placeorder' element={<Summary />} />
       <Route path='/book/:slug/:id' element={<Book />} />
+      <Route path='/payment' element={<Payment />} />
     </Routes>
   </BrowserRouter>,
 );

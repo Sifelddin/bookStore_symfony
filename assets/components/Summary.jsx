@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 const Summary = () => {
   const [send, setSend] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [booksPerPage, setBooksPerPage] = useState(5);
 
   if (
     localStorage.getItem('SHOPPING-CART') === null ||
@@ -12,11 +14,16 @@ const Summary = () => {
     location.assign('/');
   }
 
-  const register = () => setSend(confirm('you confirm you registration ?'));
-
-
+  const register = () => {
+    if(order.isPrivate){
+      location.assign('/payment')
+    }else{
+      setSend(confirm('you confirm you registration ?'))
+    }
+  };
   useEffect(() => {
     if (send) {
+
       axios
         .post('https://localhost:8000/api/orders', order)
         .then((res) => {
@@ -40,8 +47,6 @@ const Summary = () => {
     }
   }, [send]);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [booksPerPage, setBooksPerPage] = useState(5);
 
   const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
   const order = JSON.parse(localStorage.getItem('ORDER'));

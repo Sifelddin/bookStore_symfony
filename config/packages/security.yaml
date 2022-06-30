@@ -41,6 +41,7 @@ security:
          - { path: ^/checkout, roles: ROLE_USER }
          - { path: ^/shipping, roles: ROLE_USER }
          - { path: ^/placeorder, roles: ROLE_USER }
+         - { path: ^/payment, roles: ROLE_USER }
 
 when@test:
     security:
