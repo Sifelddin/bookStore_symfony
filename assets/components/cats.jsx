@@ -49,7 +49,7 @@ export const Cats = ({ select }) => {
       </div>
     );
   } else {
-    let catsClasses = 'mt-2 p-2 w-full';
+    let catsClasses = 'mt-2 p-2 w-full lg:block grid grid-cols-4';
     if (data['hydra:totalItems'] > 8) {
       catsClasses += ' border-b-2';
     }

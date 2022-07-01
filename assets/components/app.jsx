@@ -4,6 +4,7 @@ import { SubCats } from './subCats';
 import { Books } from './books';
 import Header from './header';
 import { Cart } from './cart';
+import {Link } from 'react-router-dom';
 
 const App = () => {
   const [catParent, setCatParent] = useState(null);
@@ -16,12 +17,12 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList));
     JSON.parse(localStorage.getItem('SHOPPING-CART')).length > 0 ||
-      localStorage.removeItem('SHOPPING-CART');
+      (localStorage.removeItem('SHOPPING-CART'), localStorage.removeItem('ORDER'));
   }, [cartList]);
 
-  const selectCat = (e) => {
-    setCatParent(e), setCatBooks(null);
-  };
+  const selectCat = (e) => {setCatParent(e); setCatBooks(null)};
+    
+  
 
   const selectBooks = (e) => setCatBooks(e);
 
@@ -53,11 +54,32 @@ const App = () => {
   const deleteBook = (book, cartList) => {
     setCartList(cartList.filter((item) => item.id !== book));
   };
-  console.log(showCart);
+
+  const localStorageOrder = localStorage.getItem('ORDER');
+  const localStorageCart = localStorage.getItem('SHOPPING-CART');
+
   return (
     <>
       <div className='xl:w-10/12 w-11/12 mx-auto'>
         <Header show={setShowCart} cartList={cartList} />
+        <div>
+          {localStorageCart && (
+            <Link
+              to={'/shipping'}
+              className='underline text-gray-700 hover:text-black mx-2 p-1'>
+              {' '}
+              shipping{'>>'}
+            </Link>
+          )}
+          {localStorageOrder && (
+            <Link
+              to={'/placeorder'}
+              className='underline text-gray-700 hover:text-black mx-2 p-1'>
+              {' '}
+              placeorder{'>>'}
+            </Link>
+          )}
+        </div>
         <div className='flex flex-col lg:grid lg:grid-cols-4 md:gap-3  mx-auto '>
           <div className='md:col-span-1'>
             <Cats select={selectCat} />

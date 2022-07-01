@@ -56,9 +56,9 @@ export const SubCats = ({ catParent, select }) => {
 
   if (!catParent) {
     return (
-      <div className='h-20 w-full flex justify-center items-center text-lg uppercase'>
+      <div className=' w-full flex justify-center items-center text-lg uppercase'>
         {' '}
-        <p>recently published books in the list below</p>
+        <h1 className=' text-xl'>recently published books in the list below</h1>
       </div>
     );
   }

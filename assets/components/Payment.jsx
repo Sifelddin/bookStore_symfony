@@ -1,6 +1,7 @@
 import React,{useState,useEffect}from 'react'
 import { useForm , Controller } from 'react-hook-form';
 import Cleave from 'cleave.js/react';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -80,8 +81,15 @@ const Payment = () => {
       'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md';
       const labelClasses = 'block text-md m-1 text-gray-700';
   return (
-    <div className='w-full flex justify-center items-center'>
-        <div className='bg-white mt-40 p-6 shadow-md rounded-md'>
+    <div className='w-full flex flex-col justify-center items-center'>
+      <div className='mt-40'>
+         <div className='p-1 mb-1  flex justify-start w-full'>
+          <Link to='/'><span className='underline text-gray-700 hover:text-black mx-2 p-1'>{"<<"}store</span></Link> 
+          <Link to='/shipping'><span className='underline text-gray-700 hover:text-black mx-2 p-1'>{"<<"}shipping</span></Link>
+          <Link to='/placeorder'><span className='underline text-gray-700 hover:text-black mx-2 p-1'>{"<<"}summary</span></Link>
+          </div>
+        <div className='bg-white p-6 shadow-md rounded-md '>
+       
             <h1 className='text-xl text-center'>Confirm Purchase</h1>
             <div className='m-2 p-2'>
             <form onSubmit={handleSubmit(onSubmit)}> 
@@ -171,6 +179,7 @@ const Payment = () => {
             </form>
             </div>
         </div>
+    </div>
     </div>
   )
 }

@@ -63,13 +63,13 @@ const Summary = () => {
       <div className='md:w-4/5 py-2 my-2'>
         <Link
           to={'/'}
-          className='underline text-gray-700 hover:text-black mx-2 p-1 uppercase'>
+          className='underline text-gray-700 hover:text-black mx-2 p-1'>
           {' '}
-          {'<<'}Store{' '}
+          {'<<'}store{' '}
         </Link>
         <Link
           to={'/shipping'}
-          className='underline text-gray-700 hover:text-black uppercase'>
+          className='underline text-gray-700 hover:text-black mx-2 p-1'>
           {'<<'}shipping{' '}
         </Link>
         <span></span>

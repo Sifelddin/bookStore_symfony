@@ -49,15 +49,15 @@ const Checkout = () => {
           <div className='flex justify-start flex-start xl:w-3/5 md:w-4/5'>
             <Link
               to={'/'}
-              className='underline text-gray-700 hover:text-black mx-2 p-1 uppercase'>
+              className='underline text-gray-700 hover:text-black mx-2 p-1 '>
               {' '}
-              {'<<'}Store
+              {'<<'}store
             </Link>
             {localStorageOrder && (
               <Link
                 to={'/placeorder'}
-                className='underline text-gray-700 hover:text-black mx-2 p-1 uppercase'>
-                Place Order{'>>'}
+                className='underline text-gray-700 hover:text-black mx-2 p-1 '>
+                summary{'>>'}
               </Link>
             )}
           </div>
