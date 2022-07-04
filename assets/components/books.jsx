@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import fetchData, { onAdd } from './hooks';
@@ -6,31 +5,32 @@ import Pagination from './Pagination';
 import Spinner from './Spinner';
 
 export const Books = ({ catBooks, cartList, setCartList }) => {
-
   const [books, setBooks] = useState({ loading: true, data });
   const [pageUrl, setPageUrl] = useState(null);
 
   useEffect(() => {
     setBooks({ loading: true, data });
     if (catBooks) {
-        fetchData(`/api/books?page=1&category=${catBooks.id}&published=true`,setBooks)
+      fetchData(
+        `/api/books?page=1&category=${catBooks.id}&published=true`,
+        setBooks,
+      );
     } else {
-       fetchData(`api/books?page=1&published=true`,setBooks)
+      fetchData(`api/books?page=1&published=true`, setBooks);
     }
   }, [catBooks]);
 
   useEffect(() => {
     setBooks({ loading: true, data });
     if (pageUrl) {
-        fetchData(pageUrl,setBooks)
+      fetchData(pageUrl, setBooks);
     }
   }, [pageUrl]);
-
 
   const { loading, data } = books;
 
   if (loading) {
-    return (<Spinner />);
+    return <Spinner />;
   } else {
     let catsClasses = 'p-2 m-2';
     if (data['hydra:totalItems'] > 5) {
@@ -40,7 +40,7 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
     return (
       <div className=' bg-orange-50 my-2 pt-2 shadow-md rounded-md'>
         {catBooks && (
-          <span className='uppercase text-gray-500 p-4'>
+          <span className='uppercase text-gray-500 p-4 text-sm sm:text-base'>
             total books of {catBooks.name} category :{' '}
             <strong>{data['hydra:totalItems']}</strong>
           </span>
@@ -52,7 +52,7 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
                 className='flex items-center m-1 p-1 md:p-3 md:m-3 bg-white rounded-md shadow-sm hover:shadow-md hover:shadow-blue-200 transition-all duration-300'
                 key={book.id}>
                 <div className='mr-2 w-24 h-auto block'>
-                  <Link to={`book/${book.slug}/${book.id}`} >
+                  <Link to={`book/${book.slug}/${book.id}`}>
                     <img
                       className='cursor-pointer w-20 md:w-24 h-auto'
                       src={'uploads/images/' + book.photo}
@@ -67,10 +67,15 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
                       {book.title}
                     </Link>
                   </h3>
-                  <span className='text-sm md:text-lg text-red-400'>{book.price}€</span>
-                  <p className='text-gray-700 text-sm md:text-base'> Author : {book.author}</p>
+                  <span className='text-sm md:text-lg text-red-400'>
+                    {book.price}€
+                  </span>
+                  <p className='text-gray-700 text-sm md:text-base'>
+                    {' '}
+                    Author : {book.author}
+                  </p>
                   <button
-                    onClick={() => onAdd(book,setCartList,cartList)}
+                    onClick={() => onAdd(book, setCartList, cartList)}
                     className=' flex justify-center items-center px-2 py-1 mt-2 bg-green-400 border border-transparent rounded-md font-normal md:font-semibold text-sm text-white uppercase md:tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
                     Add To Cart
                   </button>
@@ -79,7 +84,7 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
             );
           })}
         </div>
-       <Pagination data={data} setPageUrl={setPageUrl}  />
+        <Pagination data={data} setPageUrl={setPageUrl} />
       </div>
     );
   }

@@ -1,16 +1,16 @@
-
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import fetchData from './hooks';
+import Spinner from './Spinner';
 
 const Checkout = () => {
   const localStorageOrder = localStorage.getItem('ORDER');
- 
-  const [user, setUser] = useState(null);
- 
+
+  const [user, setUser] = useState({ loading: true, data });
+
   useEffect(() => {
-     fetchData('api/me',setUser)
+    fetchData('api/me', setUser);
   }, []);
 
   const {
@@ -19,9 +19,9 @@ const Checkout = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    data.isPrivate = user.private
-    data.coef = user.Coef 
-    data.userClient = user['@id']
+    data.isPrivate = user.private;
+    data.coef = user.Coef;
+    data.userClient = user['@id'];
     localStorage.setItem('ORDER', JSON.stringify(data));
     location.assign('/placeorder');
   };
@@ -40,9 +40,13 @@ const Checkout = () => {
     'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md';
   const labelClasses = 'block text-md font-medium text-gray-700';
 
-  return (
-    <>
-      {user && (
+  const { loading, data } = user;
+
+  if (loading) {
+    return <Spinner />;
+  } else {
+    return (
+      <>
         <div className=' h-screen w-full flex flex-col justify-center items-center'>
           <div className='flex justify-start flex-start xl:w-3/5 md:w-4/5'>
             <Link
@@ -60,15 +64,14 @@ const Checkout = () => {
             )}
           </div>
           <div className=' xl:w-3/5 md:w-4/5 p-3 bg-white rounded-md shadow-md'>
-            <h2 className='text-2xl uppercase my-3 border-b-gray-200 border-solid border-b-2'>
-              {user.firstname + ' ' + user.lastname}
+            <h2 className='text-lg sm:text-2xl uppercase my-3 border-b-gray-200 border-solid border-b-2'>
+              {data.firstname + ' ' + data.lastname}
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-          
               <div className='mx-auto sm:grid sm:grid-cols-2 sm:gap-10  items-center'>
                 <div className='col-span-1 '>
                   <div className='w-full'>
-                    <h2 className='uppercase text-xl text-center m-2 text-gray-600'>
+                    <h2 className='uppercase text-base sm:text-xl text-center m-2 text-gray-600'>
                       Shipping Address
                     </h2>
                   </div>
@@ -80,7 +83,7 @@ const Checkout = () => {
                       type='text'
                       id='shipAddress'
                       className={inputClasses}
-                      defaultValue={user.address}
+                      defaultValue={data.address}
                       {...register('shipAddress', {
                         required: true,
                         minLength: 5,
@@ -114,7 +117,7 @@ const Checkout = () => {
                       type='text'
                       id='shipCity'
                       className={inputClasses}
-                      defaultValue={user.city}
+                      defaultValue={data.city}
                       {...register('shipCity', {
                         required: true,
                         minLength: 3,
@@ -153,7 +156,7 @@ const Checkout = () => {
                       type='text'
                       id='shipZipCode'
                       className={inputClasses}
-                      defaultValue={user.zipCode}
+                      defaultValue={data.zipCode}
                       {...register('shipZipCode', {
                         required: true,
                         validate: exactZipCode,
@@ -175,7 +178,7 @@ const Checkout = () => {
                 </div>
                 <div className='col-span-1 '>
                   <div className='w-full'>
-                    <h2 className='text-xl text-center uppercase m-2 text-gray-600'>
+                    <h2 className='text-base sm:text-xl text-center uppercase m-2 text-gray-600'>
                       Billing Address
                     </h2>
                   </div>
@@ -187,7 +190,7 @@ const Checkout = () => {
                       type='text'
                       id='shipAddress'
                       className={inputClasses}
-                      defaultValue={user.address}
+                      defaultValue={data.address}
                       {...register('billAddress', {
                         required: true,
                         minLength: 5,
@@ -221,7 +224,7 @@ const Checkout = () => {
                       type='text'
                       id='shipCity'
                       className={inputClasses}
-                      defaultValue={user.city}
+                      defaultValue={data.city}
                       {...register('billCity', {
                         required: true,
                         minLength: 3,
@@ -261,7 +264,7 @@ const Checkout = () => {
                       name='billZipCode'
                       id='billZipCode'
                       className={inputClasses}
-                      defaultValue={user.zipCode}
+                      defaultValue={data.zipCode}
                       {...register('billZipCode', {
                         required: true,
                         validate: exactZipCode,
@@ -283,7 +286,7 @@ const Checkout = () => {
                 </div>
               </div>
               <div>
-                {user.private || (
+                {data.private || (
                   <div className='mt-6'>
                     {' '}
                     <h2 className='text-xl text-center text-gray-600 uppercase mt-2'>
@@ -328,9 +331,9 @@ const Checkout = () => {
             </form>
           </div>
         </div>
-      )}
-    </>
-  );
+      </>
+    );
+  }
 };
 
 export default Checkout;
