@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { onAdd,onRemove,deleteBook } from  './hooks';
 
 import { TiDeleteOutline } from 'react-icons/ti';
 
-export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowCart }) => {
+export const Cart = ({ cartList, showCart ,setShowCart ,setCartList}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(5);
 
@@ -10,8 +11,6 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowC
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentList = cartList.slice(indexOfFirstBook, indexOfLastBook);
 
-  console.log(indexOfLastBook , 'indexOfLastBook');
-  console.log(indexOfFirstBook , 'indexOfFirstBook');;
 
   const globalTotal = cartList.reduce(
     (a, c) => a + c.qty * c.price * (1 + 10 / 100),
@@ -21,9 +20,9 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowC
   const taxTotal = (book) => (book.qty * book.price * 10) / 100;
 
   let bg = 'fixed top-0 right-0 left-0 bottom-0 h-screen w-screen bg-gray-700/75 transition-all ease-in-out duration-300'
-  let cartClasses = 'bg-white sm:rounded-lg p-6 z-50 w-5/6 lg:w-4/6 transtion-all duration-500 mx-auto';
-    console.log(showCart);
-  showCart ? (bg += " z-20" ,cartClasses += ' translate-y-20') : (bg += " -z-20" , cartClasses += ' transtale-y-0')
+  let cartClasses = 'bg-white sm:rounded-lg p-3 md:p-6 z-50 w-11/12 md:w-5/6 lg:w-4/6 transtion-all duration-500 mx-auto';
+
+  showCart ? (bg += " z-20" ,cartClasses += ' translate-y-10') : (bg += " -z-20" , cartClasses += ' transtale-y-0')
   
 
 
@@ -31,7 +30,7 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowC
     <div onClick={(e) => { setShowCart(false) ; e.stopPropagation() }} className={bg}>
         <div onClick={(e) => { e.stopPropagation()}} className={cartClasses}>
           <div className='flex flex-col'>
-                <div className=' sm:rounded-lg z-50'>
+                <div className=' sm:rounded-lg z-50 '>
                   {cartList.length == 0 && (
                     <h1 className='text-center text-xl'>
                       {' '}
@@ -44,7 +43,7 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowC
                         <tr>
                           <th
                             scope='col'
-                            className='px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                            className=' hidden md:block px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                             Book
                           </th>
                           <th
@@ -83,35 +82,35 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowC
                         {currentList.map((book) => {
                           return (
                             <tr key={book.id}>
-                              <td className='px-4 py-4 whitespace-nowrap inline-block h-28 w-28  rounded-full ring-2 ring-white '>
+                              <td className=' hidden  px-4 py-4 whitespace-nowrap md:inline-block h-28 w-28  rounded-full ring-2 ring-white '>
                                 <img
                                   className=' border-white h-full object-cover'
                                   src={'uploads/images/' + book.photo}
                                 />
                               </td>
-                              <td className='px-2 py-2'>{book.title}</td>
-                              <td className='px-2 py-2'>{book.price}€</td>
-                              <td className='px-2 py-2'>{book.qty}</td>
-                              <td className='px-2 py-2'>
+                              <td className='px-2 py-2 text-sm sm:text-base'>{book.title}</td>
+                              <td className='px-2 py-2 text-sm sm:text-base'>{book.price}€</td>
+                              <td className='px-2 py-2 text-sm sm:text-base'>{book.qty}</td>
+                              <td className='px-2 py-2 text-sm sm:text-base'>
                                 {bookTotal(book).toFixed(2)}€
                               </td>
-                              <td className='px-2 py-2'>
+                              <td className='px-2 py-2 text-sm sm:text-base'>
                                 {taxTotal(book).toFixed(2)}€
                               </td>
                               <td className='px-2 py-2 flex justify-around items-center'>
                                 <button
-                                  onClick={() => onAdd(book)}
-                                  className='px-3 py-1  bg-green-700 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-green-900 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 text-lg'>
+                                  onClick={() => onAdd(book,setCartList,cartList)}
+                                  className='px-3 py-1  bg-green-700 border border-transparent rounded-md font-semibold text-white hover:bg-green-900 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 text-sm sm:text-md'>
                                   +
                                 </button>{' '}
                                 <button
-                                  onClick={() => onRemove(book)}
-                                  className=' px-3 py-1 bg-red-700 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-red-900 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 text-lg'>
+                                  onClick={() => onRemove(book,setCartList,cartList)}
+                                  className=' px-3 py-1 bg-orange-700 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-orange-900 active:bg-orange-900 focus:outline-none focus:border-orange-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 text-sm sm:text-md'>
                                   -
                                 </button>
                                 <span
-                                  onClick={() => deleteBook(book.id, cartList)}
-                                  className='text-3xl cursor-pointer text-red-500 hover:text-red-700 mx-4'>
+                                  onClick={() => deleteBook(book.id,setCartList, cartList)}
+                                  className='text-3xl cursor-pointer text-red-500 hover:text-red-700 mx-1 '>
                                   <TiDeleteOutline></TiDeleteOutline>
                                 </span>
                               </td>
@@ -122,10 +121,10 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowC
                     </table>
                     <div className='mt-4 px-5 border-t-2 border-gray-200 flex justify-between items-center' >
                     
-                          <span scope='row' className='uppercase text-lg w-full'>
+                          <span scope='row' className='uppercase w-full text-md sm:text-lg'>
                             Total :
                           </span>
-                          <span className=' py-2 my-2 text-xl'>
+                          <span className=' py-2 my-2 text-md sm:text-lg'>
                             {globalTotal.toFixed(2)}€
                           </span>
                       
@@ -154,13 +153,13 @@ export const Cart = ({ cartList, showCart, onAdd, onRemove, deleteBook ,setShowC
 
               <div className='p-4 flex justify-around items-center border-gray-200'>
                 {cartList.length > 0 && (
-                  <button className='flex  justify-center items-center px-2 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'>
+                  <button className='flex  justify-center items-center px-2 py-1 md:px-4 md:py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'>
                     <a href='/shipping'> Shipping</a>{' '}
                   </button>
                 )}
                 <button
                   onClick={(e) =>{ e.stopPropagation(); setShowCart(false)}}
-                  className='flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+                  className='flex justify-center items-center px-2 py-1 sm:px-4 sm:py-2  bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
                   back to list
                 </button>
               </div>

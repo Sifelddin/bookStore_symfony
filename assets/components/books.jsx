@@ -1,55 +1,42 @@
-import axios from 'axios';
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import fetchData, { onAdd } from './hooks';
+import Pagination from './Pagination';
 import Spinner from './Spinner';
 
-export const Books = ({ catBooks, onAdd }) => {
-  const [books, setBooks] = useState({ LoadBooks: true, data });
+export const Books = ({ catBooks, cartList, setCartList }) => {
+
+  const [books, setBooks] = useState({ loading: true, data });
   const [pageUrl, setPageUrl] = useState(null);
 
-  const getUrlPerPage = (hydraView) =>
-    setPageUrl(data['hydra:view'][hydraView]);
-
   useEffect(() => {
-    setBooks({ LoadBooks: true, data });
+    setBooks({ loading: true, data });
     if (catBooks) {
-      axios
-        .get(`/api/books?page=1&category=${catBooks.id}&published=true`)
-        .then((res) => setBooks({ LoadBooks: false, data: res.data }))
-        .catch((err) => console.log(err));
+        fetchData(`/api/books?page=1&category=${catBooks.id}&published=true`,setBooks)
     } else {
-      axios
-        .get(`api/books?page=1&published=true`)
-        .then((res) => setBooks({ LoadBooks: false, data: res.data }))
-        .catch((err) => console.log(err));
+       fetchData(`api/books?page=1&published=true`,setBooks)
     }
   }, [catBooks]);
 
   useEffect(() => {
-    setBooks({ LoadBooks: true, data });
+    setBooks({ loading: true, data });
     if (pageUrl) {
-      axios
-        .get(pageUrl)
-        .then((res) => setBooks({ LoadBooks: false, data: res.data }))
-        .catch((err) => console.log(err));
+        fetchData(pageUrl,setBooks)
     }
   }, [pageUrl]);
 
-  const btnClasses =
-    'flex justify-center items-center px-2 py-1 cursor-pointer border border-transparent rounded-md font-medium text-sm text-gray-600 tracking-widest hover:underline active:text-gray-800  disabled:opacity-25 transition ease-in-out duration-150';
-  const { LoadBooks, data } = books;
 
-  if (LoadBooks) {
-    return (
-      <div className='w-full h-full flex items-center justify-center'>
-        <Spinner />
-      </div>
-    );
+  const { loading, data } = books;
+
+  if (loading) {
+    return (<Spinner />);
   } else {
     let catsClasses = 'p-2 m-2';
     if (data['hydra:totalItems'] > 5) {
       catsClasses += ' border-b-2';
     }
+
     return (
       <div className=' bg-orange-50 my-2 pt-2 shadow-md rounded-md'>
         {catBooks && (
@@ -62,29 +49,29 @@ export const Books = ({ catBooks, onAdd }) => {
           {data['hydra:member'].map((book) => {
             return (
               <div
-                className='flex items-center p-3 m-3 bg-white rounded-md shadow-sm hover:shadow-md hover:shadow-blue-200 transition-all duration-300'
+                className='flex items-center m-1 p-1 md:p-3 md:m-3 bg-white rounded-md shadow-sm hover:shadow-md hover:shadow-blue-200 transition-all duration-300'
                 key={book.id}>
-                <div className='mr-2'>
-                  <Link to={`book/${book.slug}/${book.id}`}>
+                <div className='mr-2 w-24 h-auto block'>
+                  <Link to={`book/${book.slug}/${book.id}`} >
                     <img
-                      className='cursor-pointer w-24 h-auto'
+                      className='cursor-pointer w-20 md:w-24 h-auto'
                       src={'uploads/images/' + book.photo}
                       alt={book.photo}
                     />{' '}
                   </Link>
                 </div>
                 <div className='ml-2'>
-                  <h3 className='text-lg text-blue-500 hover:text-blue-800 duration-150 cursor-pointer'>
+                  <h3 className='text-base md:text-lg text-blue-500 hover:text-blue-800 duration-150 cursor-pointer'>
                     {' '}
                     <Link to={`book/${book.slug}/${book.id}`}>
                       {book.title}
                     </Link>
                   </h3>
-                  <span className='text-lg text-red-400'>{book.price}€</span>
-                  <p className='text-gray-700'> Author : {book.author}</p>
+                  <span className='text-sm md:text-lg text-red-400'>{book.price}€</span>
+                  <p className='text-gray-700 text-sm md:text-base'> Author : {book.author}</p>
                   <button
-                    onClick={() => onAdd(book)}
-                    className=' flex justify-center items-center px-2 py-1 mt-2 bg-green-400 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+                    onClick={() => onAdd(book,setCartList,cartList)}
+                    className=' flex justify-center items-center px-2 py-1 mt-2 bg-green-400 border border-transparent rounded-md font-normal md:font-semibold text-sm text-white uppercase md:tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
                     Add To Cart
                   </button>
                 </div>
@@ -92,34 +79,7 @@ export const Books = ({ catBooks, onAdd }) => {
             );
           })}
         </div>
-        {data['hydra:totalItems'] > 5 && (
-          <div className='w-full flex justify-around'>
-            <span
-              onClick={() => getUrlPerPage('hydra:first')}
-              className={btnClasses}>
-              First Page
-            </span>
-            {data['hydra:view']['hydra:previous'] && (
-              <span
-                onClick={() => getUrlPerPage('hydra:previous')}
-                className={btnClasses}>
-                {'<<'}Prev
-              </span>
-            )}
-            {data['hydra:view']['hydra:next'] && (
-              <span
-                onClick={() => getUrlPerPage('hydra:next')}
-                className={btnClasses}>
-                Next {'>>'}
-              </span>
-            )}
-            <span
-              onClick={() => getUrlPerPage('hydra:last')}
-              className={btnClasses}>
-              Last Page
-            </span>
-          </div>
-        )}
+       <Pagination data={data} setPageUrl={setPageUrl}  />
       </div>
     );
   }

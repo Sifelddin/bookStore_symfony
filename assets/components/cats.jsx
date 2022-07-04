@@ -1,31 +1,22 @@
-import axios from 'axios';
+
 import React, { useState, useEffect, useRef } from 'react';
+import Pagination from './Pagination';
 import Spinner from './Spinner';
+import fetchData from './hooks';
 
 export const Cats = ({ select }) => {
   const [pageUrl, setPageUrl] = useState(
     '/api/categories?exists%5BcatParent%5D=false&exists%5BsubCategories%5D=true&page=1',
   );
-  const [categories, setCategories] = useState({ loadCategories: true, data });
+  const [categories, setCategories] = useState({ loading: true, data });
   const elements = useRef([]);
 
-  console.log('categories render');
+
   useEffect(() => {
-    axios
-      .get(pageUrl)
-      .then((res) => {
-        setCategories({ loadCategories: false, data: res.data });
-      })
-      .catch((e) => console.log(e));
+  fetchData(pageUrl,setCategories)
   }, [pageUrl]);
 
-  const { loadCategories, data } = categories;
-
-  const getUrlPerPage = (hydraView) =>
-    data['hydra:view'][hydraView] && setPageUrl(data['hydra:view'][hydraView]);
-
-  const btnClasses =
-    'flex justify-center items-center px-2 py-1 mt-2 cursor-pointer border border-transparent rounded-md font-medium text-sm text-gray-600 tracking-widest hover:underline active:text-gray-800  disabled:opacity-25 transition ease-in-out duration-150';
+  const { loading, data } = categories;
 
   const addToRefs = (el) => {
     if (el && !elements.current.includes(el)) {
@@ -42,21 +33,19 @@ export const Cats = ({ select }) => {
     });
   };
 
-  if (loadCategories) {
-    return (
-      <div className='w-full h-full flex items-center justify-center'>
-        <Spinner />
-      </div>
-    );
+  if (loading) {
+    return (<Spinner />);
+      
   } else {
-    let catsClasses = 'mt-2 p-2 w-full lg:block grid grid-cols-4';
+    let catsClasses = 'mt-2 p-2 w-full lg:block grid md:grid-cols-4 grid-cols-2 sm:grid-cols-3';
     if (data['hydra:totalItems'] > 8) {
       catsClasses += ' border-b-2';
     }
-
     return (
-      <div className='p-3 bg-orange-50 my-2 shadow-md rounded-md'>
-        <span className='uppercase text-gray-500 pl-4'>
+      <>
+        <h2 className='text-base sm:text-xl text-center uppercase'>Main Categories</h2>
+      <div className='p-1 xl:p-3 md:pt-3 bg-orange-50 my-2 shadow-md rounded-md'>
+        <span className='uppercase text-gray-500 pl-4 text-sm sm:text-base'>
           total categories : <strong>{data['hydra:totalItems']}</strong>
         </span>
         <div className={catsClasses}>
@@ -68,46 +57,20 @@ export const Cats = ({ select }) => {
                 >
                 <img
                   id={cat.id}
-                  className='w-16 h-16 rounded-full m-0 border-4 border-white shadow-md cursor-pointer'
+                  className=' md:block w-14 h-14 xl:w-16 xl:h-16  rounded-full m-0 border-4 border-white shadow-md cursor-pointer'
                   ref={addToRefs}
                   onClick={(e) => {addStyles(e),select(cat)}}
                   src={'uploads/images/' + cat.photo}
                   alt={cat.title}
                 />
-                <h3 className='mx-2'>{cat.name}</h3>
+                <h3 className='mx-2 text-sm xl:text-base'>{cat.name}</h3>
               </div>
             );
           })}
         </div>
-        {data['hydra:totalItems'] > 8 && (
-          <div className='flex justify-around w-full my-2 '>
-            <button
-              onClick={() => getUrlPerPage('hydra:first')}
-              className={btnClasses}>
-              first
-            </button>
-            {data['hydra:view']['hydra:previous'] && (
-              <button
-                onClick={() => getUrlPerPage('hydra:previous')}
-                className={btnClasses}>
-                {'<<'}prev
-              </button>
-            )}
-            {data['hydra:view']['hydra:next'] && (
-              <button
-                onClick={() => getUrlPerPage('hydra:next')}
-                className={btnClasses}>
-                next {'>>'}
-              </button>
-            )}
-            <button
-              onClick={() => getUrlPerPage('hydra:last')}
-              className={btnClasses}>
-              last
-            </button>
-          </div>
-        )}
+        <Pagination data={data} setPageUrl={setPageUrl} />
       </div>
+      </>
     );
   }
 };

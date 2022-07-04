@@ -1,43 +1,29 @@
-import axios from 'axios';
+
 import React, { useState, useEffect, useRef } from 'react';
+import fetchData from './hooks';
+import Pagination from './Pagination';
 import Spinner from './Spinner';
 
-export const SubCats = ({ catParent, select }) => {
+export const SubCats = ({ catParent, setCatBooks }) => {
   const [subCategories, setSubCategories] = useState({
-    loadSubCategories: true,
+    loading: true,
     data,
   });
   const [pageUrl, setPageUrl] = useState(null);
   const elements = useRef([]);
 
-  const getUrlPerPage = (hydraView) =>
-    setPageUrl(data['hydra:view'][hydraView]);
-
   useEffect(() => {
     if (catParent) {
-      axios
-        .get(`api/categories?page=1&catParent.name=${catParent.name}`)
-        .then((res) => {
-          setSubCategories({ loadSubCategories: false, data: res.data });
-        })
-        .catch((err) => console.log(err));
+        fetchData(`api/categories?page=1&catParent.name=${catParent.name}`,setSubCategories)
     }
   }, [catParent]);
   useEffect(() => {
     if (pageUrl) {
-      axios
-        .get(pageUrl)
-        .then((res) =>
-          setSubCategories({ loadSubCategories: false, data: res.data }),
-        )
-        .catch((err) => log.error(err));
+      fetchData(pageUrl,setSubCategories)
     }
   }, [pageUrl]);
 
-  const { loadSubCategories, data } = subCategories;
-
-  const btnClasses =
-    'flex justify-center items-center px-2 py-1 mt-2 cursor-pointer border border-transparent rounded-md font-medium text-sm text-gray-600 tracking-widest hover:underline active:text-gray-800  disabled:opacity-25 transition ease-in-out duration-150';
+  const { loading, data } = subCategories;
 
   const addToRefs = (el) => {
     if (el && !elements.current.includes(el)) {
@@ -58,27 +44,23 @@ export const SubCats = ({ catParent, select }) => {
     return (
       <div className=' w-full flex justify-center items-center text-lg uppercase'>
         {' '}
-        <h1 className=' text-xl'>recently published books in the list below</h1>
+        <h1 className='text-base sm:text-xl'>recently published books in the list below</h1>
       </div>
     );
   }
-  if (loadSubCategories) {
-    return (
-      <div className='w-full h-full flex items-center justify-center'>
-        <Spinner />
-      </div>
-    );
+  if (loading) {
+    return ( <Spinner /> ); 
   } else {
     let catsClasses =
-      'grid xl:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 gap-1 p-4 m-2 w-full';
+      'grid md:grid-cols-4 p-2 mt-2 w-full grid-cols-2 sm:grid-cols-3';
     if (data['hydra:totalItems'] > 8) {
       catsClasses += ' border-b-2';
     }
 
     return (
-      <div className='p-3 bg-orange-50 my-2 shadow-md'>
+      <div className='p-1 md:pt-2 xl:p-3 bg-orange-50 my-2 shadow-md'>
         <div>
-          <span className='uppercase text-gray-500 p-4'>
+          <span className='uppercase text-gray-500 p-4 text-sm sm:text-base'>
             total subCategories of {catParent.name} :{' '}
             <strong>{data['hydra:totalItems']}</strong>
           </span>
@@ -88,50 +70,22 @@ export const SubCats = ({ catParent, select }) => {
                 <div
                   className=' flex items-center cursor-pointer'
                   key={cat.id}
-                  onClick={() => select(cat)}>
+                  onClick={() => setCatBooks(cat)}>
                   <img
                     id={cat.id}
-                    className='w-16 h-16 rounded-full m-0 border-4 border-white '
+                    className='w-14 h-14 2xl:w-16 2xl:h-16 rounded-full m-0 border-4 border-white '
                     ref={addToRefs}
                     onClick={(e) => addStyles(e)}
                     src={'uploads/images/' + cat.photo}
                     alt={cat.title}
                   />
-                  <h3 className='mx-1 text-md'>{cat.name}</h3>
+                  <h3 className='mx-1 text-sm 2xl:text-base'>{cat.name}</h3>
                 </div>
               );
             })}
           </div>
         </div>
-
-        {data['hydra:totalItems'] > 8 && (
-          <div className='w-full flex justify-around'>
-            <button
-              onClick={() => getUrlPerPage('hydra:first')}
-              className={btnClasses}>
-              first
-            </button>
-            {data['hydra:view']['hydra:previous'] && (
-              <button
-                onClick={() => getUrlPerPage('hydra:previous')}
-                className={btnClasses}>
-                {'<<'}prev
-              </button>
-            )}
-            {data['hydra:view']['hydra:next'] && (
-              <button
-                onClick={() => getUrlPerPage('hydra:next')}
-                className={btnClasses}>
-                next {'>>'}
-              </button>
-            )}
-            <button
-              onClick={() => getUrlPerPage('hydra:last')}
-              className={btnClasses}>
-              last
-            </button>
-          </div>
-        )}
+        <Pagination data={data} setPageUrl={setPageUrl}/>
       </div>
     );
   }

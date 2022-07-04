@@ -6,7 +6,10 @@ import Header from './header';
 import { Cart } from './cart';
 import {Link } from 'react-router-dom';
 
+
 const App = () => {
+
+
   const [catParent, setCatParent] = useState(null);
   const [catBooks, setCatBooks] = useState(null);
   const [showCart, setShowCart] = useState(false);
@@ -21,52 +24,19 @@ const App = () => {
   }, [cartList]);
 
   const selectCat = (e) => {setCatParent(e); setCatBooks(null)};
-    
-  
-
-  const selectBooks = (e) => setCatBooks(e);
-
-  const onAdd = (book) => {
-    const exist = cartList.find((item) => item.id === book.id);
-    if (exist) {
-      setCartList(
-        cartList.map((item) =>
-          item.id === book.id ? { ...exist, qty: exist.qty + 1 } : item,
-        ),
-      );
-    } else {
-      setCartList([...cartList, { ...book, qty: 1 }]);
-    }
-  };
-  const onRemove = (book) => {
-    const exist = cartList.find((item) => item.id === book.id);
-    if (exist.qty === 1) {
-      setCartList(cartList.filter((item) => item.id !== book.id));
-    } else {
-      setCartList(
-        cartList.map((item) =>
-          item.id === book.id ? { ...exist, qty: exist.qty - 1 } : item,
-        ),
-      );
-    }
-  };
-
-  const deleteBook = (book, cartList) => {
-    setCartList(cartList.filter((item) => item.id !== book));
-  };
-
+     
   const localStorageOrder = localStorage.getItem('ORDER');
   const localStorageCart = localStorage.getItem('SHOPPING-CART');
 
   return (
     <>
-      <div className='xl:w-10/12 w-11/12 mx-auto'>
+      <div className=' xl:w-10/12 w-11/12 mx-auto'>
         <Header show={setShowCart} cartList={cartList} />
-        <div>
+        <div className='p-2 xl:p-0'>
           {localStorageCart && (
             <Link
               to={'/shipping'}
-              className='underline text-gray-700 hover:text-black mx-2 p-1'>
+              className='underline text-gray-700 hover:text-black mx-2 p-1' >
               {' '}
               shipping{'>>'}
             </Link>
@@ -80,23 +50,20 @@ const App = () => {
             </Link>
           )}
         </div>
-        <div className='flex flex-col lg:grid lg:grid-cols-4 md:gap-3  mx-auto '>
-          <div className='md:col-span-1'>
+        <div className='flex flex-col lg:grid lg:grid-cols-4 lg:gap-2  mx-auto '>
+          <div className='md:col-span-1 order-1 lg:order-3'>
             <Cats select={selectCat} />
           </div>
-          <div className='md:col-span-3 flex flex-col'>
-            <SubCats catParent={catParent} select={selectBooks} />
-            <Books catBooks={catBooks} onAdd={onAdd} />
+          <div className='md:col-span-3 flex flex-col order-2'>
+            <SubCats catParent={catParent} setCatBooks={setCatBooks} />
+            <Books catBooks={catBooks} cartList={cartList} setCartList={setCartList} />
           </div>
         </div>
 
         <Cart
-          deleteBook={deleteBook}
           cartList={cartList}
           setShowCart={setShowCart}
           showCart={showCart}
-          onAdd={onAdd}
-          onRemove={onRemove}
           setCartList={setCartList}></Cart>
       </div>
     </>

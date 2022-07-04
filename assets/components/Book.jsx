@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import MDate from 'mini-date-format';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link ,useParams} from 'react-router-dom';
 import Spinner from './Spinner';
+import fetchData,{onAdd} from './hooks';
+
 
 const Book = () => {
   const { id } = useParams();
-  const [book, setBook] = useState({ loadBook: true, data: null });
+  const [book, setBook] = useState({ loading: true, data: null });
   const [cartList, setCartList] = useState(
     JSON.parse(localStorage.getItem('SHOPPING-CART')) || [],
   );
 
   useEffect(() => {
-    axios
-      .get(`/api/books/${id}`)
-      .then((res) => setBook({ loadBook: false, data: res.data }))
-      .catch((err) => console.log(err));
+      fetchData(`/api/books/${id}`,setBook)
   }, []);
 
   useEffect(() => {
@@ -24,23 +21,9 @@ const Book = () => {
     JSON.parse(localStorage.getItem('SHOPPING-CART')).length > 0 ||
       localStorage.removeItem('SHOPPING-CART');
   }, [cartList]);
-  const { loadBook, data } = book;
+  const { loading, data } = book;
 
-  const onAdd = (book) => {
-    book.description && delete book.description;
-    const exist = cartList.find((item) => item.id === book.id);
-    if (exist) {
-      setCartList(
-        cartList.map((item) =>
-          item.id === book.id ? { ...exist, qty: exist.qty + 1 } : item,
-        ),
-      );
-    } else {
-      setCartList([...cartList, { ...book, qty: 1 }]);
-    }
-  };
-
-  if (loadBook) {
+  if (loading) {
     return (
       <div className='w-full h-full flex items-center justify-center'>
         <Spinner />
@@ -94,7 +77,7 @@ const Book = () => {
               </Link>
 
               <button
-                onClick={() => onAdd(data)}
+                onClick={() => onAdd(data,setCartList, cartList)}
                 className=' flex justify-center items-center px-4 py-2 mt-4 bg-green-400 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
                 Add To Cart
               </button>

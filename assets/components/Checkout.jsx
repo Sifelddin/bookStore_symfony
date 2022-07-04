@@ -1,7 +1,8 @@
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import fetchData from './hooks';
 
 const Checkout = () => {
   const localStorageOrder = localStorage.getItem('ORDER');
@@ -9,10 +10,7 @@ const Checkout = () => {
   const [user, setUser] = useState(null);
  
   useEffect(() => {
-    axios
-      .get('api/me')
-      .then((res) => setUser(res.data))
-      .catch((err) => console.log(err));
+     fetchData('api/me',setUser)
   }, []);
 
   const {
