@@ -70,12 +70,17 @@ class CatalogueController extends AbstractController
     }
 
     #[Route('/book/{slug}', name: 'book')]
-    public function book(Book $book): Response
+    public function book(Book $book, CategoryRepository $catRepo): Response
     {
+    
+
+    $slug =$catRepo->find($book->getCategory()->getId())->getSlug();
+   // dd($slug);
 
 
         return $this->render("catalogue/show.html.twig",[
-            'book' => $book
+            'book' => $book,
+            'slug' => $slug
            
         ]);
     }

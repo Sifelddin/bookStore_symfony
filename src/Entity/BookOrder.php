@@ -94,12 +94,12 @@ class BookOrder
         return $this;
     }
 
-    public function getorder(): ?Order
+    public function getOrder(): ?Order
     {
         return $this->order;
     }
 
-    public function setorder(?Order $order): self
+    public function setOrder(?Order $order): self
     {
         $this->order = $order;
 

@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\BookOrder;
 use App\Entity\Order;
 use App\Form\OrderType;
+use App\Repository\BookOrderRepository;
 use App\Repository\BookRepository;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OrderController extends AbstractController
@@ -26,79 +29,27 @@ class OrderController extends AbstractController
     {
 
         $session = $request->getSession();
-     
-        if($session->get('order')){
-            
-            $user = $this->getUser();
-            $order = $session->get('order');
-            $form = $this->createForm(OrderType::class, $order);
-        
-            $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $orderRepository->add($order, false);
-                $session->set('order',$order);
-                return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
-            }
+        $order = new Order();
 
-            return $this->render('catalogue/order.html.twig', [
-                'order' => $order,
-                'form' => $form->createView(),
-                'user' => $user
-            ]);
-                
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            $session->set('order',$order);
+            return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
         }
-        else {
-     
-            $user = $this->getUser();
-            $order = new Order();
 
-
-            // $Address = $this->getUser()->getAddress();
-            // $ZipCode = $this->getUser()->getZipCode();
-            // $City = $this->getUser()->getCity();
-
-            // $order->setUserClient($user);
-            // $order->setCoef($this->getUser()->getCoef());
-            // $order->setBillAddress($Address);
-            // $order->setBillZipCode($ZipCode);
-            // $order->setBillCity($City);
-
-            // $order->setShipAddress($Address);
-            // $order->setShipZipCode($ZipCode);
-            // $order->setShipCity($City);
-            //dd($order);
-            $form = $this->createForm(OrderType::class, $order);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted()) {
-                $orderRepository->add($order, false);
-                $session->set('order',$order);
-                return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
-            }
-
-    
-         
-            return $this->render('catalogue/order.html.twig', [
-                'order' => $order,
-                'form' => $form->createView(),
-                //'user' => $user
-            ]);
-        }
+        return $this->render('catalogue/order.html.twig', [
+            'order' => $order,
+            'form' => $form->createView(),
+        ]);
     }
-
-
-
-
-
-
 
     #[Route('/summary', name: 'app_summary')]
     public function summary(Request $request, SessionInterface $session, BookRepository $bookRepository): Response
     {
 
-        
         $order = $session->get('order'); 
         $user = $this->getUser();
 
@@ -113,12 +64,51 @@ class OrderController extends AbstractController
             ];
 
         }
+    
+        return $this->render('catalogue/summary.html.twig', [
+            'order' => $order,
+            'user' => $user,
+            'items'=>$panier2
+        ]);
+    }
 
-                return $this->render('catalogue/summary.html.twig', [
-                    'order' => $order,
-                    'user' => $user,
-                   'items'=>$panier2
-                ]);
-            }
+
+    #[Route('/test', name: 'new_order')]
+    public function test(SessionInterface $session, OrderRepository $orderRepository,BookOrderRepository $bookOrderRepository,BookRepository $bookRepository ): Response
+    {
+
+        $order = $session->get('order'); 
+        $panier= $session->get('panier',[]);
+        //dd ($panier);
+        $user = $this->getUser();
+
+        $order->setUserClient($user);
+        $order->setCoef($user->getCoef());
+
+         $orderRepository->add($order, true);
+
+        
+
+        foreach ($panier as $id => $quantity){
+
+            $book=$bookRepository->find($id);
+            $price=$book->getPrice();
+            $results = $orderRepository->findOneBy([], ['id' => 'DESC']);;
+            
+            $bookOrder  = new BookOrder;
+            $bookOrder->setQuantity($quantity);
+            $bookOrder->setBook($book);
+            $bookOrder->setUnitPrice($price);
+            $bookOrder->setOrder($results);
+
+            $bookOrderRepository->add($bookOrder, true);
+
+       }
+
+        return $this->redirectToRoute('app_catalogue', [], Response::HTTP_SEE_OTHER);
+
+    }
+
+            
         
 }

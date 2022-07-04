@@ -10,11 +10,11 @@
 					<p class="flex justify-center items-center ">Adresse de livraison</p>
 					<div class="border-double border-8 px-10 pb-5">
 						{{ form_row(form.ShipAddress, {
-							attr: { value: order.ShipAddress }
+							attr: { value: order.ShipAddress ? order.ShipAddress : app.user.address } 
 						})}}
 
 						{{ form_row(form.shipCity, {
-							attr: { value: order.shipCity }
+							attr: { value: order.shipCity ? order.shipCity : app.user.city } 
 						})}}
 						{{ form_row(form.shipZipCode, {
 							attr: { value: order.shipZipCode ? order.shipZipCode : app.user.zipCode }
@@ -26,18 +26,18 @@
 					<p class=" flex justify-center items-center" >Adresse de facturation</p>
 					<div class="border-double border-8 px-10 pb-5">
 						{{ form_row(form.billAddress, {
-							attr: { value: order.billAddress }
+							attr: { value: order.billAddress ? order.billAddress : app.user.address } 
 						})}}
 						{{ form_row(form.billCity, {
-							attr: { value: order.billCity }
+							attr: { value: order.billCity ? order.billCity : app.user.city } 
 						})}}
 						{{ form_row(form.billZipCode, {
-                    		attr: { value: order.billZipCode }
+                    		attr: { value: order.billZipCode ? order.billZipCode : app.user.zipCode }
                 		})}}
 					</div>
 				</div>
 				{% if app.user.private == 1 %}
-							{{ form_row(form.payMethod) }}
+					{{ form_row(form.payMethod) }}
 				{% else %}
 						<div class="hidden">{{ form_row(form.payMethod) }}</div>
 				{% endif %}
