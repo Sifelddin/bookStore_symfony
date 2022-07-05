@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 #[ApiResource(
-
+    security: 'is_granted("ROLE_USER")',
     denormalizationContext: ['groups' => ["write:post"]]
 )]
 class Order

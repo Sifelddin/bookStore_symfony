@@ -5,24 +5,34 @@ import fetchData from './hooks';
 import Spinner from './Spinner';
 
 const Checkout = () => {
-  const localStorageOrder = localStorage.getItem('ORDER');
-
-  const [user, setUser] = useState({ loading: true, data });
-
+ 
+const localStorageOrder = JSON.parse(localStorage.getItem('ORDER'));
+ 
+const [user, setUser] = useState({ loading: true, data });
+console.log('uesr',user.data);
+console.log('localStorageOrder',localStorageOrder);
   useEffect(() => {
     fetchData('api/me', setUser);
   }, []);
+
+  const { loading, data } = user;
+
+  if(!loading && localStorageOrder){
+     localStorageOrder.userClient !== data['@id'] && localStorage.removeItem('ORDER')
+  }
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
-    data.isPrivate = user.private;
-    data.coef = user.Coef;
-    data.userClient = user['@id'];
-    localStorage.setItem('ORDER', JSON.stringify(data));
+
+
+  const onSubmit = (OrderData) => {
+    OrderData.isPrivate = data.private;
+    OrderData.coef = data.Coef;
+    OrderData.userClient = data['@id'];
+    localStorage.setItem('ORDER', JSON.stringify(OrderData));
     location.assign('/placeorder');
   };
 
@@ -40,8 +50,7 @@ const Checkout = () => {
     'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md';
   const labelClasses = 'block text-md font-medium text-gray-700';
 
-  const { loading, data } = user;
-
+ 
   if (loading) {
     return <Spinner />;
   } else {
@@ -322,7 +331,7 @@ const Checkout = () => {
               </div>
 
               <div className='w-full flex justify-center items-center p-2 mt-2'>
-                <button
+                <button 
                   type='submit'
                   className='inline-block rounded-md bg-green-500 px-6 py-2 font-semibold text-green-100 shadow-md duration-75 hover:bg-green-400'>
                   validate

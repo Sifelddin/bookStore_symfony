@@ -3,7 +3,7 @@
 	<div class="max-w-7xl mx-auto px-4 sm:px-6">
 		<div class="flex justify-between items-center  py-4 md:justify-start md:space-x-10">
 			<div class="flex justify-start lg:w-0 lg:flex-1">
-				<a href="#">
+				<a href="{{ path('app_react') }}">
 					<span class="sr-only">Workflow</span>
 					<img class="h-8 w-auto sm:h-12  rounded-full " src="{{ asset('build/images/book-logo2.jpg') }}" alt="logo img">
 				</a>
@@ -98,23 +98,26 @@
 					<a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
 						Docs
 					</a>
-					<a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-						Contact
+					<a href="{{path('app_react')}}" class="text-base font-medium text-gray-900 hover:text-gray-700">
+						Store
 					</a>
-					<a href="" class="text-base font-medium text-gray-900 hover:text-gray-700">
-						Contact
+					<a href="{{path('app_dashboard')}}" class="text-base font-medium text-gray-900 hover:text-gray-700">
+						Dashboard
 					</a>
 
 
 				</div>
 				<div>
-					<a href="#" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+					{% if app.user %}
+					{% else %}
+					<a href="{{path('app_register')}}" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
 						Sign up
 					</a>
+					{% endif %}
 					<p class="mt-6 text-center text-base font-medium text-gray-500">
 						Existing customer?
-						<a href="#" class="text-indigo-600 hover:text-indigo-500">
-							Sign in
+						<a href="{{ app.user ? path('app_logout') : path('app_login')}}" class="text-indigo-600 hover:text-indigo-500">
+							{{ app.user ? 'Logout' :  'Sign in'}}
 						</a>
 					</p>
 				</div>

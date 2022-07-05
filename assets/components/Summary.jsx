@@ -1,18 +1,31 @@
 import axios from 'axios';
 import React, { useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import fetchData from './hooks';
 
 const Summary = () => {
+
+
+  const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
+  const order = JSON.parse(localStorage.getItem('ORDER'));
+
+
   const [send, setSend] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(5);
+  const [user, setUser] = useState({ loading: true, data });
+  const {loading, data} = user
 
-  if (
-    localStorage.getItem('SHOPPING-CART') === null ||
-    localStorage.getItem('ORDER') === null
-  ) {
-    location.assign('/');
-  }
+
+  useEffect(() => {
+    fetchData('api/me', setUser);
+  }, []);
+  useEffect(() =>{
+  if(!loading && order){
+    order.userClient !== data['@id'] && (localStorage.removeItem('ORDER'))
+}
+  (books === null || localStorage.getItem('ORDER') === null) && location.assign('/');
+},[order,user])
 
   const register = () => {
     if(order.isPrivate){
@@ -48,9 +61,7 @@ const Summary = () => {
   }, [send]);
 
 
-  const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
-  const order = JSON.parse(localStorage.getItem('ORDER'));
-
+ 
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
@@ -59,7 +70,7 @@ const Summary = () => {
   const taxTotal = books.reduce((a, c) => a + (c.qty * c.price * 20) / 100, 0);
 
   return (
-    <div className='h-screen w-full flex flex-col justify-center items-center'>
+    <div className='lg:h-screen w-full flex flex-col justify-center items-center'>
       <div className='md:w-4/5 py-2 my-2'>
         <Link
           to={'/'}
@@ -74,12 +85,12 @@ const Summary = () => {
         </Link>
         <span></span>
       </div>
-      <div className='grid grid-cols-4 md:w-4/5 mx-auto bg-white h-auto'>
+      <div className='md:grid md:grid-cols-4 w-11/12 xl:w-4/5 mx-auto bg-white h-auto'>
         <div className=' col-span-3'>
-          <div className='p-3 m-3 rounded-md bg-orange-50 shadow-md'>
+          <div className='m-2 p-2 lg:p-3 lg:m-3 rounded-md bg-orange-50 shadow-md'>
             <div className='border-b-2 border-gray-300 pb-1'>
               {' '}
-              <h2 className='text-lg uppercase text-gray-700'>
+              <h2 className='text-base lg:text-lg uppercase text-gray-700'>
                 Shipping Address :{' '}
               </h2>{' '}
               <p className=' my-1'>
@@ -93,7 +104,7 @@ const Summary = () => {
 
             <div className='border-b-2 border-gray-300 pb-1'>
               {' '}
-              <h2 className='text-lg uppercase text-gray-700'>
+              <h2 className='text-base lg:text-lg uppercase text-gray-700'>
                 Billing Address :{' '}
               </h2>
               <p className=' my-1'>
@@ -107,15 +118,15 @@ const Summary = () => {
             </div>
             {order.payMethod && (
               <div>
-                <h2 className='text-lg uppercase text-gray-700'>
+                <h2 className='text-base lg:text-lg uppercase text-gray-700'>
                   Pay Method :
                 </h2>{' '}
                 <p className=' my-2'>{order.payMethod}</p>
               </div>
             )}
           </div>
-          <div className=' p-3 m-4 rounded-md bg-orange-50 shadow-md'>
-            <h2 className='text-lg uppercase text-gray-700 m-1'>
+          <div className='p-2 m-2 lg:p-3 lg:m-4 rounded-md bg-orange-50 shadow-md'>
+            <h2 className='text-base lg:text-lg uppercase text-gray-700 m-1'>
               {' '}
               Order Books :
             </h2>
@@ -141,7 +152,7 @@ const Summary = () => {
                     <th
                       scope='col'
                       className='px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Quantity
+                      Qty
                     </th>
                     <th
                       scope='col'
@@ -190,7 +201,7 @@ const Summary = () => {
             <div className='flex justify-around '>
               {books[indexOfFirstBook - 1] && (
                 <button
-                  className='bg-blue-500 text-white rounded-md p-2'
+                  className='bg-blue-500 text-white rounded-md py-1 px-2 text-xs lg:text-sm'
                   onClick={() => setCurrentPage(currentPage - 1)}>
                   {' '}
                   {'<<'} previous{' '}
@@ -198,7 +209,7 @@ const Summary = () => {
               )}
               {books[indexOfLastBook] && (
                 <button
-                  className='bg-blue-500 text-white rounded-md p-2'
+                  className='bg-blue-500 text-white rounded-md py-1 px-2 text-xs lg:text-sm'
                   onClick={() => setCurrentPage(currentPage + 1)}>
                   Next {'>>'}
                 </button>
@@ -207,8 +218,8 @@ const Summary = () => {
           </div>
         </div>
 
-        <div className=' col-span-1 m-5 p-5 bg-orange-50 shadow-md'>
-          <h2 className='border-b-2 border-gray-200 pb-1 text-lg uppercase text-gray-700'>
+        <div className=' col-span-1 m-2 p-1 lg:m-5 lg:p-5 bg-orange-50 shadow-md'>
+          <h2 className='border-b-2 border-gray-200 pb-1 text-base lg:text-lg uppercase text-gray-700'>
             Order Summary:
           </h2>
           <div className='p-1 m-2'>
@@ -216,11 +227,11 @@ const Summary = () => {
               <tbody className='border-b-2 border-gray-200'>
                 <tr className='flex justify-between w-full my-2'>
                   <th>Books</th>
-                  <td className='text-lg'>{total.toFixed(2)}€</td>
+                  <td className='text-base lg:text-lg'>{total.toFixed(2)}€</td>
                 </tr>
                 <tr className='flex justify-between w-full my-2'>
                   <th>Tax</th>
-                  <td className='text-lg'>{taxTotal.toFixed(2)}€</td>
+                  <td className='text-base lg:text-lg'>{taxTotal.toFixed(2)}€</td>
                 </tr>
               </tbody>
               <tfoot>

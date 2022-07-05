@@ -8,23 +8,22 @@ import axios from 'axios';
 
 const Payment = () => {
 
+    const books = JSON.parse(localStorage.getItem('SHOPPING-CART'))
+    const order = JSON.parse(localStorage.getItem('ORDER'))
+
     const [messageErr,setMessageErr] = useState(null)
     const [send, setSend] = useState(false);
     console.log(messageErr);
     if (
-      localStorage.getItem('SHOPPING-CART') === null ||
-      localStorage.getItem('ORDER') === null
+      books === null || !order?.isPrivate
     ) {
-      location.assign('/');
+      location.assign('/placeorder');
     }
     
-    
-    
-    
+  
     useEffect(() => {
         if (send) {
-        const books = JSON.parse(localStorage.getItem('SHOPPING-CART'))
-        const order = JSON.parse(localStorage.getItem('ORDER'))
+      
         axios
           .post('https://localhost:8000/api/orders', order)
           .then((res) => {
@@ -54,28 +53,24 @@ const Payment = () => {
         handleSubmit,
         
         formState: { errors },
-      } = useForm({
-          mode : 'onTouched'
-      });
+      } = useForm();
+     
       const onSubmit = (data) => {
           let cartNums = [16,15,14]
-          let ccNumber = data["cc-number"].replace(/\s/g,"").length;
-          let cvv = data["cc-exp"].replace(/\//g,"").length
+          let ccNumber = data["cc-number"]?.replace(/\s/g,"").length;
+          let cvv = data["cc-exp"]?.replace(/\//g,"").length
           console.log(data);
           if (cartNums.includes(ccNumber) && cvv === 4) {
             setMessageErr(null);
             setSend(confirm('you confirm you registration ?'))
             
           }else{
-              setMessageErr("checkout your cart number or expiry date !")
+              setMessageErr(" your cart number or expiry date should be full filled !")
           }
       };
 
-
-      const exactCVV = (cvv) => {
-        const regExp = /^[0-9]{3,4}$/;
-        return regExp.test(cvv);
-      };
+      const exactCVV = (cvv) => /^[0-9]{3,4}$/.test(cvv)
+      const fullName = (nameStr) => /^[a-zA-Z]+$/ig.test(nameStr)
 
       const inputClasses =
       'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md';
@@ -95,6 +90,30 @@ const Payment = () => {
             <form onSubmit={handleSubmit(onSubmit)}> 
         
          {messageErr && (<span className='text-red-600 text-sm'>{messageErr}</span>)}
+
+         <div className='h-24'>
+                  <label htmlFor='fullName' className={labelClasses}>
+                    FullName*
+                  </label>
+                    <input
+                      type='text'
+                      id='fullName'
+                      className={inputClasses}
+                      {...register('fullName', {
+                        required: true,validate: fullName
+                      })}
+                    />
+                      {errors['fullName']?.type === 'required' && (
+                          <span className='text-red-600 text-sm'>
+                         Name on card is required
+                        </span>)}
+                      {errors['fullName']?.type === 'validate' && (
+                          <span className='text-red-600 text-sm'>
+                         fullname includes only letters
+                        </span>
+                    )}
+                    </div>
+
             <div className='h-24'>
             <label htmlFor='cc-number' className={labelClasses}>
                     Card number*
@@ -128,7 +147,6 @@ const Payment = () => {
                             type="tel"
                             render={({
                                 field: { onChange, onBlur, value, name, ref },
-                                fieldState: { error },
                             }) => (
                                 <Cleave placeholder='mm/yy'
                                         options={{date: true ,datePattern : ['m','y'] , delimiter : '/' }}
@@ -138,7 +156,7 @@ const Payment = () => {
                                         value={value}
                                         ref={ref}
                                         onBlur={onBlur}
-                                        error={error}
+                                        
                                         />
                                 )} />
                      
@@ -147,7 +165,7 @@ const Payment = () => {
            
                     <div className='h-24'>
                   <label htmlFor='cc-csc' className={labelClasses}>
-                    CVV*
+                    Security Code*
                   </label>
                     <input
                       type='text'

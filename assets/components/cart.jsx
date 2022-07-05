@@ -67,7 +67,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                       <th
                         scope='col'
                         className='p-1 sm:px-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Quantity
+                        Qty
                       </th>
                       <th
                         scope='col'
@@ -152,7 +152,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
             <div className='flex justify-around '>
               {cartList[indexOfFirstBook - 1] && (
                 <button
-                  className='bg-blue-500 text-white rounded-md p-2'
+                  className='bg-blue-500 text-white rounded-md p-2 text-xs sm:text-sm'
                   onClick={() => setCurrentPage(currentPage - 1)}>
                   {' '}
                   {'<<'} previous{' '}
@@ -160,7 +160,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
               )}
               {cartList[indexOfLastBook] && (
                 <button
-                  className='bg-blue-500 text-white rounded-md p-2'
+                  className='bg-blue-500 text-white rounded-md p-2 text-xs sm:text-sm'
                   onClick={() => setCurrentPage(currentPage + 1)}>
                   Next {'>>'}
                 </button>
@@ -171,7 +171,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
 
         <div className='p-4 flex justify-around items-center border-gray-200'>
           {cartList.length > 0 && (
-            <button className='flex  justify-center items-center px-2 py-1 md:px-4 md:py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'>
+            <button className='flex justify-center items-center px-2 py-1 md:px-4 md:py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'>
               <a href='/shipping'> Shipping</a>{' '}
             </button>
           )}
@@ -180,7 +180,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
               e.stopPropagation();
               setShowCart(false);
             }}
-            className='flex justify-center items-center px-2 py-1 sm:px-4 sm:py-2  bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+            className='flex justify-center items-center px-2 py-1 md:px-4 md:py-2  bg-gray-700 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
             back to list
           </button>
         </div>
