@@ -1,21 +1,24 @@
-import axios from 'axios';
+
 import React, { useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import fetchData from './hooks';
+import CartPagination from './CartPagination';
+import fetchData, { postData } from './hooks';
+
 
 const Summary = () => {
-
 
   const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
   const order = JSON.parse(localStorage.getItem('ORDER'));
 
+  if(books === null || order === null){
+    location.assign('/');
+  } 
 
   const [send, setSend] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(5);
   const [user, setUser] = useState({ loading: true, data });
   const {loading, data} = user
-
 
   useEffect(() => {
     fetchData('api/me', setUser);
@@ -24,11 +27,10 @@ const Summary = () => {
   if(!loading && order){
     order.userClient !== data['@id'] && (localStorage.removeItem('ORDER'))
 }
-  (books === null || localStorage.getItem('ORDER') === null) && location.assign('/');
-},[order,user])
+},[user])
 
   const register = () => {
-    if(order.isPrivate){
+    if(data.isPrivate){
       location.assign('/payment')
     }else{
       setSend(confirm('you confirm you registration ?'))
@@ -36,27 +38,7 @@ const Summary = () => {
   };
   useEffect(() => {
     if (send) {
-
-      axios
-        .post('https://localhost:8000/api/orders', order)
-        .then((res) => {
-          books.map((book) => {
-            axios
-              .post('https://localhost:8000/api/book_orders', {
-                quantity: book.qty,
-                unitPrice: book.price,
-                book: book['@id'],
-                order: res.data['@id'],
-              })
-              .then((res) => console.log(res.data))
-              .catch((err) => console.log(err));
-          });
-          localStorage.removeItem('ORDER');
-          localStorage.removeItem('SHOPPING-CART');
-          alert('your order has been registered');
-          location.assign('/');
-        })
-        .catch((err) => console.log(err));
+      postData('/api/orders','/api/book_orders',order,books)
     }
   }, [send]);
 
@@ -71,7 +53,7 @@ const Summary = () => {
 
   return (
     <div className='lg:h-screen w-full flex flex-col justify-center items-center'>
-      <div className='md:w-4/5 py-2 my-2'>
+      <div className='w-11/12 xl:w-4/5 my-2'>
         <Link
           to={'/'}
           className='underline text-gray-700 hover:text-black mx-2 p-1'>
@@ -79,9 +61,9 @@ const Summary = () => {
           {'<<'}store{' '}
         </Link>
         <Link
-          to={'/shipping'}
+          to={'/ordering'}
           className='underline text-gray-700 hover:text-black mx-2 p-1'>
-          {'<<'}shipping{' '}
+          {'<<'}ordering{' '}
         </Link>
         <span></span>
       </div>
@@ -131,12 +113,12 @@ const Summary = () => {
               Order Books :
             </h2>
             {currentBooks && (
-              <table className='pb-4 w-full'>
+              <table className='pb-2 w-full'>
                 <thead className='bg-orange-100 shadow-sm'>
                   <tr>
                     <th
                       scope='col'
-                      className='px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      className='hidden sm:table-cell px-2 self-center py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                       Book
                     </th>
                     <th
@@ -171,7 +153,7 @@ const Summary = () => {
                   {currentBooks.map((book) => {
                     return (
                       <tr key={book.id} className='w-full'>
-                        <td className='my-2'>
+                        <td className='my-2 hidden sm:table-cell'>
                           <img
                             className=' border-white object-center h-24 w-20'
                             src={'uploads/images/' + book.photo}
@@ -198,23 +180,7 @@ const Summary = () => {
                 </tbody>
               </table>
             )}
-            <div className='flex justify-around '>
-              {books[indexOfFirstBook - 1] && (
-                <button
-                  className='bg-blue-500 text-white rounded-md py-1 px-2 text-xs lg:text-sm'
-                  onClick={() => setCurrentPage(currentPage - 1)}>
-                  {' '}
-                  {'<<'} previous{' '}
-                </button>
-              )}
-              {books[indexOfLastBook] && (
-                <button
-                  className='bg-blue-500 text-white rounded-md py-1 px-2 text-xs lg:text-sm'
-                  onClick={() => setCurrentPage(currentPage + 1)}>
-                  Next {'>>'}
-                </button>
-              )}
-            </div>
+          <CartPagination currentPage={currentPage} cartList={books} indexOfFirstBook={indexOfFirstBook} indexOfLastBook={indexOfLastBook} setCurrentPage={setCurrentPage} />
           </div>
         </div>
 

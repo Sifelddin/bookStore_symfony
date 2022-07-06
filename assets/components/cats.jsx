@@ -11,7 +11,6 @@ export const Cats = ({ select }) => {
   const [categories, setCategories] = useState({ loading: true, data });
   const elements = useRef([]);
 
-
   useEffect(() => {
   fetchData(pageUrl,setCategories)
   }, [pageUrl]);

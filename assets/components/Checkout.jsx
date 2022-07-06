@@ -9,10 +9,9 @@ const Checkout = () => {
 const localStorageOrder = JSON.parse(localStorage.getItem('ORDER'));
  
 const [user, setUser] = useState({ loading: true, data });
-console.log('uesr',user.data);
-console.log('localStorageOrder',localStorageOrder);
+
   useEffect(() => {
-    fetchData('api/me', setUser);
+    fetchData('/api/me', setUser);
   }, []);
 
   const { loading, data } = user;
@@ -27,7 +26,6 @@ console.log('localStorageOrder',localStorageOrder);
     formState: { errors },
   } = useForm();
 
-
   const onSubmit = (OrderData) => {
     OrderData.isPrivate = data.private;
     OrderData.coef = data.Coef;
@@ -37,14 +35,8 @@ console.log('localStorageOrder',localStorageOrder);
   };
 
   // functions contain some validation rules
-  const exactZipCode = (zipCode) => {
-    const regExp = /^[0-9]{5}$/;
-    return regExp.test(zipCode);
-  };
-  const validCity = (city) => {
-    const regExp = /\d+/g;
-    return !regExp.test(city);
-  };
+  const exactZipCode = (zipCode) => /^[0-9]{5}$/.test(zipCode)
+  const validCity = (city) => !/\d+/g.test(city)
 
   const inputClasses =
     'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md';
@@ -72,7 +64,7 @@ console.log('localStorageOrder',localStorageOrder);
               </Link>
             )}
           </div>
-          <div className=' xl:w-3/5 md:w-4/5 p-3 bg-white rounded-md shadow-md'>
+          <div className=' sm:w-10/12 xl:w-3/5 md:w-4/5 p-3 bg-white rounded-md shadow-md'>
             <h2 className='text-lg sm:text-2xl uppercase my-3 border-b-gray-200 border-solid border-b-2'>
               {data.firstname + ' ' + data.lastname}
             </h2>

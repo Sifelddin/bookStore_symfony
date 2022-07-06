@@ -2,7 +2,8 @@ import React,{useState,useEffect}from 'react'
 import { useForm , Controller } from 'react-hook-form';
 import Cleave from 'cleave.js/react';
 import {Link} from 'react-router-dom';
-import axios from 'axios';
+import { postData } from './hooks';
+
 
 
 
@@ -13,37 +14,18 @@ const Payment = () => {
 
     const [messageErr,setMessageErr] = useState(null)
     const [send, setSend] = useState(false);
-    console.log(messageErr);
+
+    order.isPrivate || location.assign('/placeorder')
     if (
-      books === null || !order?.isPrivate
+      books === null || order === null
     ) {
-      location.assign('/placeorder');
+      location.assign('/');
     }
     
   
     useEffect(() => {
         if (send) {
-      
-        axios
-          .post('https://localhost:8000/api/orders', order)
-          .then((res) => {
-            books.map((book) => {
-              axios
-                .post('https://localhost:8000/api/book_orders', {
-                  quantity: book.qty,
-                  unitPrice: book.price,
-                  book: book['@id'],
-                  order: res.data['@id'],
-                })
-                .then((res) => console.log(res.data))
-                .catch((err) => console.log(err));
-            });
-            localStorage.removeItem('ORDER');
-            localStorage.removeItem('SHOPPING-CART');
-            alert('your order has been registered');
-            location.assign('/');
-          })
-          .catch((err) => console.log(err));
+          postData('/api/orders','/api/book_orders',order,books)
       }
     }, [send]);
   

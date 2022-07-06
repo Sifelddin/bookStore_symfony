@@ -34,7 +34,7 @@ const Book = () => {
       <>
         <div className='flex items-center justify-center w-full h-screen bg-slate-900'>
           <div className='flex flex-col justify-center p-8 bg-white shadow-md sm:rounded-lg w-5/6 h-5/6  2xl:w-3/5 '>
-            <div className='md:grid md:grid-cols-2 md:gap-2 flex flex-col items-center justify-center w-full overflow-scroll lg:overflow-auto'>
+            <div className='md:grid md:grid-cols-2 md:gap-2 flex flex-col items-center justify-center w-full overflow-hidden lg:overflow-auto'>
               <div className='md:col-span-1 md:self-center pb-8 md:p-0'>
                 <img
                   className=' md:object-center md:w-60 w-52 shadow-md ' 
@@ -58,7 +58,7 @@ const Book = () => {
                   </p>
                 </div>
               </div>
-              <div className='mx-auto col-span-1 text-center  overflow-scroll md:overflow-auto' >
+              <div className='mx-auto col-span-1 text-center overflow-y-scroll md:overflow-auto' >
                 <div className='p-1 xl:p-2  border-none'>
                   <h2 className='text-center text-base xl:text-2xl font-semibold'>
                     {' '}

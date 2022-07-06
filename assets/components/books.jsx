@@ -49,12 +49,12 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
           {data['hydra:member'].map((book) => {
             return (
               <div
-                className='flex items-center m-1 p-1 md:p-3 md:m-3 bg-white rounded-md shadow-sm hover:shadow-md hover:shadow-blue-200 transition-all duration-300'
+                className='flex items-center  m-1 p-1 md:p-3 md:m-3 bg-white rounded-md shadow-sm hover:shadow-md hover:shadow-blue-200 transition-all duration-300'
                 key={book.id}>
-                <div className='mr-2 w-24 h-auto block'>
+                <div className='mr-2 w-24 h-auto '>
                   <Link to={`book/${book.slug}/${book.id}`}>
                     <img
-                      className='cursor-pointer w-20 md:w-24 h-auto'
+                      className='cursor-pointer w-20 md:w-24 h-auto table-cell'
                       src={'uploads/images/' + book.photo}
                       alt={book.photo}
                     />{' '}
@@ -76,7 +76,7 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
                   </p>
                   <button
                     onClick={() => onAdd(book, setCartList, cartList)}
-                    className=' flex justify-center items-center px-2 py-1 mt-2 bg-green-400 border border-transparent rounded-md font-normal md:font-semibold text-sm text-white uppercase md:tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
+                    className=' flex justify-center items-center px-2 py-1 mt-2 bg-green-400 border border-transparent rounded-md font-normal md:font-semibold text-xs sm:text-sm text-white uppercase md:tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
                     Add To Cart
                   </button>
                 </div>

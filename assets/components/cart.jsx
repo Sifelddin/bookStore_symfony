@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { onAdd, onRemove, deleteBook } from './hooks';
-
+import CartPagination from './CartPagination' ;
 import { TiDeleteOutline } from 'react-icons/ti';
 
 export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
+
+
+
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(5);
 
+   
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentList = cartList.slice(indexOfFirstBook, indexOfLastBook);
+
 
   const globalTotal = cartList.reduce(
     (a, c) => a + c.qty * c.price * (1 + 10 / 100),
@@ -51,7 +56,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                     <tr>
                       <th
                         scope='col'
-                        className=' hidden md:block px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        className=' hidden md:table-cell px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                         Book
                       </th>
                       <th
@@ -90,7 +95,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                     {currentList.map((book) => {
                       return (
                         <tr key={book.id}>
-                          <td className=' hidden px-4 py-4 whitespace-nowrap md:inline-block h-28 w-28  rounded-full ring-2 ring-white '>
+                          <td className='hidden px-4 py-4 whitespace-nowrap md:table-cell h-28 w-28  rounded-full ring-2 ring-white '>
                             <img
                               className=' border-white h-full object-cover'
                               src={'uploads/images/' + book.photo}
@@ -111,7 +116,8 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                           <td className='p-1 sm:p-2 text-sm sm:text-base'>
                             {taxTotal(book).toFixed(2)}€
                           </td>
-                          <td className='p-1 sm:p-2 flex justify-around items-center'>
+                          <td className='p-1 sm:p-2 table-cell'>
+                            <div className='flex items-center justify-between '>
                             <button
                               onClick={() => onAdd(book, setCartList, cartList)}
                               className='px-2 sm:px-3 py-1  bg-green-700 border border-transparent rounded-md font-semibold text-white hover:bg-green-900 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 text-xs sm:text-sm'>
@@ -131,6 +137,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                               className='text-3xl cursor-pointer text-red-500 hover:text-red-700 mx-1 '>
                               <TiDeleteOutline></TiDeleteOutline>
                             </span>
+                          </div>
                           </td>
                         </tr>
                       );
@@ -149,30 +156,14 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                 </div>
               </>
             )}
-            <div className='flex justify-around '>
-              {cartList[indexOfFirstBook - 1] && (
-                <button
-                  className='bg-blue-500 text-white rounded-md p-2 text-xs sm:text-sm'
-                  onClick={() => setCurrentPage(currentPage - 1)}>
-                  {' '}
-                  {'<<'} previous{' '}
-                </button>
-              )}
-              {cartList[indexOfLastBook] && (
-                <button
-                  className='bg-blue-500 text-white rounded-md p-2 text-xs sm:text-sm'
-                  onClick={() => setCurrentPage(currentPage + 1)}>
-                  Next {'>>'}
-                </button>
-              )}
-            </div>
+          <CartPagination currentPage={currentPage} cartList={cartList} indexOfFirstBook={indexOfFirstBook} indexOfLastBook={indexOfLastBook} setCurrentPage={setCurrentPage} />
           </div>
         </div>
 
         <div className='p-4 flex justify-around items-center border-gray-200'>
           {cartList.length > 0 && (
             <button className='flex justify-center items-center px-2 py-1 md:px-4 md:py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'>
-              <a href='/shipping'> Shipping</a>{' '}
+              <a href='/ordering'> ordering</a>{' '}
             </button>
           )}
           <button

@@ -5,20 +5,31 @@ import { Books } from './books';
 import Header from './header';
 import { Cart } from './cart';
 import { Link } from 'react-router-dom';
+import fetchData from './hooks';
 
 const App = () => {
+  
+  const [user, setUser] = useState({loading: true, data: null});
   const [catParent, setCatParent] = useState(null);
   const [catBooks, setCatBooks] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const [cartList, setCartList] = useState(
     JSON.parse(localStorage.getItem('SHOPPING-CART')) || [],
   );
+  const [order, setOrder] = useState(localStorage.getItem('ORDER') || null)
+console.log(order);
+  useEffect(() => {
+    if(order){
+    let status = fetchData('/api/me',setUser)
+    status.then((respStatus) => {
+    respStatus === 200 || (localStorage.removeItem('ORDER') , setOrder(null));
+  })
+}
+  },[]) 
 
   useEffect(() => {
     localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList));
-    JSON.parse(localStorage.getItem('SHOPPING-CART')).length > 0 ||
-      (localStorage.removeItem('SHOPPING-CART'),
-      localStorage.removeItem('ORDER'));
+    cartList.length > 0 || (localStorage.removeItem('SHOPPING-CART'),localStorage.removeItem('ORDER'));
   }, [cartList]);
 
   const selectCat = (e) => {
@@ -26,29 +37,27 @@ const App = () => {
     setCatBooks(null);
   };
 
-  const localStorageOrder = localStorage.getItem('ORDER');
-  const localStorageCart = localStorage.getItem('SHOPPING-CART');
 
   return (
     <>
       <div className=' xl:w-10/12 w-11/12 mx-auto'>
         <Header show={setShowCart} cartList={cartList} />
         <div className='p-2 xl:p-0'>
-          {localStorageCart && (
-            <Link
-              to={'/shipping'}
+          {cartList.length > 0 && (
+            <a
+              href='/ordering'
               className='underline text-gray-700 hover:text-black mx-2 p-1'>
               {' '}
-              shipping{'>>'}
-            </Link>
+              ordering{'>>'}
+            </a>
           )}
-          {localStorageOrder && (
-            <Link
-              to={'/placeorder'}
+          {order && (
+            <a
+            href='/placeorder'
               className='underline text-gray-700 hover:text-black mx-2 p-1'>
               {' '}
               placeorder{'>>'}
-            </Link>
+            </a>
           )}
         </div>
         <div className='flex flex-col lg:grid lg:grid-cols-4 lg:gap-2  mx-auto '>

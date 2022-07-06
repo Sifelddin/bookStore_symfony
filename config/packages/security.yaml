@@ -25,7 +25,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                target: app_dashboard
+                target: app_react
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -39,7 +39,7 @@ security:
          #- { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
          - { path: ^/checkout, roles: ROLE_USER }
-         - { path: ^/shipping, roles: ROLE_USER }
+         - { path: ^/ordering, roles: ROLE_USER }
          - { path: ^/placeorder, roles: ROLE_USER }
          - { path: ^/payment, roles: ROLE_USER }
 
