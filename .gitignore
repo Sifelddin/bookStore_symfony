@@ -9,28 +9,11 @@
 /var/
 /vendor/
 /.eslint/
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 74cef29 (20220518_fixtures)
 .env
-###< symfony/framework-bundle ###
->>>>>>> 7862ed1 (c)
-
-###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
 npm-debug.log
 yarn-error.log
-###< symfony/webpack-encore-bundle ###
-<<<<<<< HEAD
-<<<<<<< HEAD
 /.env
-###< symfony/framework-bundle ###
-
 .vscode
-=======
->>>>>>> 7862ed1 (c)
-=======
->>>>>>> 74cef29 (20220518_fixtures)
+

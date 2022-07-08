@@ -7,31 +7,30 @@
     .example-wrapper { margin: 1em auto; max-width: 80%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
-
-<div class=" pt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 example-wrapper">
+    <div class="flex justify-around items-center ">
+        <a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase hover:bg-gray-800 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('subCatalogue', {'slug': cat.catParent.slug}) }}">back to subCategory</a>
+    </div>
 
         {% for book in cat.books %}
-{# 
-            <a  href='{{path('book',{"slug":book.slug})}}'>  
-                <h1 class=' text-blue-400 underline hover:text-blue-800'>{{book.title}}</h1>
-            </a> #}
-            <div class="  p-4">
-                <a href='{{path('book',{"slug":book.slug}) }}'>
-                    <div  class="flex items-center cursor-pointer">
-                        <img class="w-32 h-32 rounded-full m-0 border-4 border-white" src="/uploads/images/{{book.photo}}">
-                        <h3  class="mx-2">{{book.title}}</h3>
-                    </div>
-                </a>
-            </div>
-            
 
+            <div class="sm:flex sm:justify-start justify-center items-center  p-5 m-1 bg-white rounded-md shadow-sm hover:shadow-md hover:shadow-blue-200 transition-all duration-300 example-wrapper ">
+                <div class="flex cursor-pointer justify-center items-center">
+                    <a href='{{path('book',{"slug":book.slug}) }}'><img class=" justify-center items-center w-32 h-auto m-0 border-4 border-white" src="/uploads/images/{{book.photo}}"></a>
+                </div>
+                <div class="ml-3 cursor-default sm:text-base text-sm justify-center items-center ">
+                    <h3 class="sm:text-lg text-base text-blue-500 hover:text-blue-800 cursor-pointer sm:block  flex justify-center items-center"><a href='{{path('book',{"slug":book.slug}) }}'>{{book.title}}</a></h3>
+                    <span class=" sm:text-lg text-base text-red-400 sm:block flex justify-center items-center">{{book.price}} €</span>
+                    <p class="text-gray-700 sm:text-base text-sm sm:block flex justify-center items-center">{{book.author}}</p>
+                    <p colspan='2' class='sm:block flex justify-center items-center sm:mt-3'><a class=' sm:text-base text-xs sm:px-4 px-1 py-2 mt-4 bg-blue-400 border border-transparent rounded-md sm:font-semibold text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150' href="{{ path('add_panier', {'id': book.id}) }}">add to cart</a></p>
+
+                </div>
+            </div>
+       
 
         {% endfor %}
-        </div>
+         </div>
+    </div>
 
-        <div class="flex justify-around items-center mb-5 ">
-            <a class="flex justify-center items-center px-4 py-2 m-10  bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-800 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_catalogue') }}">back to subCategory</a>
-        </div>
-</div>
+
 {% endblock %}
 

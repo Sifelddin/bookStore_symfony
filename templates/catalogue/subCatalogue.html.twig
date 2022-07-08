@@ -8,28 +8,29 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class=" pt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 example-wrapper">
+
+    <div class="flex justify-around mb-5 ">
+        <a class="justify-center items-center px-4 py-2 mt-4 sm:text-sm text-xs  bg-gray-700 border border-transparent rounded-md font-semibold  text-white uppercase tracking-widest hover:bg-gray-800 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_catalogue') }}">back to category</a>
+    </div>
+
+    <div class=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 example-wrapper">
 
         {% for category in categories %}
 
-           {# <a  href='{{path('books',{"slug":category.slug}) }}'>  <h1 class=' text-blue-400 underline hover:text-blue-800'>{{category.name}}</h1></a> #}
-     
-            <div class="  p-4">
-                <a href='{{path('books',{"slug":category.slug}) }}'>
-                    <div  class="flex items-center cursor-pointer">
-                        <img class="w-32 h-32 rounded-full m-0 border-4 border-white" src="/uploads/images/{{category.photo}}">
-                        <h3  class="mx-2">{{category.name}}</h3>
-                    </div>
-                </a>
-            </div>
-            
+        {# <a  href='{{path('books',{"slug":category.slug}) }}'>  <h1 class=' text-blue-400 underline hover:text-blue-800'>{{category.name}}</h1></a> #}
+
+        <div class="sm:px-10 px-auto py-5 md:justify-start justify-center items-center">
+            <a href='{{path('books',{"slug":category.slug}) }}'>
+                <div  class="flex md:flex-row flex-col items-center justify-center md:justify-start cursor-pointer">
+                    <img class="sm:w-32 sm:h-32 w-24 h-24 rounded-full m-0 border-4 border-white" src="/uploads/images/{{category.photo}}">
+                    <h3  class="mx-2 sm:text-base text-center text-sm">{{category.name}}</h3>
+                </div>
+            </a>
+        </div>
+                
 
 
         {% endfor %}
-        </div>
-
-        <div class="flex justify-around items-center mb-5 ">
-            <a class="flex justify-center items-center px-4 py-2 m-10  bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-800 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_catalogue') }}">back to category</a>
         </div>
 </div>
 {% endblock %}

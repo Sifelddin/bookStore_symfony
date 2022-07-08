@@ -38,24 +38,30 @@ class PanierController extends AbstractController
     #[Route('/panier/add/{id}', name: 'add_panier')]
     public function add($id, Request $request, Book $book){
         $session = $request->getSession();
-
-
-      //  $test = $request->attributes->get('_route');
-        //dd($book);
-
-
         $panier = $session->get('panier',[]);
-
         if(!empty($panier[$id])){
             $panier[$id]++;
         }else{
             $panier[$id]=1;
         }
-    
-        $session->set('panier',$panier);
-       // dd($session->get('panier'));
+  
 
-       return $this->redirectToRoute("book",['slug'=>$book->getSlug()]);
+
+        $session->set('panier',$panier);
+       return $this->redirect($request->headers->get('referer'));
+    }
+
+    #[Route('/panier/add2/{id}', name: 'add_panier2')]
+    public function add2($id, Request $request, Book $book){
+        $session = $request->getSession();
+        $panier = $session->get('panier',[]);
+        if(!empty($panier[$id])){
+            $panier[$id]++;
+        }else{
+            $panier[$id]=1;
+        }
+        $session->set('panier',$panier);
+       return $this->redirectToRoute("books",['slug'=>$book->getCategory()]);
     }
 
     #[Route('/panier/remove/{id}', name: 'remove_panier')]
@@ -78,8 +84,11 @@ class PanierController extends AbstractController
 
         $panier = $session->get('panier',[]);
 
-        if(!empty($panier[$id])){
+        if($panier[$id] >1){
             $panier[$id]--;
+        }
+        else{
+            unset($panier[$id]);
         }
 
         $session->set('panier',$panier);

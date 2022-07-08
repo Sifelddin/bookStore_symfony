@@ -1,73 +1,33 @@
-{% extends 'admin.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Book
 {% endblock %}
 
 {% block body %}
-	<div class="min-h-fit  sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 col-span-4">
-		<div class="flex flex-col  mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg m-10">
-			<div class="grid grid-cols-2">
-				<table class="divide-y divide-gray-200 col-span-1">
-					<tbody>
-						<tr>
-							<th class='text-left uppercase'>Id :</th>
-							<td class='text-left'>{{ book.id }}</td>
-						</tr>
-						<tr>
-							<th class='text-left uppercase'>Title :</th>
-							<td class='text-left'>{{ book.title }}</td>
-						</tr>
-						<tr>
-							<th class='text-left uppercase'>Slug :</th>
-							<td class='text-left'>{{ book.slug }}</td>
-						</tr>
-						<tr>
-							<th class='text-left uppercase'>editor :</th>
-							<td class='text-left'>{{ book.editor }}</td>
-						</tr>
-						<tr>
-							<th class='text-left uppercase'>author :</th>
-							<td class='text-left'>{{ book.author }}</td>
-						</tr>
-						<tr>
-							<th class='text-left uppercase'>
-								Parent Category:</th>
-							<td class='text-left'>{{ book.category.catParent }}</td>
-						</tr>
-						<tr>
-							<th class='text-left uppercase'>Category :</th>
-							<td class='text-left'>{{ book.category }}</td>
-						</tr>
-						<tr>
-							<th class='text-left uppercase'>Supplier :</th>
-							<td class='text-left'>{{ book.supplier }}</td>
-						</tr>
-						<tr>
-							<th class='text-left uppercase'>Price :</th>
-							<td class='text-left'>{{ book.price ? book.price : '' }}</td>
-						</tr>
-						<tr>
-							<th colspan='2' class='justify-center items-center mt-5'><a class='px-4 py-2 mt-4 bg-blue-400 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150' href="{{ path('add_panier', {'id': book.id}) }}">add to cart</a></th>
-						</tr>
-						<tr>
-            				<th colspan='2' class='justify-center items-center mt-5'><a class=" px-4 py-2  bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-800 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('books', {'slug': slug}) }}">back to books</a></th>
-						</tr>
-						
-					</tbody>
-				</table>
-				<div class="flex flex-col col-span-1">
-					<img src={{ asset('uploads/images/' ~ book.photo)}} alt={{ book.photo }}>
-					<p>Description :
-						<span>{{book.Description}}</span>
-					</p>
+	<div class='pt-4'>
+		<div class=" min-h-fit sm:justify-center items-center md:pt-6 bg-gray-100 col-span-4">
+			<div class=" md:px-10 md:py-4 bg-white shadow-md overflow-hidden rounded-lg md:m-10 mx-3 md:mt-6 mt-0 mb-3">
+				<div class="grid grid-cols-1 md:grid-cols-3 ">
+					<div class="md:justify-start justify-center md:items-start items-center flex flex-col mt-5  col-span-1 md:mx-0 mx-10">
+						<div>
+							<img class='md:w-auto w-64' src={{ asset('uploads/images/' ~ book.photo)}} alt={{ book.photo }}>
+						</div>
+						<div class="col-span-1">
+							<p class='md:m-4 my-3 font-bold'>{{ book.title }}</p>
+							<p class='md:m-4 my-3'>by <span class='font-bold'>{{ book.author }}</span></p>
+							<p class='md:m-4 my-3'>{{ book.price ? book.price : '' }} €</p>
+						</div>
+					</div>
+					<div class="mx-10 flex flex-col col-span-2">
+						<p class='md:mx-4 md:mt-10 mt-5 font-bold'>Description: <br></p><p class='md:mx-10 mx-2'>{{book.Description}}</p>				
+						</p>
+					</div>
+				</div>
+					<div class="md:flex justify-around items-center mb-5 col-span-2">
+						<p colspan='2' class='flex justify-center items-center mt-5'><a class='px-4 py-2 mt-4 bg-blue-400 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150' href="{{ path('add_panier', {'id': book.id}) }}">add to cart</a></p>
+						<p colspan='2' class='flex justify-center items-center mt-5'><a class=" px-4 py-2 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-800 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('books', {'slug': slug}) }}">back to books</a></p>
+
 				</div>
 			</div>
-			<div class='flex mt-10'>
-				{# <a class="flex justify-center items-center px-4 py-2 mt-4 bg-gray-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="{{ path('app_book_index') }}">back to list</a> #}
-
-
-				{# {{ include('book/_delete_form.html.twig') }} #}
-			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}

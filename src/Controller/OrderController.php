@@ -47,7 +47,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/summary', name: 'app_summary')]
-    public function summary(Request $request, SessionInterface $session, BookRepository $bookRepository): Response
+    public function summary(SessionInterface $session, BookRepository $bookRepository): Response
     {
 
         $order = $session->get('order'); 
@@ -73,8 +73,8 @@ class OrderController extends AbstractController
     }
 
 
-    #[Route('/test', name: 'new_order')]
-    public function test(SessionInterface $session, OrderRepository $orderRepository,BookOrderRepository $bookOrderRepository,BookRepository $bookRepository ): Response
+    #[Route('/commande', name: 'new_order')]
+    public function commande(SessionInterface $session, OrderRepository $orderRepository,BookOrderRepository $bookOrderRepository,BookRepository $bookRepository ): Response
     {
 
         $order = $session->get('order'); 

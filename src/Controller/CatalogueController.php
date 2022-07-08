@@ -9,7 +9,7 @@ use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/catalogue')]
 class CatalogueController extends AbstractController
@@ -48,24 +48,14 @@ class CatalogueController extends AbstractController
 
     
     #[Route('/{slug}/books/', name: 'books')]
-    public function books(Category $cat): Response
+    public function books(Category $cat,Request $request): Response
     {
-        // $category = $doctrine->getRepository(Category::class)->find($cat);
 
-        // foreach( $cat->getBooks() as $v) {
-
-        // }
-        // dd($cat);
-       
-        // $id = $book->getId();
-
-        //dd(  $categories= $categoriesRepository->isParent($id));
-        // $books= $bookRepository->findAll();
-
+        // $path=($request->getPathInfo());
+        // //dd($path);
 
         return $this->render("catalogue/books.html.twig",[
             'cat' => $cat
-           
         ]);
     }
 
@@ -75,7 +65,7 @@ class CatalogueController extends AbstractController
     
 
     $slug =$catRepo->find($book->getCategory()->getId())->getSlug();
-   // dd($slug);
+    // dd($slug);
 
 
         return $this->render("catalogue/show.html.twig",[
