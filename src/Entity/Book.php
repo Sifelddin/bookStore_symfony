@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity('title', message: 'the title should be unique')]
 #[
     ApiResource(
+        attributes: ["pagination_items_per_page" => 5],
         collectionOperations: ["get" => ['normalization_context' => ['groups' => 'book:list']]],
         itemOperations: ["get" => [
             'normalization_context' => ['groups' => 'book:item']
