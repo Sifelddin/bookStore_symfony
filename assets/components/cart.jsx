@@ -5,8 +5,6 @@ import { TiDeleteOutline } from 'react-icons/ti';
 
 export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
 
-
-
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(5);
 
