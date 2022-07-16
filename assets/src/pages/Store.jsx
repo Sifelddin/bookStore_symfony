@@ -1,38 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Cats } from './cats';
-import { SubCats } from './subCats';
-import { Books } from './books';
-import Header from './header';
-import { Cart } from './cart';
-import fetchData from './hooks';
-import NavLink from './uis/NavLink';
+import Categories from '../layouts/Categories';
+import SubCategories from '../layouts/SubCategories';
+import { Books } from '../layouts/books';
+import Header from '../layouts/header';
+import { Cart } from '../layouts/cart';
+import NavLink from '../components/uis/NavLink';
+import { useAuth } from '../contexts/OrderContext';
 
-const App = () => {
-  const [user, setUser] = useState({ loading: true, data: null });
+const Store = () => {
   const [catParent, setCatParent] = useState(null);
   const [catBooks, setCatBooks] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const [cartList, setCartList] = useState(
     JSON.parse(localStorage.getItem('SHOPPING-CART')) || [],
   );
-  const [order, setOrder] = useState(localStorage.getItem('ORDER') || null);
-  console.log(order);
-  useEffect(() => {
-    if (order) {
-      let status = fetchData('/api/me', setUser);
-      status.then((respStatus) => {
-        respStatus === 200 ||
-          (localStorage.removeItem('ORDER'), setOrder(null));
-      });
-    }
-  }, []);
-
   useEffect(() => {
     localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList));
     cartList.length > 0 ||
       (localStorage.removeItem('SHOPPING-CART'),
       localStorage.removeItem('ORDER'));
   }, [cartList]);
+  const order = localStorage.getItem('ORDER');
+
+  const { loading, data } = useAuth();
+  if (!loading) {
+    data || localStorage.removeItem('ORDER');
+  }
 
   const selectCat = (e) => {
     setCatParent(e);
@@ -45,16 +38,16 @@ const App = () => {
         <Header show={setShowCart} cartList={cartList} />
         <div className='p-2 xl:p-0'>
           {cartList.length > 0 && (
-            <NavLink link={'/ordering'}>ordering </NavLink>
+            <NavLink link={'/ordering'}>ordering {'>>'} </NavLink>
           )}
-          {order && <NavLink link={'/placeorder'}> summary </NavLink>}
+          {order && <NavLink link={'/placeorder'}> summary {'>>'} </NavLink>}
         </div>
         <div className='flex flex-col lg:grid lg:grid-cols-4 lg:gap-2  mx-auto '>
           <div className='md:col-span-1 order-1 lg:order-3'>
-            <Cats select={selectCat} />
+            <Categories select={selectCat} />
           </div>
           <div className='md:col-span-3 flex flex-col order-2'>
-            <SubCats catParent={catParent} setCatBooks={setCatBooks} />
+            <SubCategories catParent={catParent} setCatBooks={setCatBooks} />
             <Books
               catBooks={catBooks}
               cartList={cartList}
@@ -73,4 +66,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Store;

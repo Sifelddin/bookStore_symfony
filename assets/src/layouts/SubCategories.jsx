@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import fetchData from './hooks';
-import Pagination from './Pagination';
-import Spinner from './Spinner';
+import fetchData from '../hooks';
+import Pagination from '../components/Pagination';
+import Spinner from '../components/Spinner';
 
-export const SubCats = ({ catParent, setCatBooks }) => {
+const SubCategories = ({ catParent, setCatBooks }) => {
   const [subCategories, setSubCategories] = useState({
     loading: true,
     data,
@@ -14,12 +13,15 @@ export const SubCats = ({ catParent, setCatBooks }) => {
 
   useEffect(() => {
     if (catParent) {
-        fetchData(`api/categories?page=1&catParent.name=${catParent.name}`,setSubCategories)
+      fetchData(
+        `api/categories?page=1&catParent.name=${catParent.name}`,
+        setSubCategories,
+      );
     }
   }, [catParent]);
   useEffect(() => {
     if (pageUrl) {
-      fetchData(pageUrl,setSubCategories)
+      fetchData(pageUrl, setSubCategories);
     }
   }, [pageUrl]);
 
@@ -44,12 +46,14 @@ export const SubCats = ({ catParent, setCatBooks }) => {
     return (
       <div className=' w-full flex justify-center items-center text-lg uppercase'>
         {' '}
-        <h1 className='text-base sm:text-xl'>recently published books in the list below</h1>
+        <h1 className='text-base sm:text-xl'>
+          recently published books in the list below
+        </h1>
       </div>
     );
   }
   if (loading) {
-    return ( <Spinner /> ); 
+    return <Spinner />;
   } else {
     let catsClasses =
       'grid md:grid-cols-4 p-2 mt-2 w-full grid-cols-2 sm:grid-cols-3';
@@ -58,7 +62,7 @@ export const SubCats = ({ catParent, setCatBooks }) => {
     }
 
     return (
-      <div className='p-1 md:pt-2 xl:p-3 bg-orange-50 my-2 shadow-md'>
+      <div className='p-1 md:pt-2 xl:p-3 bg-stone-50 my-2 shadow-md'>
         <div>
           <span className='uppercase text-gray-500 p-4 text-sm sm:text-base'>
             total subCategories of {catParent.name} :{' '}
@@ -85,8 +89,10 @@ export const SubCats = ({ catParent, setCatBooks }) => {
             })}
           </div>
         </div>
-        <Pagination data={data} setPageUrl={setPageUrl}/>
+        <Pagination data={data} setPageUrl={setPageUrl} />
       </div>
     );
   }
 };
+
+export default SubCategories;

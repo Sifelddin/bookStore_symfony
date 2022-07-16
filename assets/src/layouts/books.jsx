@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import fetchData, { onAdd } from './hooks';
-import Pagination from './Pagination';
-import Spinner from './Spinner';
+import fetchData, { onAdd } from '../hooks';
+import Pagination from '../components/Pagination';
+import Spinner from '../components/Spinner';
 
 export const Books = ({ catBooks, cartList, setCartList }) => {
   const [books, setBooks] = useState({ loading: true, data });
@@ -38,7 +38,7 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
     }
 
     return (
-      <div className=' bg-orange-50 my-2 pt-2 shadow-md rounded-md'>
+      <div className=' bg-stone-50 my-2 pt-2 shadow-md rounded-md'>
         {catBooks && (
           <span className='uppercase text-gray-500 p-4 text-sm sm:text-base'>
             total books of {catBooks.name} category :{' '}
@@ -49,7 +49,7 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
           {data['hydra:member'].map((book) => {
             return (
               <div
-                className='flex items-center  m-1 p-1 md:p-3 md:m-3 bg-white rounded-md shadow-sm hover:shadow-md hover:shadow-blue-200 transition-all duration-300'
+                className='flex items-center shadow-md m-1 p-1 md:p-3 md:m-3 bg-white rounded-md  hover:shadow-md hover:shadow-blue-200 transition-all duration-300'
                 key={book.id}>
                 <div className='mr-2 w-24 h-auto '>
                   <Link to={`book/${book.slug}/${book.id}`}>

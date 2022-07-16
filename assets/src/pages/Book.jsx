@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import MDate from 'mini-date-format';
-import { Link ,useParams} from 'react-router-dom';
-import Spinner from './Spinner';
-import fetchData,{onAdd} from './hooks';
-
+import { Link, useParams } from 'react-router-dom';
+import Spinner from '../components/Spinner';
+import fetchData, { onAdd } from '../hooks';
 
 const Book = () => {
   const { id } = useParams();
@@ -13,7 +12,7 @@ const Book = () => {
   );
 
   useEffect(() => {
-      fetchData(`/api/books/${id}`,setBook)
+    fetchData(`/api/books/${id}`, setBook);
   }, []);
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const Book = () => {
             <div className='md:grid md:grid-cols-2 md:gap-2 flex flex-col items-center justify-center w-full overflow-hidden lg:overflow-auto'>
               <div className='md:col-span-1 md:self-center pb-8 md:p-0'>
                 <img
-                  className=' md:object-center md:w-60 w-52 shadow-md ' 
+                  className=' md:object-center md:w-60 w-52 shadow-md '
                   src={'/uploads/images/' + data.photo}
                 />
                 <div>
@@ -58,7 +57,7 @@ const Book = () => {
                   </p>
                 </div>
               </div>
-              <div className='mx-auto col-span-1 text-center overflow-y-scroll md:overflow-auto' >
+              <div className='mx-auto col-span-1 text-center overflow-y-scroll md:overflow-auto'>
                 <div className='p-1 xl:p-2  border-none'>
                   <h2 className='text-center text-base xl:text-2xl font-semibold'>
                     {' '}
@@ -67,7 +66,9 @@ const Book = () => {
                   <br />
                 </div>
                 <div className=''>
-                <p className='text-left text-sm xl:text-base '>{data.description}</p>
+                  <p className='text-left text-sm xl:text-base '>
+                    {data.description}
+                  </p>
                 </div>
               </div>
             </div>
@@ -79,7 +80,7 @@ const Book = () => {
               </Link>
 
               <button
-                onClick={() => onAdd(data,setCartList, cartList)}
+                onClick={() => onAdd(data, setCartList, cartList)}
                 className=' flex justify-center items-center px-4 py-2 mt-4 bg-green-400 border border-transparent rounded-md font-semibold text-xs md:text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
                 Add To Cart
               </button>

@@ -1,12 +1,11 @@
 import React from 'react';
+import LinkSpan from './LinkSpan';
 
 const NavLink = ({ link, children }) => {
   console.log(link);
   return (
-    <a
-      className='underline text-gray-700 hover:text-black mx-2 p-1'
-      href={link}>
-      {children}
+    <a href={link}>
+      <LinkSpan> {children}</LinkSpan>
     </a>
   );
 };

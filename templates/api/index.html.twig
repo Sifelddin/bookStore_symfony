@@ -18,11 +18,12 @@
 	</head>
 	<body>
 		{{ include('components/header.html.twig') }}
-		<main class='bg-gray-100 min-h-screen'> {% block body %}
-		<div id="root"></div>
-		{% endblock %}
-			</main>
-			{{ include("components/footer.html.twig") }}
+		<main class='bg-slate-50 min-h-screen'>
+			{% block body %}
+				<div id="root"></div>
+			{% endblock %}
+		</main>
+		{{ include("components/footer.html.twig") }}
 
-		</body>
-	</html>
+	</body>
+</html>

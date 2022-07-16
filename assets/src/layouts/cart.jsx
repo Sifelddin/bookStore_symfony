@@ -1,25 +1,22 @@
-import React, { useState, useRef } from 'react';
-import { onAdd, onRemove, deleteBook } from './hooks';
-import CartPagination from './CartPagination' ;
+import React, { useState } from 'react';
+import {
+  onAdd,
+  onRemove,
+  deleteBook,
+  globalTotal,
+  taxTotal,
+  bookTotal,
+} from '../hooks';
+import CartPagination from '../components/CartPagination';
 import { TiDeleteOutline } from 'react-icons/ti';
 
 export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
-
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(5);
 
-   
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentList = cartList.slice(indexOfFirstBook, indexOfLastBook);
-
-
-  const globalTotal = cartList.reduce(
-    (a, c) => a + c.qty * c.price * (1 + 10 / 100),
-    0,
-  );
-  const bookTotal = (book) => book.qty * book.price * (1 + 10 / 100);
-  const taxTotal = (book) => (book.qty * book.price * 10) / 100;
 
   let bg =
     'fixed top-0 right-0 left-0 bottom-0 h-screen w-screen bg-gray-700/75 transition-all ease-in-out duration-300';
@@ -116,26 +113,28 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                           </td>
                           <td className='p-1 sm:p-2 table-cell'>
                             <div className='flex items-center justify-between '>
-                            <button
-                              onClick={() => onAdd(book, setCartList, cartList)}
-                              className='px-2 sm:px-3 py-1  bg-green-700 border border-transparent rounded-md font-semibold text-white hover:bg-green-900 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 text-xs sm:text-sm'>
-                              +
-                            </button>{' '}
-                            <button
-                              onClick={() =>
-                                onRemove(book, setCartList, cartList)
-                              }
-                              className='px-2 sm:px-3 py-1 bg-orange-700 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-orange-900 active:bg-orange-900 focus:outline-none focus:border-orange-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 text-xs sm:text-sm'>
-                              -
-                            </button>
-                            <span
-                              onClick={() =>
-                                deleteBook(book.id, setCartList, cartList)
-                              }
-                              className='text-3xl cursor-pointer text-red-500 hover:text-red-700 mx-1 '>
-                              <TiDeleteOutline></TiDeleteOutline>
-                            </span>
-                          </div>
+                              <button
+                                onClick={() =>
+                                  onAdd(book, setCartList, cartList)
+                                }
+                                className='px-2 sm:px-3 py-1  bg-green-700 border border-transparent rounded-md font-semibold text-white hover:bg-green-900 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 text-xs sm:text-sm'>
+                                +
+                              </button>{' '}
+                              <button
+                                onClick={() =>
+                                  onRemove(book, setCartList, cartList)
+                                }
+                                className='px-2 sm:px-3 py-1 bg-orange-700 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-orange-900 active:bg-orange-900 focus:outline-none focus:border-orange-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 text-xs sm:text-sm'>
+                                -
+                              </button>
+                              <span
+                                onClick={() =>
+                                  deleteBook(book.id, setCartList, cartList)
+                                }
+                                className='text-3xl cursor-pointer text-red-500 hover:text-red-700 mx-1 '>
+                                <TiDeleteOutline></TiDeleteOutline>
+                              </span>
+                            </div>
                           </td>
                         </tr>
                       );
@@ -149,24 +148,31 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                     Total :
                   </span>
                   <span className='text-sm sm:text-lg'>
-                    {globalTotal.toFixed(2)}€
+                    {globalTotal(cartList).toFixed(2)}€
                   </span>
                 </div>
               </>
             )}
-          <CartPagination currentPage={currentPage} cartList={cartList} indexOfFirstBook={indexOfFirstBook} indexOfLastBook={indexOfLastBook} setCurrentPage={setCurrentPage} />
+            <CartPagination
+              currentPage={currentPage}
+              cartList={cartList}
+              indexOfFirstBook={indexOfFirstBook}
+              indexOfLastBook={indexOfLastBook}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         </div>
 
         <div className='p-4 flex justify-around items-center border-gray-200'>
           {cartList.length > 0 && (
-            <button className='flex justify-center items-center px-2 py-1 md:px-4 md:py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'>
-              <a href='/ordering'> ordering</a>{' '}
-            </button>
+            <a
+              href='/ordering'
+              className='flex justify-center items-center px-2 py-1 md:px-4 md:py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit'>
+              ordering
+            </a>
           )}
           <button
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               setShowCart(false);
             }}
             className='flex justify-center items-center px-2 py-1 md:px-4 md:py-2  bg-gray-700 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150'>
