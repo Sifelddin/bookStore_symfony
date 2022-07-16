@@ -3,22 +3,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import CartPagination from '../components/CartPagination';
 import LinkSpan from '../components/uis/LinkSpan';
 import { postData } from '../hooks';
-import { useOrderStorage } from '../contexts/OrderContext';
-import { useBooksStorage } from '../contexts/OrderContext';
 
 const Summary = () => {
-  const books = useBooksStorage();
-  const order = useOrderStorage();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    books || navigate('../', { replace: true });
-    order || navigate('../ordering', { replace: true });
-  }, [order, books]);
-
+  //cart list pagination
   const [send, setSend] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage, setBooksPerPage] = useState(5);
+
+  // get data from localstorage
+  const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
+  const order = JSON.parse(localStorage.getItem('ORDER'));
+  const navigate = useNavigate();
+
+  //check 
+  useEffect(() => {
+    books || navigate('/', { replace: true });
+    order || navigate('/ordering', { replace: true });
+  }, [order, books]);
 
   const register = () => {
     if (order.isPrivate) {

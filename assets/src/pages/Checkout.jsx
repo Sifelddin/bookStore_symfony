@@ -3,20 +3,17 @@ import { useForm } from 'react-hook-form';
 import Spinner from '../components/Spinner';
 import ErrorSpan from '../components/uis/ErrorSpan';
 import Label from '../components/uis/Label';
-import {
-  useAuth,
-  useBooksStorage,
-  useOrderStorage,
-} from '../contexts/OrderContext';
+import { useAuth } from '../contexts/OrderContext';
 import { Link, useNavigate } from 'react-router-dom';
 import LinkSpan from '../components/uis/LinkSpan';
 import { inputDivClasses, inputfeildClasses } from '../hooks';
 
 const Checkout = () => {
   const { loading, data } = useAuth();
-  const books = useBooksStorage();
+  const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
+  const order = JSON.parse(localStorage.getItem('ORDER'));
   const navigate = useNavigate();
-  const order = useOrderStorage();
+
   useEffect(() => {
     if (!loading && order) {
       order.userClient !== data['@id'] && localStorage.removeItem('ORDER');
@@ -35,7 +32,7 @@ const Checkout = () => {
     OrderData.coef = data.Coef;
     OrderData.userClient = data['@id'];
     localStorage.setItem('ORDER', JSON.stringify(OrderData));
-    location.assign('/placeorder');
+    navigate('/placeorder');
   };
 
   // functions contain some validation rules

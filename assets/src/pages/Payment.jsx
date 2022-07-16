@@ -14,7 +14,7 @@ const Payment = () => {
   const [messageErr, setMessageErr] = useState(null);
   const [send, setSend] = useState(false);
   useEffect(() => {
-    order.isPrivate || navigate('../placeorder');
+    order?.isPrivate || navigate('../placeorder');
     if (books === null || order === null) {
       navigate('../');
     }
@@ -23,6 +23,7 @@ const Payment = () => {
   useEffect(() => {
     if (send) {
       postData('/api/orders', '/api/book_orders', order, books);
+      navigate('../');
     }
   }, [send]);
 

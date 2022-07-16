@@ -28,7 +28,7 @@ export const postData = (orderUrl, cartUrl, order, cartList) => {
       localStorage.removeItem('ORDER');
       localStorage.removeItem('SHOPPING-CART');
       alert('your order has been registered');
-      location.assign('/');
+      return true;
     })
     .catch((err) => console.log(err));
 };
