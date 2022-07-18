@@ -23,7 +23,7 @@ const Payment = () => {
   useEffect(() => {
     if (send) {
       postData('/api/orders', '/api/book_orders', order, books);
-      navigate('../');
+      navigate('/',{replace:true});
     }
   }, [send]);
 

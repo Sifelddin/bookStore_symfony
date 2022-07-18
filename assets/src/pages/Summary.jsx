@@ -31,6 +31,7 @@ const Summary = () => {
   useEffect(() => {
     if (send) {
       postData('/api/orders', '/api/book_orders', order, books);
+      navigate('/',{replace:true});
     }
   }, [send]);
 
