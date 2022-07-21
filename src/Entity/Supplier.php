@@ -9,10 +9,13 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ApiResource(
+    itemOperations: ['delete', 'put', 'get'],
     denormalizationContext: ['groups' => ['write:post']]
 )]
+#[UniqueEntity('contactName', message: 'contactName should be unique')]
 #[ORM\Entity(repositoryClass: SupplierRepository::class)]
 class Supplier
 {

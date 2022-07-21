@@ -19,9 +19,27 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity('name', message: 'category name should be unique')]
 #[
     ApiResource(
-        attributes: ["pagination_items_per_page" => 8],
-        collectionOperations: ["get" => ['normalization_context' => ['groups' => ['cat:list']]]],
-        itemOperations: ["get"]
+        collectionOperations: [
+            "get" => [
+                "pagination_items_per_page" => 8,
+                'normalization_context' => ['groups' => ['cat:list']]
+            ],
+            "electron" => [
+                'method' => 'get',
+                'path' => '/v2/categories',
+                'pagination_items_per_page' => 6,
+                'normalization_context' => ['groups' => ['cat:electron:list']]
+            ],
+            "all" => [
+                'method' => 'get',
+                'path' => '/v2/categories/all',
+                'paginationEnabled' => false,
+                'normalization_context' => ['groups' => ['cat:list']]
+            ],
+            "post"
+        ],
+        itemOperations: ["get", "delete", "put"],
+        denormalizationContext: ['groups' => ['cat:write']]
     ),
 ]
 // #[ApiFilter(SearchFilter::class, properties: ['catParent' => 'exact'])]
@@ -32,24 +50,24 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['cat:list'])]
+    #[Groups(['cat:list', 'cat:electron:list'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[Groups(['cat:list'])]
+    #[Groups(['cat:list', 'cat:electron:list', 'cat:write'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["name"])]
     private $slug;
 
-    #[Groups(['cat:list'])]
+    #[Groups(['cat:list', 'cat:electron:list', 'cat:write'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
-    #[Groups(['cat:list'])]
+    #[Groups(['cat:list', 'cat:electron:list', 'cat:write'])]
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategories')]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
     private $catParent;

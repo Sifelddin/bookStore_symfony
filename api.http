@@ -39,3 +39,7 @@ X-Requested-With: XMLHttpRequest
 "userClient": "2",
 "payMethod": "Bank Transfer"
 }
+
+###
+
+GET https://127.0.0.1:8000/api/v2/categories

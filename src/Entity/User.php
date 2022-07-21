@@ -4,10 +4,10 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use App\Controller\Api\Users\MeController;
 use ApiPlatform\Core\Action\NotFoundAction;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\MeController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -305,7 +305,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getCoef(): string
     {
-    
+
         return $this->Coef;
     }
 
