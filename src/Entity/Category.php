@@ -8,14 +8,19 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+
+
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[Vich\Uploadable]
 #[UniqueEntity('name', message: 'category name should be unique')]
 #[
     ApiResource(
@@ -67,11 +72,13 @@ class Category
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
+    #[Vich\UploadableField(mapping: 'category_image', fileNameProperty: 'photo')]
+    private ?File $imageFile = null;
+
     #[Groups(['cat:list', 'cat:electron:list', 'cat:write'])]
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategories')]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
     private $catParent;
-
 
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
     private $subCategories;
@@ -79,11 +86,31 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
     private $books;
 
+    #[Gedmo\Timestampable(on: "create")]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $createdAt;
+
+    #[Gedmo\Timestampable(on: "update")]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeInterface $updatedAt = null;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
         $this->subCategories = new ArrayCollection();
     }
+
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
 
     public function getId(): ?int
     {
@@ -108,7 +135,7 @@ class Category
         return $this->photo;
     }
 
-    public function setPhoto(string $photo): self
+    public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
 
@@ -195,6 +222,38 @@ class Category
                 $book->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of imageFile
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

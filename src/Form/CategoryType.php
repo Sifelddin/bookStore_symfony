@@ -6,12 +6,12 @@ use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CategoryType extends AbstractType
 
@@ -52,12 +52,11 @@ class CategoryType extends AbstractType
                 'required' => false
 
             ])
-            ->add('photo', FileType::class, [
+            ->add('imageFile', VichImageType::class, [
                 'attr' => array(
                     'class' => 'py-8 my-4',
                 ),
                 'label' => 'Category image',
-                'mapped' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',

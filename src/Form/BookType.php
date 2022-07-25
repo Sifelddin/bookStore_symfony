@@ -7,13 +7,12 @@ use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
@@ -65,7 +64,8 @@ class BookType extends AbstractType
             ->add('description', TextareaType::class, [
                 'attr' => [
                     'class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full ',
-                'rows' => '6'],
+                    'rows' => '6'
+                ],
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
                 'empty_data' => '',
                 'required' => false
@@ -121,11 +121,10 @@ class BookType extends AbstractType
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
                 'required' => false
             ])
-            ->add('photo', FileType::class, [
+            ->add('imageFile', VichImageType::class, [
                 'attr' => array(
                     'class' => 'py-8 my-4 cursor-pointer',
                 ),
-                'mapped' => false,
                 'label' => 'Book Image',
                 'constraints' => [
                     new File([
@@ -138,7 +137,10 @@ class BookType extends AbstractType
                 'required' => true,
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
                 'empty_data' => '',
-                'required' => false
+                'required' => false,
+                'download_link' => false,
+                'image_uri' => false,
+                'allow_delete' => false,
             ]);
     }
 

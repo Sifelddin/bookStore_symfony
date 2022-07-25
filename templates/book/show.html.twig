@@ -73,7 +73,7 @@
 					</tbody>
 				</table>
 				<div class="flex flex-col col-span-1">
-					<img src={{ asset('uploads/images/' ~ book.photo)}} alt={{ book.photo }}>
+					<img src={{ vich_uploader_asset(book)}} alt={{ book.title }}>
 					<p>Description :
 						<span>{{book.Description}}</span>
 					</p>

@@ -29,7 +29,7 @@
 									<tbody class="bg-white divide-y divide-gray-200">
 										{% for category in categories %}
 											<tr>
-												<td class="px-4 py-4 whitespace-nowrap inline-block h-40 w-40 rounded-full ring-2 ring-white "><img class=" h-full object-cover" src={{ asset('uploads/images/' ~ category.photo)}} alt={{ category.photo }}>
+												<td class="px-4 py-4 whitespace-nowrap inline-block h-40 w-40 rounded-full ring-2 ring-white "><img class=" h-full object-cover" src={{ vich_uploader_asset(category) }} alt={{ category.name }}>
 												</td>
 
 												<td class="px-2 py-2 whitespace-nowrap">{{ category.name }}</td>

@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ApiResource(
+    paginationItemsPerPage: 8,
     itemOperations: ['delete', 'put', 'get'],
     denormalizationContext: ['groups' => ['write:post']]
 )]

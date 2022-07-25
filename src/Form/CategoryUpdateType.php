@@ -5,9 +5,9 @@ namespace App\Form;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 
@@ -36,12 +36,12 @@ class CategoryUpdateType extends AbstractType
                 'empty_data' => ''
             ])
 
-            ->add('photo', FileType::class, [
+            ->add('imageFile', VichImageType::class, [
                 'attr' => array(
                     'class' => 'py-8 my-4',
                 ),
+
                 'label' => 'Category image',
-                'mapped' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -49,8 +49,11 @@ class CategoryUpdateType extends AbstractType
                         'mimeTypesMessage' => 'please upload a valide image'
                     ])
                 ],
-                'required' => false,
                 'label_attr' => ['class' => 'block font-normal text-base text-gray-700 mt-4'],
+                'required' => false,
+                'download_link' => false,
+                'image_uri' => false,
+                'allow_delete' => false,
 
             ]);
     }
@@ -59,6 +62,7 @@ class CategoryUpdateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Category::class,
+
         ]);
     }
 }
