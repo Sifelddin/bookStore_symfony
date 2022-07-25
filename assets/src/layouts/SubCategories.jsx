@@ -80,7 +80,7 @@ const SubCategories = ({ catParent, setCatBooks }) => {
                     className='w-14 h-14 2xl:w-16 2xl:h-16 rounded-full m-0 border-4 border-white '
                     ref={addToRefs}
                     onClick={(e) => addStyles(e)}
-                    src={'uploads/images/' + cat.photo}
+                    src={'images/categories/' + cat.photo}
                     alt={cat.title}
                   />
                   <h3 className='mx-1 text-sm 2xl:text-base'>{cat.name}</h3>

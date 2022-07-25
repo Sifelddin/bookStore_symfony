@@ -15,6 +15,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\Api\Categories\EmptyController;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
@@ -43,7 +44,31 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
             ],
             "post"
         ],
-        itemOperations: ["get", "delete", "put"],
+        itemOperations: ["get", "delete", "put",
+        'image' => [
+            'method' => 'POST',
+            'path'=> '/categories/{id}/image',
+            'controller' => EmptyController::class,
+            'openapi_context' => [
+                'requestBody' => [
+                    'content' => [
+                        'multipart/form-data' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'file' => [
+                                        'type' => 'string',
+                                        'format' => 'binary',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+         ],
+        ],
+        
         denormalizationContext: ['groups' => ['cat:write']]
     ),
 ]
@@ -73,6 +98,7 @@ class Category
     private $photo;
 
     #[Vich\UploadableField(mapping: 'category_image', fileNameProperty: 'photo')]
+    #[Groups(['cat:write'])]
     private ?File $imageFile = null;
 
     #[Groups(['cat:list', 'cat:electron:list', 'cat:write'])]

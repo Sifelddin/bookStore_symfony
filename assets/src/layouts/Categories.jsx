@@ -59,7 +59,7 @@ const Categories = ({ select }) => {
                     onClick={(e) => {
                       addStyles(e), select(cat);
                     }}
-                    src={'uploads/images/' + cat.photo}
+                    src={'images/categories/' + cat.photo}
                     alt={cat.title}
                   />
                   <h3 className='mx-2 text-sm xl:text-base'>{cat.name}</h3>

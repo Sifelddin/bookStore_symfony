@@ -23,14 +23,24 @@ services:
   #     $targetDirectory: '%images_directory%'
 
   App\OpenApi\OpenApiFactory:
-      decorates: 'api_platform.openapi.factory'
-      arguments: [ '@App\OpenApi\OpenApiFactory.inner' ]
-      autoconfigure: false
+    decorates: 'api_platform.openapi.factory'
+    arguments: ['@App\OpenApi\OpenApiFactory.inner']
+    autoconfigure: false
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
-json_request:
-    content_types:
-        - json
-        - jsonld
-        - someouthertype
 
+  App\EventListener\DeserializerListener:
+    tags:
+      - {
+          name: 'kernel.event_listener',
+          event: 'kernel.request',
+          method: onKernelRequest,
+          priority: 2,
+        }
+    decorates: 'api_platform.listener.request.deserialize'
+    autoconfigure: false
+json_request:
+  content_types:
+    - json
+    - jsonld
+    - someouthertype

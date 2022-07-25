@@ -55,8 +55,8 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
                   <Link to={`book/${book.slug}/${book.id}`}>
                     <img
                       className='cursor-pointer w-20 md:w-24 h-auto table-cell'
-                      src={'uploads/images/' + book.photo}
-                      alt={book.photo}
+                      src={'/images/books/' + book.photo}
+                      alt={book.title}
                     />{' '}
                   </Link>
                 </div>
