@@ -43,3 +43,12 @@ X-Requested-With: XMLHttpRequest
 ###
 
 GET https://127.0.0.1:8000/api/v2/categories
+
+###
+
+PUT https://127.0.0.1:8000/api/categories/18
+Content-Type: multipart/form-data
+
+{
+   
+}

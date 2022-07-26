@@ -7,6 +7,7 @@ const Pagination = ({data,setPageUrl}) => {
 
     const btnClasses =
     'flex justify-center items-center px-2 py-1 mt-2 cursor-pointer border border-transparent rounded-md font-medium text-sm text-gray-600 tracking-widest hover:underline active:text-gray-800  disabled:opacity-25 transition ease-in-out duration-150 ';
+   
 
   return (
     data['hydra:totalItems'] > data['hydra:member'].length  && (

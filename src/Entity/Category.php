@@ -42,23 +42,28 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
                 'paginationEnabled' => false,
                 'normalization_context' => ['groups' => ['cat:list']]
             ],
-            "post"
+            "post" => [
+                'denormalizationContext' => ['groups' => ['cat:write']]
+            ],
+
         ],
-        itemOperations: ["get", "delete", "put",
-        'image' => [
-            'method' => 'POST',
-            'path'=> '/categories/{id}/image',
-            'controller' => EmptyController::class,
-            'openapi_context' => [
-                'requestBody' => [
-                    'content' => [
-                        'multipart/form-data' => [
-                            'schema' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'file' => [
-                                        'type' => 'string',
-                                        'format' => 'binary',
+        itemOperations: [
+            "get" => ['normalizationContext' => ['groups' => ['cat:item']]], "delete",
+            'image' => [
+                'method' => 'POST',
+                'path' => '/categories/{id}/image',
+                'controller' => EmptyController::class,
+                'openapi_context' => [
+                    'requestBody' => [
+                        'content' => [
+                            'multipart/form-data' => [
+                                'schema' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'file' => [
+                                            'type' => 'string',
+                                            'format' => 'binary',
+                                        ],
                                     ],
                                 ],
                             ],
@@ -66,9 +71,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
                     ],
                 ],
             ],
-         ],
         ],
-        
+
         denormalizationContext: ['groups' => ['cat:write']]
     ),
 ]
@@ -86,14 +90,14 @@ class Category
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[Groups(['cat:list', 'cat:electron:list', 'cat:write'])]
+    #[Groups(['cat:list', 'cat:electron:list', 'cat:write', 'cat:item'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["name"])]
     private $slug;
 
-    #[Groups(['cat:list', 'cat:electron:list', 'cat:write'])]
+    #[Groups(['cat:list', 'cat:electron:list', 'cat:item'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
@@ -101,11 +105,12 @@ class Category
     #[Groups(['cat:write'])]
     private ?File $imageFile = null;
 
-    #[Groups(['cat:list', 'cat:electron:list', 'cat:write'])]
+    #[Groups(['cat:list', 'cat:electron:list', 'cat:write', 'cat:item'])]
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategories')]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
     private $catParent;
 
+    #[Groups(['cat:electron:list', 'cat:list'])]
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
     private $subCategories;
 
