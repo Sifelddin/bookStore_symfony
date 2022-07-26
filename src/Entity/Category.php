@@ -48,7 +48,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
         ],
         itemOperations: [
-            "get" => ['normalizationContext' => ['groups' => ['cat:item']]], "delete",
+            "get" => [
+                'normalization_context' => ['groups' => 'cat:item']
+                ]
+            , "delete",
             'image' => [
                 'method' => 'POST',
                 'path' => '/categories/{id}/image',
@@ -110,7 +113,7 @@ class Category
     #[ORM\JoinColumn(onDelete: "SET NULL")]
     private $catParent;
 
-    #[Groups(['cat:electron:list', 'cat:list'])]
+    #[Groups(['cat:electron:list', 'cat:list','cat:item'])]
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
     private $subCategories;
 
