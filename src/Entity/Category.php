@@ -28,30 +28,23 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         collectionOperations: [
             "get" => [
                 "pagination_items_per_page" => 8,
-                'normalization_context' => ['groups' => ['cat:list']]
             ],
             "electron" => [
                 'method' => 'get',
                 'path' => '/v2/categories',
                 'pagination_items_per_page' => 6,
-                'normalization_context' => ['groups' => ['cat:electron:list']]
             ],
             "all" => [
                 'method' => 'get',
                 'path' => '/v2/categories/all',
                 'paginationEnabled' => false,
-                'normalization_context' => ['groups' => ['cat:list']]
             ],
-            "post" => [
-                'denormalizationContext' => ['groups' => ['cat:write']]
-            ],
-
+            "post"
         ],
         itemOperations: [
             "get" => [
                 'normalization_context' => ['groups' => 'cat:item']
-                ]
-            , "delete",
+            ], "delete", "patch",
             'image' => [
                 'method' => 'POST',
                 'path' => '/categories/{id}/image',
@@ -76,7 +69,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
             ],
         ],
 
-        denormalizationContext: ['groups' => ['cat:write']]
+        denormalizationContext: ['groups' => ['cat:write']],
+        normalizationContext: ['groups' => ['cat:list']]
     ),
 ]
 // #[ApiFilter(SearchFilter::class, properties: ['catParent' => 'exact'])]
@@ -87,20 +81,20 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['cat:list', 'cat:electron:list'])]
+    #[Groups(['cat:list'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[Groups(['cat:list', 'cat:electron:list', 'cat:write', 'cat:item'])]
+    #[Groups(['cat:list', 'cat:write', 'cat:item'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["name"])]
     private $slug;
 
-    #[Groups(['cat:list', 'cat:electron:list', 'cat:item'])]
+    #[Groups(['cat:list', 'cat:item'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $photo;
 
@@ -108,15 +102,16 @@ class Category
     #[Groups(['cat:write'])]
     private ?File $imageFile = null;
 
-    #[Groups(['cat:list', 'cat:electron:list', 'cat:write', 'cat:item'])]
+    #[Groups(['cat:list', 'cat:write', 'cat:item'])]
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategories')]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
     private $catParent;
 
-    #[Groups(['cat:electron:list', 'cat:list','cat:item'])]
+    #[Groups(['cat:item'])]
     #[ORM\OneToMany(mappedBy: 'catParent', targetEntity: self::class)]
     private $subCategories;
 
+    #[Groups(['cat:item'])]
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
     private $books;
 
@@ -183,6 +178,7 @@ class Category
 
     public function setCatParent(?self $catParent): self
     {
+
         $this->catParent = $catParent;
 
         return $this;

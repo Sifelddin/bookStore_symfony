@@ -50,6 +50,10 @@ class DeserializerListener
             $context['object_to_populate'] = $populated;
         }
         $data = $request->request->all();
+        if (isset($data['catParent']) && $data['catParent'] === "null") {
+            $data['catParent'] = null;
+        }
+
         $files = $request->files->all();
         $object = $this->denormalizer->denormalize(array_merge($data, $files), $attributes['resource_class'], null, $context);
         $request->attributes->set('data', $object);
