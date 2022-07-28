@@ -23,10 +23,38 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[
     ApiResource(
         attributes: ["pagination_items_per_page" => 5],
-        collectionOperations: ["get" => ['normalization_context' => ['groups' => 'book:list']]],
-        itemOperations: ["get" => [
-            'normalization_context' => ['groups' => 'book:item']
-        ]]
+        collectionOperations: [
+            "get" => ['normalization_context' => ['groups' => 'book:list']], "post"
+        ],
+        itemOperations: [
+            "get" => [
+                'normalization_context' => ['groups' => 'book:item']
+            ], "delete",
+
+            'image' => [
+                'method' => 'POST',
+                'path' => '/books/{id}/image',
+                'controller' => EmptyController::class,
+                'openapi_context' => [
+                    'requestBody' => [
+                        'content' => [
+                            'multipart/form-data' => [
+                                'schema' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'file' => [
+                                            'type' => 'string',
+                                            'format' => 'binary',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        denormalizationContext: ['groups' => ["book:write"]]
     ),
 ]
 #[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'slug' => 'exact'])]
@@ -75,6 +103,7 @@ class Book
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['book:list', 'book:item'])]
     private $stock;
 
     #[Assert\NotBlank]
@@ -89,6 +118,7 @@ class Book
 
     #[ORM\Column(type: 'boolean')]
     #[ApiFilter(BooleanFilter::class)]
+    #[Groups(['book:list', 'book:item'])]
     private $published;
 
     #[Assert\NotBlank]
