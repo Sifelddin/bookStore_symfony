@@ -15,7 +15,7 @@ const Summary = () => {
   const order = JSON.parse(localStorage.getItem('ORDER'));
   const navigate = useNavigate();
 
-  //check 
+  //check
   useEffect(() => {
     books || navigate('/', { replace: true });
     order || navigate('/ordering', { replace: true });
@@ -30,8 +30,9 @@ const Summary = () => {
   };
   useEffect(() => {
     if (send) {
-      postData('/api/orders', '/api/book_orders', order, books);
-      navigate('/',{replace:true});
+      postData('/api/orders', order, books).then(() => {
+        navigate('/', { replace: true });
+      });
     }
   }, [send]);
 
@@ -136,7 +137,6 @@ const Summary = () => {
                       </th>
                     </tr>
                   </thead>
-
                   <tbody className='w-full'>
                     {currentBooks.map((book) => {
                       return (
@@ -144,7 +144,7 @@ const Summary = () => {
                           <td className='my-2 hidden sm:table-cell'>
                             <img
                               className=' border-white object-center h-24 w-20'
-                              src={'uploads/images/' + book.photo}
+                              src={'images/books/' + book.photo}
                             />
                           </td>
                           <td className='px-2 py-2 max-w-sm whitespace-pre-wrap '>

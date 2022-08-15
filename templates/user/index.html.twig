@@ -40,7 +40,7 @@
 												<td class="px-2 py-2">{{ user.email }}</td>
 												<td class="px-2 py-2">{{ user.phone }}</td>
 												<td class="px-2 py-2">{{ user.coef }}</td>
-												<td class="px-2 py-2">{{ user.private ? "yes" : user.private == false ? "no" : "" }}</td>
+												<td class="px-2 py-2">{{ user.private ? "yes" : user.private is null ? "null" : "no" }}</td>
 												<td class="px-2 py-2">
 													{% for role in user.roles %}
 														<span>{{role}}</span><br>

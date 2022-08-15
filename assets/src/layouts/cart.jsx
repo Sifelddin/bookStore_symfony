@@ -93,7 +93,7 @@ export const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                           <td className='hidden px-4 py-4 whitespace-nowrap md:table-cell h-28 w-28  rounded-full ring-2 ring-white '>
                             <img
                               className=' border-white h-full object-cover'
-                              src={'uploads/images/' + book.photo}
+                              src={'images/books/' + book.photo}
                             />
                           </td>
                           <td className='p-1 sm:p-2 text-sm sm:text-base'>

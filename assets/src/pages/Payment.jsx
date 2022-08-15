@@ -10,7 +10,6 @@ const Payment = () => {
   const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
   const order = JSON.parse(localStorage.getItem('ORDER'));
   const navigate = useNavigate();
-
   const [messageErr, setMessageErr] = useState(null);
   const [send, setSend] = useState(false);
   useEffect(() => {
@@ -22,8 +21,9 @@ const Payment = () => {
 
   useEffect(() => {
     if (send) {
-      postData('/api/orders', '/api/book_orders', order, books);
-      navigate('/',{replace:true});
+      postData('/api/orders', order, books).then(() => {
+        navigate('/', { replace: true });
+      });
     }
   }, [send]);
 
@@ -31,7 +31,6 @@ const Payment = () => {
     control,
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm();
 

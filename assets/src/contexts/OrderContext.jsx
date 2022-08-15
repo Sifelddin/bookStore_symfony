@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useMemo } from 'react';
 import fetchData from '../hooks';
 
 const authContext = React.createContext();
@@ -8,12 +8,14 @@ export const useAuth = () => {
 };
 
 const OrderContext = ({ children }) => {
-  const [user, setUser] = useState({ loading: true, data: null });
+  const [authUser, setAuthUser] = useState({ loading: true, data: null });
   useEffect(() => {
-    fetchData('/api/me', setUser);
+    fetchData('/api/me', setAuthUser);
   }, []);
 
-  
+  const user = useMemo(() => {
+    return authUser;
+  }, [authUser]);
 
   return <authContext.Provider value={user}>{children}</authContext.Provider>;
 };

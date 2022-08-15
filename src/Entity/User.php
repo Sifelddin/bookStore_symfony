@@ -10,11 +10,9 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;;
-
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -35,16 +33,20 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             'method' => 'get',
             'controller' => MeController::class,
             'read' => false,
-        ]
+        ],
+        'patch' => [
+            'denormalization_context' => ['groups' => ['patch:user']]
+        ],
+       
     ],
-    normalizationContext: ['groups' => ['read:User']]
+    normalizationContext: ['groups' => ['read:user']]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user"])]
     private $id;
 
     #[Assert\NotBlank]
@@ -52,13 +54,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user",'patch:user'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user"])]
     private $roles = [];
-
 
     #[ORM\Column(type: 'string')]
     private $password;
@@ -67,48 +68,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Regex('/\d+/', htmlPattern: false, match: false, message: "firstname does not have numbers",)]
     #[Assert\Length(min: 2, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
     #[ORM\Column(type: 'string', length: 50)]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user",'patch:user'])]
     private $firstname;
 
     #[Assert\NotBlank]
     #[Assert\Regex('/\d+/', htmlPattern: false, match: false, message: "lastname name does not have numbers")]
     #[Assert\Length(min: 2, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
     #[ORM\Column(type: 'string', length: 50)]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user",'patch:user'])]
     private $lastname;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user",'patch:user'])]
     private $address;
 
     #[Assert\NotBlank(message: 'zipcode field must be filled')]
     #[Assert\Regex('/^[0-9]{5}$/', match: true, message: "zipcode is not valid, please insert a valid zipcode ex: 76000",)]
     #[ORM\Column(type: 'string', length: 5)]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user",'patch:user'])]
     private $zipCode;
 
     #[Assert\NotBlank]
     #[Assert\Regex('/\d+/', match: false, htmlPattern: false, message: "city name does not have numbers",)]
     #[Assert\Length(min: 3, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
     #[ORM\Column(type: 'string', length: 50)]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user",'patch:user'])]
     private $city;
 
     #[Assert\NotBlank]
     #[Assert\Regex('/^0{1}[0-9]{9}$/', match: true, message: "phone numbre is not valid, please insert a valid phone number ex: 0660801097",)]
     #[ORM\Column(type: 'string', length: 10)]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user",'patch:user'])]
     private $phone;
 
 
     #[Assert\PositiveOrZero(message: "the coefficient should be positive")]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ["default" => 0])]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user"])]
     private $Coef;
 
     #[ORM\Column(type: 'boolean', nullable: true, options: ["default" => true])]
-    #[Groups(["read:User"])]
+    #[Groups(["read:user"])]
     private $private;
 
     #[ORM\OneToMany(mappedBy: 'userClient', targetEntity: Order::class)]

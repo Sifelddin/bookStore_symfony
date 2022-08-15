@@ -15,9 +15,30 @@ const openMenuBtn = document.getElementById('open_menu');
 const closeMenuBtn = document.getElementById('close_menu');
 const nav = document.getElementById('nav');
 
-openMenuBtn.addEventListener('click', () => {
+openMenuBtn?.addEventListener('click', () => {
   nav.classList.toggle('hidden');
 });
 closeMenuBtn.addEventListener('click', () => {
   nav.classList.toggle('hidden');
+});
+
+const user = document.getElementById('user');
+const userActions = document.getElementById('userActions');
+
+user?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (userActions.classList.contains('hidden')) {
+    userActions.classList.remove('hidden');
+    userActions.classList.add('block');
+  } else {
+    userActions.classList.add('hidden');
+    userActions.classList.remove('block');
+  }
+});
+
+document.addEventListener('click', () => {
+  if (userActions?.classList.contains('block')) {
+    userActions.classList.remove('block');
+    userActions.classList.add('hidden');
+  }
 });

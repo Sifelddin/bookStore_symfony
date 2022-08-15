@@ -1,4 +1,5 @@
 import axios from 'axios';
+import MDate from 'mini-date-format';
 
 const fetchData = async (url, callback) => {
   try {
@@ -10,29 +11,25 @@ const fetchData = async (url, callback) => {
   }
 };
 
-export const postData = (orderUrl, cartUrl, order, cartList) => {
-  axios
+export const postData = async (orderUrl, order, books) => {
+  order.isPrivate ? (order.paymentDate = MDate('YYYY-MM-DD')) : '';
+  order.bookOrders = books.map((book) => {
+    return Object.assign(
+      {},
+      { quantity: book.qty, unitPrice: book.price, book: book['@id'] },
+    );
+  });
+  return axios
     .post(orderUrl, order)
-    .then((res) => {
-      cartList.map((book) => {
-        axios
-          .post(cartUrl, {
-            quantity: book.qty,
-            unitPrice: book.price,
-            book: book['@id'],
-            order: res.data['@id'],
-          })
-          .then((res) => console.log(res.data))
-          .catch((err) => console.log(err));
-      });
+    .then(() => {
+      alert('your order has been registered successfully !');
       localStorage.removeItem('ORDER');
       localStorage.removeItem('SHOPPING-CART');
-      alert('your order has been registered');
-      return true;
     })
-    .catch((err) => console.log(err));
+    .catch((e) => {
+      alert('server error !'), console.log(e);
+    });
 };
-
 export default fetchData;
 
 export const onAdd = (book, setCartList, cartList) => {

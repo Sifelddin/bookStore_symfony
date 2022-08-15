@@ -5,17 +5,19 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[Vich\Uploadable]
@@ -71,7 +73,7 @@ class Book
     #[Assert\NotBlank]
     #[Assert\Length(min: 4, max: 255, minMessage: 'the title should be more than 4 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', 'read:order'])]
     private $title;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
@@ -114,6 +116,7 @@ class Book
     #[Assert\NotBlank]
     #[ORM\Column(type: 'date')]
     #[Groups(['book:list', 'book:item'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private $releaseDate;
 
     #[ORM\Column(type: 'boolean')]

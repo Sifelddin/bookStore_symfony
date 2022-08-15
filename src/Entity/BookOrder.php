@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ApiResource(
-    denormalizationContext: ["groups" => ['write:post']]
+    denormalizationContext: ["groups" => ['write:order']]
 )]
 class BookOrder
 {
@@ -20,23 +20,22 @@ class BookOrder
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['write:post'])]
+    #[Groups(['write:order','read:order'])]
     #[ORM\Column(type: 'integer')]
     private $quantity;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
     private $discount;
 
-    #[Groups(['write:post'])]
+    #[Groups(['write:order','read:order'])]
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private $unitPrice;
 
-    #[Groups(['write:post'])]
+    #[Groups(['write:order','read:order'])]
     #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: 'bookOrders')]
     #[ORM\JoinColumn(nullable: false)]
     private $book;
 
-    #[Groups(['write:post'])]
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'bookOrders')]
     #[ORM\JoinColumn(nullable: false)]
     private $order;
@@ -105,4 +104,6 @@ class BookOrder
 
         return $this;
     }
+
+
 }
