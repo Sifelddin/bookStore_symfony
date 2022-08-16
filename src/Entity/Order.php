@@ -20,11 +20,11 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ApiResource(
     paginationItemsPerPage: 5,
     security: 'is_granted("ROLE_USER")',
-    collectionOperations:['post','get' => [
-        'normalization_context' => ['groups' => ['read:list:orders']] 
+    collectionOperations: ['post', 'get' => [
+        'normalization_context' => ['groups' => ['read:list:orders']]
     ]],
     denormalizationContext: ['groups' => ["write:order"]],
-    normalizationContext:['groups' => ['read:order']]
+    normalizationContext: ['groups' => ['read:order']]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['userClient' => 'exact'])]
 class Order
@@ -32,42 +32,43 @@ class Order
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:order','read:list:orders'])]
+    #[Groups(['read:order', 'read:list:orders'])]
     private $id;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $shippedDate;
 
-    #[Groups(['write:order','read:order','read:list:orders'])]
+    #[Groups(['write:order', 'read:order', 'read:list:orders'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $shipAddress;
 
-    #[Groups(['write:order','read:list:orders','read:order'])]
+    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $shipCity;
 
-    #[Groups(['write:order','read:list:orders','read:order'])]
+    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
     #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $shipZipCode;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    #[Groups(['read:list:orders','write:order','read:order'])]
+    #[Groups(['read:list:orders', 'write:order', 'read:order'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private $paymentDate;
 
-    #[Groups(['write:order','read:list:orders','read:order'])]
+    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
     #[Assert\NotBlank()]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
     private $coef;
 
-    #[Groups(['write:order','read:list:orders','read:order'])]
+    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $billAddress;
 
-    #[Groups(['write:order','read:list:orders','read:order'])]
+    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
     #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $billZipCode;
 
-    #[Groups(['write:order','read:list:orders','read:order'])]
+    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $billCity;
 
@@ -81,18 +82,18 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private $userClient;
 
-    #[Groups(['write:order','read:order'])]
+    #[Groups(['write:order', 'read:order'])]
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $payMethod;
 
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Groups(["read:list:orders",'read:order'])]
+    #[Groups(["read:list:orders", 'read:order'])]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private $orderDate;
 
-    #[ORM\OneToMany(mappedBy: 'order', targetEntity: BookOrder::class , cascade:['persist','merge'])]
-    #[Groups(['write:order','read:order'])]
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: BookOrder::class, cascade: ['persist', 'merge'])]
+    #[Groups(['write:order', 'read:order'])]
     private $bookOrders;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: Delivery::class)]

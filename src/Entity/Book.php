@@ -73,7 +73,7 @@ class Book
     #[Assert\NotBlank]
     #[Assert\Length(min: 4, max: 255, minMessage: 'the title should be more than 4 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Groups(['book:list', 'book:item', 'read:order'])]
+    #[Groups(['book:list', 'book:item', 'read:order', "book:write"])]
     private $title;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
@@ -84,13 +84,14 @@ class Book
     #[Assert\NotBlank]
     #[Assert\Positive(message: "the price should be positive")]
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', "book:write"])]
     private $price;
 
     /**
      * This is not a mapped field of entity metadata, just a simple property.
      */
     #[Vich\UploadableField(mapping: 'book_image', fileNameProperty: 'photo')]
+    #[Groups(["book:write"])]
     private ?File $imageFile = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -99,39 +100,42 @@ class Book
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
-    #[Groups(['book:item'])]
+    #[Groups(['book:item', "book:write"])]
     private $description;
 
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', "book:write"])]
     private $stock;
 
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["book:write"])]
     private $stockAlert;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'date')]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', "book:write"])]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private $releaseDate;
 
     #[ORM\Column(type: 'boolean')]
     #[ApiFilter(BooleanFilter::class)]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', "book:write"])]
     private $published;
 
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["book:write"])]
     private $category;
 
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["book:write"])]
     private $supplier;
 
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookOrder::class)]
@@ -148,11 +152,11 @@ class Book
     #[ORM\Column(type: 'datetime_immutable')]
     private $updatedAt;
 
-    #[Groups(['book:item'])]
+    #[Groups(['book:item', "book:write"])]
     #[ORM\Column(type: 'string', length: 255)]
     private $editor;
 
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', "book:write"])]
     #[ORM\Column(type: 'string', length: 255)]
     private $author;
 
