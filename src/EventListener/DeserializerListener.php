@@ -49,13 +49,25 @@ class DeserializerListener
         if ($populated !== null) {
             $context['object_to_populate'] = $populated;
         }
+        $data = $this->convertedData($request);
+        $files = $request->files->all();
+        $object = $this->denormalizer->denormalize(array_merge($data, $files), $attributes['resource_class'], null, $context);
+        $request->attributes->set('data', $object);
+    }
+    private function convertedData(Request $request){
         $data = $request->request->all();
         if (isset($data['catParent']) && $data['catParent'] === "null") {
             $data['catParent'] = null;
         }
-
-        $files = $request->files->all();
-        $object = $this->denormalizer->denormalize(array_merge($data, $files), $attributes['resource_class'], null, $context);
-        $request->attributes->set('data', $object);
+        if (isset($data['stock'])) {
+          $data['stock'] = (int)$data['stock'];
+        }
+        if (isset($data['stockAlert'])) {
+          $data['stockAlert'] = (int)$data['stockAlert'];
+        }
+        if(isset($data['published'])){
+          $data['published'] = (bool)$data['published'];
+        }
+        return $data;
     }
 }

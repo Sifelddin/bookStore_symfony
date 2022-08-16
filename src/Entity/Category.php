@@ -87,7 +87,7 @@ class Category
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[Groups(['cat:list', 'cat:write', 'cat:item'])]
+    #[Groups(['cat:list', 'cat:write', 'cat:item','book:item'])]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]

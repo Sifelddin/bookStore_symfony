@@ -112,7 +112,7 @@ class Book
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["book:write"])]
+    #[Groups(["book:write",'book:item'])]
     private $stockAlert;
 
     #[Assert\NotBlank]
@@ -129,13 +129,13 @@ class Book
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["book:write"])]
+    #[Groups(["book:write","book:item"])]
     private $category;
 
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["book:write"])]
+    #[Groups(["book:write",'book:item'])]
     private $supplier;
 
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookOrder::class)]
@@ -146,10 +146,14 @@ class Book
 
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['book:item'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private $createdAt;
 
     #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['book:item'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private $updatedAt;
 
     #[Groups(['book:item', "book:write"])]
