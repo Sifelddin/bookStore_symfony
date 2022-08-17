@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Controller\Api\Categories\EmptyController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Serializer\Annotation\Context;
@@ -112,7 +113,7 @@ class Book
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["book:write",'book:item'])]
+    #[Groups(["book:write", 'book:item'])]
     private $stockAlert;
 
     #[Assert\NotBlank]
@@ -129,13 +130,13 @@ class Book
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["book:write","book:item"])]
+    #[Groups(["book:write", "book:item"])]
     private $category;
 
     #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["book:write",'book:item'])]
+    #[Groups(["book:write", 'book:item'])]
     private $supplier;
 
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookOrder::class)]

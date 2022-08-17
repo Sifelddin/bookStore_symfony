@@ -2,13 +2,12 @@
 
 namespace App\Controller\Api\Categories;
 
-class EmptyController {
+class EmptyController
+{
 
 
-    public function __invoke($data){
+    public function __invoke($data)
+    {
         return $data;
     }
-    
-        
-    
 }
