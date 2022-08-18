@@ -19,7 +19,6 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ORM\Table(name: '`order`')]
 #[ApiResource(
     paginationItemsPerPage: 5,
-    security: 'is_granted("ROLE_USER")',
     collectionOperations: ['post', 'get' => [
         'normalization_context' => ['groups' => ['read:list:orders']]
     ]],
@@ -32,8 +31,9 @@ class Order
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:order', 'read:list:orders'])]
+    #[Groups(['read:order', 'read:list:orders', 'read:user'])]
     private $id;
+
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $shippedDate;
@@ -51,7 +51,7 @@ class Order
     private $shipZipCode;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    #[Groups(['read:list:orders', 'write:order', 'read:order'])]
+    #[Groups(['read:list:orders', 'write:order', 'read:order', 'read:user'])]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private $paymentDate;
 
@@ -88,7 +88,7 @@ class Order
 
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Groups(["read:list:orders", 'read:order'])]
+    #[Groups(["read:list:orders", 'read:order', 'read:user'])]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     private $orderDate;
 

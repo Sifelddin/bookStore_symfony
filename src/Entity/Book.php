@@ -74,7 +74,7 @@ class Book
     #[Assert\NotBlank]
     #[Assert\Length(min: 4, max: 255, minMessage: 'the title should be more than 4 character long', maxMessage: 'the title should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Groups(['book:list', 'book:item', 'read:order', "book:write"])]
+    #[Groups(['book:list', 'book:item', 'read:order', "book:write", 'read:user'])]
     private $title;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
@@ -139,6 +139,7 @@ class Book
     #[Groups(["book:write", 'book:item'])]
     private $supplier;
 
+    #[Groups(['book:list'])]
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookOrder::class)]
     private $bookOrders;
 

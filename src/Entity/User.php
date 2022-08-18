@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Controller\Api\Users\MeController;
 use ApiPlatform\Core\Action\NotFoundAction;
 use Doctrine\Common\Collections\Collection;
@@ -12,20 +13,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;;
+
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[ApiResource(
-    security: 'is_granted("ROLE_USER")',
-    collectionOperations: [],
+
+    collectionOperations: [
+        "get"
+    ],
     itemOperations: [
         'get' => [
-            'controller' => NotFoundAction::class,
-            'openapi_context' => ['summary' => 'hidden'],
-            'read' => false,
-            'output' => false
+            'normalization_context' => ['groups' => ['read:user']]
         ],
         'me' => [
             'pagination_enabled' => false,
@@ -33,20 +36,23 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             'method' => 'get',
             'controller' => MeController::class,
             'read' => false,
+            ["security" => "is_granted('ROLE_USER')"],
         ],
         'patch' => [
-            'denormalization_context' => ['groups' => ['patch:user']]
+            'denormalization_context' => ['groups' => ['patch:user']],
+            ["security" => "is_granted('ROLE_USER')"],
         ],
-       
+
     ],
-    normalizationContext: ['groups' => ['read:user']]
+    normalizationContext: ['groups' => ['user:list']]
 )]
+#[ApiFilter(ExistsFilter::class, properties: ['private'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["read:user"])]
+    #[Groups(["read:user", 'user:list'])]
     private $id;
 
     #[Assert\NotBlank]
@@ -54,11 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(["read:user",'patch:user'])]
+    #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(["read:user"])]
+    #[Groups(["read:user", 'user:list'])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
@@ -68,50 +74,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Regex('/\d+/', htmlPattern: false, match: false, message: "firstname does not have numbers",)]
     #[Assert\Length(min: 2, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
     #[ORM\Column(type: 'string', length: 50)]
-    #[Groups(["read:user",'patch:user'])]
+    #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $firstname;
 
     #[Assert\NotBlank]
     #[Assert\Regex('/\d+/', htmlPattern: false, match: false, message: "lastname name does not have numbers")]
     #[Assert\Length(min: 2, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
     #[ORM\Column(type: 'string', length: 50)]
-    #[Groups(["read:user",'patch:user'])]
+    #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $lastname;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:user",'patch:user'])]
+    #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $address;
 
     #[Assert\NotBlank(message: 'zipcode field must be filled')]
     #[Assert\Regex('/^[0-9]{5}$/', match: true, message: "zipcode is not valid, please insert a valid zipcode ex: 76000",)]
     #[ORM\Column(type: 'string', length: 5)]
-    #[Groups(["read:user",'patch:user'])]
+    #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $zipCode;
 
     #[Assert\NotBlank]
     #[Assert\Regex('/\d+/', match: false, htmlPattern: false, message: "city name does not have numbers",)]
     #[Assert\Length(min: 3, max: 50, minMessage: '3 letters minmum please', maxMessage: '50 letters maximum please')]
     #[ORM\Column(type: 'string', length: 50)]
-    #[Groups(["read:user",'patch:user'])]
+    #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $city;
 
     #[Assert\NotBlank]
     #[Assert\Regex('/^0{1}[0-9]{9}$/', match: true, message: "phone numbre is not valid, please insert a valid phone number ex: 0660801097",)]
     #[ORM\Column(type: 'string', length: 10)]
-    #[Groups(["read:user",'patch:user'])]
+    #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $phone;
 
 
     #[Assert\PositiveOrZero(message: "the coefficient should be positive")]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ["default" => 0])]
-    #[Groups(["read:user"])]
+    #[Groups(["read:user", 'user:list'])]
     private $Coef;
 
     #[ORM\Column(type: 'boolean', nullable: true, options: ["default" => true])]
-    #[Groups(["read:user"])]
+    #[Groups(["read:user", 'user:list'])]
     private $private;
 
+    #[Groups(['read:user'])]
     #[ORM\OneToMany(mappedBy: 'userClient', targetEntity: Order::class)]
     private $orders;
 
