@@ -42,7 +42,6 @@ security:
     - { path: ^/ordering, roles: ROLE_USER }
     - { path: ^/placeorder, roles: ROLE_USER }
     - { path: ^/payment, roles: ROLE_USER }
-    - { path: ^/dashboard/users, roles: ROLE_USER }
 
 when@test:
   security:
