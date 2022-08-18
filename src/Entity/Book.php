@@ -105,13 +105,13 @@ class Book
     private $description;
 
     #[Assert\NotBlank]
-    #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
+    #[Assert\PositiveOrZero(message: "stock quantity should be positive or zero")]
     #[ORM\Column(type: 'integer')]
     #[Groups(['book:list', 'book:item', "book:write"])]
     private $stock;
 
     #[Assert\NotBlank]
-    #[Assert\PositiveOrZero(message: "the price should be positive or zero")]
+    #[Assert\PositiveOrZero(message: "stock alert quantity should be positive or zero")]
     #[ORM\Column(type: 'integer')]
     #[Groups(["book:write", 'book:item'])]
     private $stockAlert;
@@ -158,10 +158,14 @@ class Book
     private $updatedAt;
 
     #[Groups(['book:item', "book:write"])]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255, minMessage: 'the editor field should be 3 or more character long', maxMessage: 'the editor field should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255)]
     private $editor;
 
     #[Groups(['book:list', 'book:item', "book:write"])]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255, minMessage: 'the author field should be 3 or more character long', maxMessage: 'the author field should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255)]
     private $author;
 
