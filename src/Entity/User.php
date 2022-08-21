@@ -6,17 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Controller\Api\Users\MeController;
-use ApiPlatform\Core\Action\NotFoundAction;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;;
-
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -47,6 +45,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     normalizationContext: ['groups' => ['user:list']]
 )]
 #[ApiFilter(ExistsFilter::class, properties: ['private'])]
+#[ApiFilter(BooleanFilter::class, properties: ['private'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

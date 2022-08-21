@@ -52,7 +52,7 @@ class Order
 
     #[ORM\Column(type: 'date', nullable: true)]
     #[Groups(['read:list:orders', 'write:order', 'read:order', 'read:user'])]
-    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd-m-Y'])]
     private $paymentDate;
 
     #[Groups(['write:order', 'read:list:orders', 'read:order'])]
@@ -72,7 +72,8 @@ class Order
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $billCity;
 
-    #[Groups(['read:order'])]
+    #[Groups(['read:order','write:order'])]
+    #[Assert\PositiveOrZero(message: "stock quantity should be positive or zero")]
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2, nullable: true)]
     private $discount;
 
@@ -89,7 +90,7 @@ class Order
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(["read:list:orders", 'read:order', 'read:user'])]
-    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd-m-Y'])]
     private $orderDate;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: BookOrder::class, cascade: ['persist', 'merge'])]

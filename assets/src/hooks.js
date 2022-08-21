@@ -62,6 +62,8 @@ export const deleteBook = (book, setCartList, cartList) => {
   setCartList(cartList.filter((item) => item.id !== book));
 };
 
+// TVA 10/100
+
 export const globalTotal = (books) =>
   books.reduce((a, c) => a + c.qty * c.price * (1 + 10 / 100), 0);
 

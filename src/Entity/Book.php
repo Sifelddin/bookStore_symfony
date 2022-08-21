@@ -149,13 +149,13 @@ class Book
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['book:item'])]
-    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd-m-Y'])]
     private $createdAt;
 
     #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['book:item'])]
-    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd-m-Y'])]
     private $updatedAt;
 
     #[Groups(['book:item', "book:write"])]
