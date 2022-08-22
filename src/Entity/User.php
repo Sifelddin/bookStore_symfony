@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;;
+
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -40,6 +41,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             'denormalization_context' => ['groups' => ['patch:user']],
             ["security" => "is_granted('ROLE_USER')"],
         ],
+        'status' => [
+            'denormalization_context' => ['groups' => ['patch:status']],
+            'path' => '/users/{id}/status',
+            'method' => 'patch',
+        ]
 
     ],
     normalizationContext: ['groups' => ['user:list']]
@@ -63,7 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(["read:user", 'user:list'])]
+    #[Groups(["read:user", 'user:list', 'patch:status'])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
@@ -110,11 +116,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\PositiveOrZero(message: "the coefficient should be positive")]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ["default" => 0])]
-    #[Groups(["read:user", 'user:list'])]
+    #[Groups(["read:user", 'user:list', 'patch:status'])]
     private $Coef;
 
     #[ORM\Column(type: 'boolean', nullable: true, options: ["default" => true])]
-    #[Groups(["read:user", 'user:list'])]
+    #[Groups(["read:user", 'user:list', 'patch:status'])]
     private $private;
 
     #[Groups(['read:user'])]
