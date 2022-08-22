@@ -18,9 +18,16 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 #[ApiResource(
-    paginationItemsPerPage: 5,
     collectionOperations: ['post', 'get' => [
-        'normalization_context' => ['groups' => ['read:list:orders']]
+        'normalization_context' => ['groups' => ['read:list:orders']],
+        'pagination_items_per_page' => 5,
+    ],
+    'all' => [
+        'method' => 'get',
+        'path' => '/orders/all',
+        'paginationEnabled' => false,
+        'normalization_context' => ['groups' => ['read:list:orders']],
+         
     ]],
     denormalizationContext: ['groups' => ["write:order"]],
     normalizationContext: ['groups' => ['read:order']]
