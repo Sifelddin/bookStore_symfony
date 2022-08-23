@@ -12,33 +12,38 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 #[ApiResource(
-    collectionOperations: ['post', 'get' => [
-        'normalization_context' => ['groups' => ['read:list:orders']],
-        'pagination_items_per_page' => 5,
+    collectionOperations: [
+        'post', 'get' => [
+            'normalization_context' => ['groups' => ['read:list:orders']],
+            'pagination_items_per_page' => 5,
+        ],
+        'all' => [
+            'method' => 'get',
+            'path' => '/orders/all',
+            'paginationEnabled' => false,
+            'normalization_context' => ['groups' => ['all:orders']],
+
+        ]
     ],
-    'all' => [
-        'method' => 'get',
-        'path' => '/orders/all',
-        'paginationEnabled' => false,
-        'normalization_context' => ['groups' => ['read:list:orders']],
-         
-    ]],
     denormalizationContext: ['groups' => ["write:order"]],
     normalizationContext: ['groups' => ['read:order']]
 )]
-#[ApiFilter(SearchFilter::class, properties: ['userClient' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['userClient' => 'exact', 'orderDate' => 'start'])]
+#[ApiFilter(ExistsFilter::class, properties: ['paymentDate'])]
+
 class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:order', 'read:list:orders', 'read:user'])]
+    #[Groups(['read:order', 'read:list:orders', 'read:user', 'all:orders'])]
     private $id;
 
 
@@ -79,7 +84,7 @@ class Order
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $billCity;
 
-    #[Groups(['read:order','write:order'])]
+    #[Groups(['read:order', 'write:order', 'all:orders'])]
     #[Assert\PositiveOrZero(message: "stock quantity should be positive or zero")]
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2, nullable: true)]
     private $discount;
@@ -96,12 +101,12 @@ class Order
 
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Groups(["read:list:orders", 'read:order', 'read:user'])]
+    #[Groups(["read:list:orders", 'read:order', 'read:user', 'all:orders'])]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd-m-Y'])]
     private $orderDate;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: BookOrder::class, cascade: ['persist', 'merge'])]
-    #[Groups(['write:order', 'read:order'])]
+    #[Groups(['write:order', 'read:order', 'all:orders'])]
     private $bookOrders;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: Delivery::class)]

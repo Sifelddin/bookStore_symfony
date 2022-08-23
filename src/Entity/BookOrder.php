@@ -20,18 +20,18 @@ class BookOrder
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['write:order', 'read:order', 'read:user'])]
+    #[Groups(['write:order', 'read:order', 'read:user', 'all:orders'])]
     #[ORM\Column(type: 'integer')]
     private $quantity;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
     private $discount;
 
-    #[Groups(['write:order', 'read:order', 'read:user'])]
+    #[Groups(['write:order', 'read:order', 'read:user', 'all:orders'])]
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private $unitPrice;
 
-    #[Groups(['write:order', 'read:order', 'read:user'])]
+    #[Groups(['write:order', 'read:order', 'read:user', 'all:orders'])]
     #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: 'bookOrders')]
     #[ORM\JoinColumn(nullable: false)]
     private $book;
