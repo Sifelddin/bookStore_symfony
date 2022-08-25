@@ -1,37 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import fetchData, { onAdd } from '../hooks';
+import fetchData, { implementCoefPrice, onAdd } from '../hooks';
 import Pagination from '../components/Pagination';
 import Spinner from '../components/Spinner';
+import { useAuth } from '../contexts/OrderContext';
 
 export const Books = ({ catBooks, cartList, setCartList }) => {
-  const [books, setBooks] = useState({ loading: true, data });
-  const [pageUrl, setPageUrl] = useState(null);
+  const [books, setBooks] = useState({ loading: true, data : undefined });
+  const [pageUrl, setPageUrl] = useState(`api/books?page=1&published=true`);
+  const { data : user} = useAuth()  
 
   useEffect(() => {
-    setBooks({ loading: true, data });
+    setBooks({ loading: true, data : undefined });
     if (catBooks) {
       fetchData(
         `/api/books?page=1&category=${catBooks.id}&published=true`,
         setBooks,
-      );
+      ).then(res => {
+      
+        if(user){
+       implementCoefPrice(res,user)
+        }
+      } );
     } else {
-      fetchData(`api/books?page=1&published=true`, setBooks);
+      fetchData(pageUrl, setBooks).then(res => {
+       
+        if(user){
+         implementCoefPrice(res,user)
+        }
+      }
+        );
     }
-  }, [catBooks]);
+  }, [catBooks, pageUrl , user]);
 
-  useEffect(() => {
-    setBooks({ loading: true, data });
-    if (pageUrl) {
-      fetchData(pageUrl, setBooks);
-    }
-  }, [pageUrl]);
+  
 
-  const { loading, data } = books;
 
+const {loading, data} = books
+
+console.log(data)
+
+ 
   if (loading) {
     return <Spinner />;
   } else {
+
+
     let catsClasses = 'p-2 m-2';
     if (data['hydra:totalItems'] > 5) {
       catsClasses += ' border-b-2';
@@ -42,11 +56,12 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
         {catBooks && (
           <span className='uppercase text-gray-500 p-4 text-sm sm:text-base'>
             total books of {catBooks.name} category :{' '}
-            <strong>{data['hydra:totalItems']}</strong>
+            <strong>{data?.['hydra:totalItems']}</strong>
           </span>
         )}
         <div className={catsClasses}>
-          {data['hydra:member'].map((book) => {
+          {data['hydra:member']?.map((book) => {
+   
             return (
               <div
                 className='flex items-center shadow-md m-1 p-1 md:p-3 md:m-3 bg-white rounded-md  hover:shadow-md hover:shadow-blue-200 transition-all duration-300'
@@ -67,9 +82,9 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
                       {book.title}
                     </Link>
                   </h3>
-                  <span className='text-sm md:text-lg text-red-400'>
+                 <p className='text-gray-800'> {user?.private === false ? 'Professional :' : ''} <span className='text-sm md:text-lg text-red-400'>
                     {book.price}€
-                  </span>
+                  </span></p>
                   <p className='text-gray-700 text-sm md:text-base'>
                     {' '}
                     Author : {book.author}

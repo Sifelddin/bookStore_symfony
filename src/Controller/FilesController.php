@@ -2,34 +2,50 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Order;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use App\Service\SetUpPDFfiles;
 use Symfony\Component\Filesystem\Filesystem;
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class FilesController extends AbstractController
 {
-    #[Route('/files', name: 'app_files')]
-    public function index(): Response
+    #[Route('/files/{orderId}/pdf', name: 'app_files',)]
+    public function index()
     {
-        $filesystem = new Filesystem();
-      
-       $user = $this->getUser();
-       dd($filesystem->exists('C:\Users\abekh\Downloads\dossier-professionnelle.odt'));
-        if(!$filesystem->exists('C:/Users/abekh/Downloads/annexes.zip/Facture.docx')){
-            $filesystem->touch('../assets/images/file.txt');
-        }
-       
-      $filesystem->appendToFile('../assets/images/file.txt' , $user->getUserIdentifier());
-        
-    
-    
 
-       
+        $html =  $this->render('pdf.html.twig', ['order' => order]);
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $options->isRemoteEnabled(true);
+        $dompdf = new Dompdf($options);
 
-        return $this->render('files/index.html.twig', [
-            'controller_name' => 'FilesController',
+        // instantiate and use the dompdf class
+
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        // Render the HTML as PDF
+        $dompdf->render();
+
+
+        $dompdf->stream("test.pdf", ['Attachment' => false]);
+
+
+        return new Response('', 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
+
+    #[Route('/files/{orderId}/pdf/template', name: 'app_pdf',)]
+    public function pdf(int $orderId)
+    {
+
+        return $this->render('pdf.html.twig', [
+            'orderId' => $orderId,
         ]);
     }
 }

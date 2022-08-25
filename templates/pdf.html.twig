@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link
+		{% block stylesheets %}<link rel="stylesheet" href="{{ asset('build/app.css') }}">
+		{% endblock %}
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+	
+		<main class="w-10/12 mx-auto bg-white h-screen" >
+				<header class="w-10/12 border border-solid "> 
+					<div>
+					<img class="h-40 w-auto   rounded-full " src="{{ asset('build/images/book-logo2.jpg') }}" alt="logo img">
+					<div>
+						{{app.user.orders}}
+					</div>
+					</div>
+				  </header>
+		</main>
+
+		</body>
+	</html>

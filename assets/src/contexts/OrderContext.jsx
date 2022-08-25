@@ -8,11 +8,11 @@ export const useAuth = () => {
 };
 
 const OrderContext = ({ children }) => {
-  const [authUser, setAuthUser] = useState({ loading: true, data: null });
+  const [authUser, setAuthUser] = useState({ loading: true, data: undefined });
   useEffect(() => {
     fetchData('/api/me', setAuthUser);
   }, []);
-
+  
   const user = useMemo(() => {
     return authUser;
   }, [authUser]);

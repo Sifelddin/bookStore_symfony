@@ -82,8 +82,8 @@ Encore
 
   .copyFiles({
     from: './assets/images',
-    to: 'images/files/[path][name].[hash:8].[ext]',
-    pattern: /\.(png|jpg|jpeg|txt)$/,
+    to: 'images/[path][name].[hash:8].[ext]',
+    pattern: /\.(png|jpg|jpeg)$/,
   });
 
 module.exports = Encore.getWebpackConfig();

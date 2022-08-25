@@ -15,7 +15,6 @@ const Categories = ({ select }) => {
   }, [pageUrl]);
 
   const { loading, data } = categories;
-console.log(categories);
   const addToRefs = (el) => {
     if (el && !elements.current.includes(el)) {
       elements.current.push(el);

@@ -10,12 +10,12 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -113,11 +113,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $phone;
 
-
-    #[Assert\PositiveOrZero(message: "the coefficient should be positive")]
-    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ["default" => 0])]
+    #[Assert\NotBlank]
+    #[Assert\Positive]
+    #[Assert\Regex('/(\d+)(.\d+)?$/', match: true, message: "Coef should be a number !")]
+    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ['default' => 1])]
     #[Groups(["read:user", 'user:list', 'patch:status'])]
-    private $Coef;
+    private $Coef = 1;
 
     #[ORM\Column(type: 'boolean', nullable: true, options: ["default" => true])]
     #[Groups(["read:user", 'user:list', 'patch:status'])]

@@ -5,18 +5,28 @@ const fetchData = async (url, callback) => {
   try {
     let res = await axios.get(url);
     callback({ loading: false, data: res.data });
+    return res
   } catch (err) {
     console.log(err);
     callback({ loading: false, data: null });
   }
 };
 
+
+export const implementCoefPrice = (res , user) => {
+  res.data['hydra:member'].forEach(book => {
+   return  book.price *= user.Coef
+     
+  })
+  return res
+}
+
 export const postData = async (orderUrl, order, books) => {
   order.isPrivate ? (order.paymentDate = MDate('YYYY-MM-DD')) : '';
   order.bookOrders = books.map((book) => {
     return Object.assign(
       {},
-      { quantity: book.qty, unitPrice: book.price, book: book['@id'] },
+      { quantity: book.qty, unitPrice: book.price.toString(), book: book['@id'] },
     );
   });
   return axios
