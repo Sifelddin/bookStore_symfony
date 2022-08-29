@@ -31,7 +31,7 @@ const Summary = () => {
   useEffect(() => {
     if (send) {
       postData('/api/orders', order, books).then(() => {
-        navigate('/', { replace: true });
+      //  navigate('/', { replace: true });
       });
     }
   }, [send]);

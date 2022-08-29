@@ -68,7 +68,7 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item', 'read:order'])]
     private $id;
 
     #[Assert\NotBlank]

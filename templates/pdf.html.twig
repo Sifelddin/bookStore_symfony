@@ -15,8 +15,8 @@
 		{% endblock %}
 	</head>
 	<body>
-		<main class="w-11/12 mx-auto bg-white h-screen" >
-		<div class="w-11/12 border-solid mx-auto border p-5 h-full">
+		<main class="w-11/12 mx-auto bg-white " >
+		<div class="w-11/12 border-solid mx-auto border p-5">
 				<header class="pb-5"> 
 					<div class='items-center'>
 					<img class="h-24 w-auto rounded-full " src="{{ absolute_url(asset('build/images/book-logo2.jpg')) }}" alt="logo img">
@@ -55,24 +55,31 @@
 					<th class="p-2 uppercase">TOTAL TTC</th>
 					</thead>
 					<tbody class="border border-solid w-full mt-2">
+						{% set totalHT = 0 %}
+						{% set totalTVA = 0 %}
+						{% set totalTTC = 0 %}
 						{% for book in  order.bookOrders  %}
+
+						{% set totalHT = totalHT + (book.quantity * book.unitPrice)  %}
+						{% set totalTVA = totalTVA + (book.unitPrice * book.quantity * 10/100)  %}
+						{% set totalTTC = totalHT + totalTVA  %}
 							<tr>
 							<td class="text-center border-solid border p-1" >{{book.id}}</td>
 							<td class="text-center border-solid border p-1">{{book.book.title}}</td>
 							<td class="text-center border-solid border p-1">{{book.unitPrice}}€</td>
 							<td class="text-center border-solid border p-1">{{book.quantity}}</td>
 							<td class="text-center border-solid border p-1">{{book.quantity * book.unitPrice}}</td>
-							<td class="text-center border-solid border p-1">{{book.unitPrice * 10/100 }}</td>
+							<td class="text-center border-solid border p-1">{{book.unitPrice * book.quantity * 10/100 }}</td>
 							<td class="text-center border-solid border p-1">{{book.unitPrice * ( 1 + 10/100) * book.quantity}}€</td>
 							</tr>
 						{% endfor %}
 						<tfoot>	
 						<tr>
 							<th scope="row" colspan="3" class="text-right p-1">Total : </th>
-								<td class="text-center border-solid border p-1" >dada1</td>
-								<td class="text-center border-solid border p-1">dada2</td>
-								<td class="text-center border-solid border p-1">dada3</td>
-								<td class="text-center border-solid border p-1">dada3</td>
+								<td class="text-center border-solid border p-1" ></td>
+								<td class="text-center border-solid border p-1">{{totalHT}}</td>
+								<td class="text-center border-solid border p-1">{{totalTVA}}</td>
+								<td class="text-center border-solid border p-1">{{totalTTC}}€</td>
 						
 						</tr>
 						</tfoot>

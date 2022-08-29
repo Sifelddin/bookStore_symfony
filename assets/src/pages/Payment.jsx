@@ -10,7 +10,6 @@ const Payment = () => {
   const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
   const order = JSON.parse(localStorage.getItem('ORDER'));
   const navigate = useNavigate();
-  const [messageErr, setMessageErr] = useState(null);
   const [send, setSend] = useState(false);
   useEffect(() => {
     order?.isPrivate || navigate('../placeorder');
@@ -35,22 +34,10 @@ const Payment = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    let cartNums = [16, 15, 14];
-    let ccNumber = data['cc-number']?.replace(/\s/g, '').length;
-    let cvv = data['cc-exp']?.replace(/\//g, '').length;
-
-    if (cartNums.includes(ccNumber) && cvv === 4) {
-      setMessageErr(null);
-      setSend(confirm('you confirm you registration ?'));
-    } else {
-      setMessageErr(
-        ' your cart number and expiry date should be full filled !',
-      );
-    }
+  if(data){
+   //send data
+  }
   };
-
-  const exactCVV = (cvv) => /^[0-9]{3,4}$/.test(cvv);
-  const fullName = (nameStr) => /^[a-zA-Z]+$/gi.test(nameStr);
 
   const inputClasses =
     'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md';
@@ -73,7 +60,6 @@ const Payment = () => {
         <h1 className='text-xl text-center'>Confirm Purchase</h1>
         <div className='m-2 p-2'>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {messageErr && <ErrorSpan>{messageErr}</ErrorSpan>}
             <div className={feildClasses}>
               <Label labelfeild={'fullName'}>
                 {' '}
@@ -84,13 +70,13 @@ const Payment = () => {
                   className={inputClasses}
                   {...register('fullName', {
                     required: true,
-                    validate: fullName,
+                    pattern: /^[a-zA-Z]+$/gi,
                   })}
                 />
                 {errors['fullName']?.type === 'required' && (
                   <ErrorSpan> Name on card is required</ErrorSpan>
                 )}
-                {errors['fullName']?.type === 'validate' && (
+                {errors['fullName']?.type === 'pattern' && (
                   <ErrorSpan>fullname includes only letters</ErrorSpan>
                 )}
               </Label>
@@ -104,6 +90,7 @@ const Payment = () => {
                   control={control}
                   name='cc-number'
                   type='text'
+                  rules={{required: true ,  min: 16, max: 19 , pattern : /^(\d{4})\s(\d{4,6})\s(\d{4,6})\s?(\d{4})?$/}}
                   render={({
                     field: { onChange, onBlur, value, name, ref },
                   }) => (
@@ -119,6 +106,12 @@ const Payment = () => {
                     />
                   )}
                 />
+                   {errors['cc-number']?.type === 'required' && (
+                  <ErrorSpan> expiry date is required</ErrorSpan>
+                )}
+                   {errors['cc-number']?.type === 'pattern' && (
+                  <ErrorSpan> please insert a valid number Ex: 5465 1313 2132 1321</ErrorSpan>
+                )}
               </Label>
             </div>
             <div className={feildClasses}>
@@ -129,6 +122,7 @@ const Payment = () => {
                   control={control}
                   name='cc-exp'
                   type='tel'
+                  rules={{required: true , pattern: /\d{2}\/\d{2}/ }}
                   render={({
                     field: { onChange, onBlur, value, name, ref },
                   }) => (
@@ -148,6 +142,12 @@ const Payment = () => {
                     />
                   )}
                 />
+                 {errors['cc-exp']?.type === 'required' && (
+                  <ErrorSpan> expiry date is required</ErrorSpan>
+                )}
+                 {errors['cc-exp']?.type === 'pattern' && (
+                  <ErrorSpan>please insert a valid expiry date ex: 02/24</ErrorSpan>
+                )}
               </Label>
             </div>
 
@@ -158,17 +158,18 @@ const Payment = () => {
                 <input
                   type='text'
                   id='cc-csc'
+                  placeholder='CVV'
                   className={inputClasses}
                   {...register('cc-csc', {
                     required: true,
-                    validate: exactCVV,
+                    pattern: /^[0-9]{3,4}$/
                   })}
                 />
                 {errors['cc-csc']?.type === 'required' && (
                   <ErrorSpan> Name on card is required</ErrorSpan>
                 )}
-                {errors['cc-csc']?.type === 'validate' && (
-                  <ErrorSpan> scc is in correct format</ErrorSpan>
+                {errors['cc-csc']?.type === 'pattern' && (
+                  <ErrorSpan> scc is in correct format ex : 123 or 4513</ErrorSpan>
                 )}
               </Label>
             </div>

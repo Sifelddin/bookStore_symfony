@@ -13,12 +13,28 @@ const fetchData = async (url, callback) => {
 };
 
 
-export const implementCoefPrice = (res , user) => {
-  res.data['hydra:member'].forEach(book => {
+export const implementCoefPrice = (books , user) => {
+  books.forEach(book => {
+    book.Coef = user.Coef
    return  book.price *= user.Coef
-     
   })
-  return res
+  return 
+}
+export const applyCoefPriceLocalStorage = (books , Coef) => {
+ let count = 0; 
+books?.forEach(book => { 
+  if(!book.hasOwnProperty('Coef')){
+   
+    book.Coef = Coef
+    book.price = Number(book.price) * Coef
+    count++
+  }
+})
+
+if(count){
+ 
+  localStorage.setItem('SHOPPING-CART',JSON.stringify(books))
+}
 }
 
 export const postData = async (orderUrl, order, books) => {
@@ -29,6 +45,7 @@ export const postData = async (orderUrl, order, books) => {
       { quantity: book.qty, unitPrice: book.price.toString(), book: book['@id'] },
     );
   });
+  console.log(order);
   return axios
     .post(orderUrl, order)
     .then(() => {
@@ -76,6 +93,10 @@ export const deleteBook = (book, setCartList, cartList) => {
 
 export const globalTotal = (books) =>
   books.reduce((a, c) => a + c.qty * c.price * (1 + 10 / 100), 0);
+
+export const TotalHT = (books) => books.reduce((a, c) => a + c.quantity * c.unitPrice , 0 )
+export const TotalTVA = (books) => books.reduce((a, c) => a + (c.quantity * c.unitPrice * 10/100) , 0 )
+export const Total = (books) => books.reduce((a, c) => a + (c.quantity * c.unitPrice * (1 + 10/100)) , 0 )
 
 export const bookTotal = (book) => book.qty * book.price * (1 + 10 / 100);
 export const taxTotal = (book) => (book.qty * book.price * 10) / 100;

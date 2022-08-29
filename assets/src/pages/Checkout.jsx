@@ -6,20 +6,27 @@ import Label from '../components/uis/Label';
 import { useAuth } from '../contexts/OrderContext';
 import { Link, useNavigate } from 'react-router-dom';
 import LinkSpan from '../components/uis/LinkSpan';
-import { inputDivClasses, inputfeildClasses } from '../hooks';
+import { applyCoefPriceLocalStorage, inputDivClasses, inputfeildClasses } from '../hooks';
+
 
 const Checkout = () => {
-  const { loading, data } = useAuth();
+  const { loading, data : userData } = useAuth();
   const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
   const order = JSON.parse(localStorage.getItem('ORDER'));
   const navigate = useNavigate();
+ //check user data 
+ useEffect(() => {
+   if(books === null){
+     console.log('navigate');
+     navigate('../', { replace: true })
+   }
+    if (!loading){ 
+    if(order)  order.userClient !== userData['@id'] && localStorage.removeItem('ORDER')
+    applyCoefPriceLocalStorage(books, userData.Coef)
+    };
+    
+  } ,[books,order])
 
-  useEffect(() => {
-    if (!loading && order) {
-      order.userClient !== data['@id'] && localStorage.removeItem('ORDER');
-    }
-    books || navigate('../', { replace: true });
-  }, [order, books]);
 
   const {
     register,
@@ -28,9 +35,9 @@ const Checkout = () => {
   } = useForm();
 
   const onSubmit = (OrderData) => {
-    OrderData.isPrivate = data.private;
-    OrderData.coef = data.Coef;
-    OrderData.userClient = data['@id'];
+    OrderData.isPrivate = userData.private;
+    OrderData.coef = userData.Coef;
+    OrderData.userClient = userData['@id'];
     localStorage.setItem('ORDER', JSON.stringify(OrderData));
     navigate('/placeorder');
   };
@@ -57,7 +64,7 @@ const Checkout = () => {
           </div>
           <div className=' sm:w-10/12 xl:w-3/5 md:w-4/5 p-3 bg-white rounded-md shadow-md'>
             <h2 className='text-lg sm:text-2xl uppercase my-3 border-b-gray-200 border-solid border-b-2'>
-              {data.firstname + ' ' + data.lastname}
+              {userData.firstname + ' ' + userData.lastname}
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className='mx-auto sm:grid sm:grid-cols-2 sm:gap-10  items-center'>
@@ -75,7 +82,7 @@ const Checkout = () => {
                         type='text'
                         id='shipAddress'
                         className={inputfeildClasses}
-                        defaultValue={data.address}
+                        defaultValue={userData.address}
                         {...register('shipAddress', {
                           required: true,
                           minLength: 5,
@@ -101,7 +108,7 @@ const Checkout = () => {
                         type='text'
                         id='shipCity'
                         className={inputfeildClasses}
-                        defaultValue={data.city}
+                        defaultValue={userData.city}
                         {...register('shipCity', {
                           required: true,
                           minLength: 3,
@@ -131,7 +138,7 @@ const Checkout = () => {
                         type='text'
                         id='shipZipCode'
                         className={inputfeildClasses}
-                        defaultValue={data.zipCode}
+                        defaultValue={userData.zipCode}
                         {...register('shipZipCode', {
                           required: true,
                           validate: exactZipCode,
@@ -159,7 +166,7 @@ const Checkout = () => {
                         type='text'
                         id='shipAddress'
                         className={inputfeildClasses}
-                        defaultValue={data.address}
+                        defaultValue={userData.address}
                         {...register('billAddress', {
                           required: true,
                           minLength: 5,
@@ -186,7 +193,7 @@ const Checkout = () => {
                         type='text'
                         id='shipCity'
                         className={inputfeildClasses}
-                        defaultValue={data.city}
+                        defaultValue={userData.city}
                         {...register('billCity', {
                           required: true,
                           minLength: 3,
@@ -217,7 +224,7 @@ const Checkout = () => {
                         name='billZipCode'
                         id='billZipCode'
                         className={inputfeildClasses}
-                        defaultValue={data.zipCode}
+                        defaultValue={userData.zipCode}
                         {...register('billZipCode', {
                           required: true,
                           validate: exactZipCode,
@@ -234,7 +241,7 @@ const Checkout = () => {
                 </div>
               </div>
               <div>
-                {data.private || (
+                {userData.private || (
                   <div className='mt-6'>
                     {' '}
                     <h2 className='text-xl text-center text-gray-600 uppercase mt-2'>

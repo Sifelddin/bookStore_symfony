@@ -19,14 +19,14 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
       ).then(res => {
       
         if(user){
-       implementCoefPrice(res,user)
+       implementCoefPrice(res.data["hydra:member"],user)
         }
       } );
     } else {
       fetchData(pageUrl, setBooks).then(res => {
        
         if(user){
-         implementCoefPrice(res,user)
+         implementCoefPrice(res.data["hydra:member"],user)
         }
       }
         );
@@ -34,13 +34,8 @@ export const Books = ({ catBooks, cartList, setCartList }) => {
   }, [catBooks, pageUrl , user]);
 
   
-
-
-const {loading, data} = books
-
-console.log(data)
-
- 
+  const {loading, data} = books
+  
   if (loading) {
     return <Spinner />;
   } else {

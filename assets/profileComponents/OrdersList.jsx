@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Pagination from '../src/components/Pagination';
 import Spinner from '../src/components/Spinner';
 import { useAuth } from '../src/contexts/OrderContext';
 import fetchData from '../src/hooks';
@@ -7,23 +9,27 @@ import OrderDetailts from './OrderDetailts';
 const OrdersList = () => {
   const { loading: loadingUser, data: userData } = useAuth();
 
-  const [orders, setOrders] = useState({ loading: true, data: null });
+  const [orders, setOrders] = useState({ loading: true, data: undefined });
   const [pageUrl, setPageUrl] = useState('');
   const [orderId, setOrderId] = useState(null);
 
   const { loading, data } = orders;
 
   useEffect(() => {
-    fetchData(
-      userData && !pageUrl ? `/api/orders?userClient=${userData?.id}` : pageUrl,
-      setOrders,
-    );
-  }, [pageUrl, userData]);
+    if(userData){
+       if( pageUrl){
+      fetchData( pageUrl,setOrders);
+    }else{
+      fetchData(`/api/orders?userClient=${userData?.id}`,setOrders);
+    }
+    }
+   
+  }, [pageUrl,userData]);
 
-  if (loadingUser) {
+  if (loading) {
     return <Spinner />;
   }
-
+  console.log(data , userData)
   return (
     <>
       {loading || (
@@ -56,7 +62,7 @@ const OrdersList = () => {
               </thead>
               <tbody className='w-full'>
                 {data?.['hydra:member']?.map((order) => {
-                  console.log(order);
+               
                   return (
                     <tr key={order.id} className='w-full'>
                       <td className='p-1'>{order.id}</td>
@@ -71,14 +77,17 @@ const OrdersList = () => {
                       </td>
                       <td
                         onClick={() => setOrderId(order['@id'])}
-                        className='text-blue-500 cursor-pointer p-1'>
+                        className='text-blue-500 cursor-pointer p-1 flex justify-around'>
                         Details
+                        <a className='text-orange-500 cursor-pointer' href={`/files/orders/${order.id}/pdf`}> PDF</a>
                       </td>
                     </tr>
                   );
                 })}
+              
               </tbody>
             </table>
+            <Pagination data={data} setPageUrl={setPageUrl} />
           </div>
           {orderId && <OrderDetailts orderId={orderId} />}
         </div>
