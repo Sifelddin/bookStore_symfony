@@ -5,27 +5,29 @@ namespace App\Controller;
 use App\Entity\Order;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use App\Service\SetUpPDFfiles;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class FilesController extends AbstractController
 {
-    #[Route('/files/orders/{orderId}/pdf', name: 'app_files',)]
-    public function index($orderId)
+    #[Route('/files/orders/{order}/pdf', name: 'app_files',)]
+    public function index(Order $order)
     {
 
-        $html =  $this->render('pdf.html.twig');
+        $html =  $this->renderView('pdf.html.twig', ['order' => $order]);
+        
         $options = new Options();
-        $options->set('defaultFont', 'Courier');
-        $options->isRemoteEnabled(true);
+        // $options->setRootDir(__DIR__);
         // instantiate and use the dompdf class
+
+        $options->set('isRemoteEnabled', true);
+      
+        // $options->isRemoteEnabled(true);
+       
         $dompdf = new Dompdf($options);
+        
         $dompdf->loadHtml($html);
-        // (Optional) Setup the paper size and orientation
-        // Render the HTML as PDF
         $dompdf->render();
         $dompdf->stream("test.pdf", ['Attachment' => false]);
         return new Response('', 200, [

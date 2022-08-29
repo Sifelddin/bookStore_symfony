@@ -8,41 +8,76 @@
 		</title>
 		<link
 		{% block stylesheets %}
-		<link rel="stylesheet" href="{{ asset('build/app.css') }}">
+		<link rel="stylesheet" href="{{ absolute_url(asset('build/app.css')) }}">
 		{% endblock %}
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
 	</head>
 	<body>
-	
-		<main class="w-10/12 mx-auto bg-white h-screen " >
-		<div class="w-10/12 border-solid mx-auto border p-5 ">
-				<header class="p-5"> 
-					<div class='flex justify-between items-center' >
-					<img class="h-40 w-auto rounded-full " src="{{ asset('build/images/book-logo2.jpg') }}" alt="logo img">
-					<div class="w-1/3">
-							<h1 class="text-4xl">Command : {{order.id}} </h1>
-							<h2 class="text-4xl">Date :{{order.orderDate.format('d/m/Y') }}</h2>
+		<main class="w-11/12 mx-auto bg-white h-screen" >
+		<div class="w-11/12 border-solid mx-auto border p-5 h-full">
+				<header class="pb-5"> 
+					<div class='items-center'>
+					<img class="h-24 w-auto rounded-full " src="{{ absolute_url(asset('build/images/book-logo2.jpg')) }}" alt="logo img">
+					<div class="w-1/3 float-right p-5">
+							<h1 class="text-2xl">Command : {{order.id}} </h1>
+							<h2 class="text-2xl">Date :{{order.orderDate.format('d/m/Y') }}</h2>
 					</div>
 					</div>
 				  </header>
 				  <div id="client infos" class="border-solid border p-5 ">
-				  		<ul class="text-xl capitalize">
+				  		<ul class="text-lg capitalize">
 						  <li>Client Numréro : {{app.user.id}} </li>
 						  <li>Nom : {{app.user.firstName}} {{app.user.lastName}}</li>
 						  <li>Adresse : {{ app.user.address }} {{ app.user.city }} {{ app.user.zipCode }}</li>
 						  <li>Contact : {{ app.user.phone}} </li>
 						  </ul>
 				  </div>
-				  <div class="grid grid-cols-2 gap-4 mt-4 ">
-						<div id="livraison" class="border-solid border p-5">
-							<h2 class="text-2xl capitalize">Adresse de livraison : <p class="text-xl text-gray-700 capitalize"> {{order.shipAddress}} {{order.shipCity}} {{order.shipZipCode}} </p></h2>
+				  <div class="mt-4 block h-28">
+						<div id="livraison" class=" p-5 float-left">
+							<h2 class="text-xl font-semibold capitalize">Adresse de livraison : <p class="text-base text-gray-700 capitalize"> {{order.shipAddress}} {{order.shipCity}} {{order.shipZipCode}} </p></h2>
 						</div>
-						<div id="facturation" class="border-solid border p-5"><h2 class="text-2xl capitalize">Adresse de livraison : <p class="capitalize text-gray-700 text-xl"> {{order.billAddress}} {{order.billCity}} {{order.billZipCode}}</p></h2></div>
+						<div id="facturation" class=" p-5 float-right">
+						<h2 class="text-xl font-semibold capitalize">Adresse de Facturation : <p class="capitalize text-gray-700 text-base"> {{order.billAddress}} {{order.billCity}} {{order.billZipCode}}</p></h2>
+						</div>
 					</div>
-				  <div id="order description mt-5">
-				  	<span class="text-lg capitalize">Description de la commande</span>
+				  <div id="order description" class="mt-6 ">
+				  	<span class="capitalize">Description de la commande</span>
+					<table class="border border-solid w-full mt-2">
+					<thead class="text-lg">
+					<th class="p-2 uppercase" >RÉF.</th>
+					<th class="p-2 uppercase" >DÉSIGNATION</th>
+					<th class="p-2 uppercase">P U HT</th>
+					<th class="p-2 uppercase">QUANTITÉ</th>
+					<th class="p-2 uppercase">TOTAL HT</th>
+					<th class="p-2 uppercase">TVA</th>
+					<th class="p-2 uppercase">TOTAL TTC</th>
+					</thead>
+					<tbody class="border border-solid w-full mt-2">
+						{% for book in  order.bookOrders  %}
+							<tr>
+							<td class="text-center border-solid border p-1" >{{book.id}}</td>
+							<td class="text-center border-solid border p-1">{{book.book.title}}</td>
+							<td class="text-center border-solid border p-1">{{book.unitPrice}}€</td>
+							<td class="text-center border-solid border p-1">{{book.quantity}}</td>
+							<td class="text-center border-solid border p-1">{{book.quantity * book.unitPrice}}</td>
+							<td class="text-center border-solid border p-1">{{book.unitPrice * 10/100 }}</td>
+							<td class="text-center border-solid border p-1">{{book.unitPrice * ( 1 + 10/100) * book.quantity}}€</td>
+							</tr>
+						{% endfor %}
+						<tfoot>	
+						<tr>
+							<th scope="row" colspan="3" class="text-right p-1">Total : </th>
+								<td class="text-center border-solid border p-1" >dada1</td>
+								<td class="text-center border-solid border p-1">dada2</td>
+								<td class="text-center border-solid border p-1">dada3</td>
+								<td class="text-center border-solid border p-1">dada3</td>
+						
+						</tr>
+						</tfoot>
+					</tbody>
+					</table>
 				  </div>
 			</div>
 
