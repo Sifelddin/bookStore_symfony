@@ -7,12 +7,12 @@ export const useAuth = () => {
   return useContext(authContext);
 };
 
-const OrderContext = ({ children }) => {
+const AuthContext = ({ children }) => {
   const [authUser, setAuthUser] = useState({ loading: true, data: undefined });
   useEffect(() => {
     fetchData('/api/me', setAuthUser);
   }, []);
-  
+
   const user = useMemo(() => {
     return authUser;
   }, [authUser]);
@@ -20,4 +20,4 @@ const OrderContext = ({ children }) => {
   return <authContext.Provider value={user}>{children}</authContext.Provider>;
 };
 
-export default OrderContext;
+export default AuthContext;

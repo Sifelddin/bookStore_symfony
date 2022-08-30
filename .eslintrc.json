@@ -1,0 +1,52 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb", "plugin:prettier/recommended", "prettier"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "prettier"],
+  "rules": {
+    // Prettier
+    "react/prop-types": 0,
+    "no-param-reassign": 0,
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    // Typescript
+    "no-use-before-define": "off",
+    "import/prefer-default-export": "warn",
+    // react
+    "react/require-default-props": 0,
+    "react/button-has-type": 0,
+    "react/no-children-prop": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/function-component-definition": [
+      "warn",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": ["function-expression"]
+      }
+    ],
+    "react/jsx-filename-extension": [
+      2,
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ],
+    // Import
+    "import/extensions": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "ignorePatterns": ["node_modules/", "public/"]
+}
