@@ -14,5 +14,23 @@ export const addToRefs = (category, categoriesRefs) => {
 };
 
 export const buttonClasses = (color) => {
-  return `flex justify-center items-center px-2 py-1 md:px-4 md:py-2 bg-${color}-700 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest hover:bg-${color}-600 active:bg-${color}-700 focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit`;
+  let colorClasses =
+    'flex justify-center items-center px-2 py-1 md:px-4 md:py-2 border border-transparent rounded-md font-semibold text-xs sm:text-sm text-white uppercase tracking-widest focus:outline-none focus:border-gray-100 focus:ring ring-gray-100 disabled:opacity-25 transition ease-in-out duration-150 w-onRemovefit ';
+  switch (color) {
+    case 'red':
+      colorClasses += `bg-red-500 hover:bg-red-900 active:bg-red-700`;
+      break;
+    case 'blue':
+      colorClasses += `bg-blue-500 hover:bg-blue-900 active:bg-blue-700`;
+      break;
+    case 'green':
+      colorClasses += `bg-green-500 hover:bg-green-900 active:bg-green-700`;
+      break;
+    case 'sky':
+      colorClasses += `bg-sky-500 hover:bg-sky-600 active:bg-sky-600`;
+      break;
+    default:
+      colorClasses += `bg-gray-500 hover:bg-gray-900 active:bg-gray-700`;
+  }
+  return colorClasses;
 };

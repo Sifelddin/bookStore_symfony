@@ -110,9 +110,9 @@ const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
           </div>
         </div>
 
-        <div className="p-4 flex justify-around items-center border-gray-200">
+        <div className="p-4 flex justify-around items-center border-gray-200 ">
           {cartList.length > 0 && (
-            <a href="/ordering" className={buttonClasses('blue')}>
+            <a href="/ordering" className={buttonClasses('green')}>
               ordering
             </a>
           )}

@@ -6,25 +6,32 @@ import { postOrder } from '../hooks';
 import ErrorSpan from '../components/uis/ErrorSpan';
 import Label from '../components/uis/Label';
 import LinkSpan from '../components/uis/LinkSpan';
+import ConfirmModal from '../components/ConfirmModal';
+import ResultModal from '../components/ResultModal';
+
 const Payment = () => {
+  const [showModal, setShowModel] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [showResult, setShowResult] = useState(undefined);
   const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
   const order = JSON.parse(localStorage.getItem('ORDER'));
   const navigate = useNavigate();
-  const [send, setSend] = useState(false);
   useEffect(() => {
-    order?.isPrivate || navigate('../placeorder');
+    if (order?.isPrivate !== false) {
+      navigate('../placeorder');
+    }
     if (books === null || order === null) {
       navigate('../');
     }
   }, [order, books]);
 
   useEffect(() => {
-    if (send) {
-      postOrder('/api/orders', order, books).then(() => {
-        navigate('/', { replace: true });
-      });
+    if (confirm) {
+      postOrder('/api/orders', order, books)
+        .then(() => setShowResult('your order has been registered succesfully .'))
+        .catch(() => setShowResult('server error : something went wrong!'));
     }
-  }, [send]);
+  }, [confirm]);
 
   const {
     control,
@@ -35,7 +42,7 @@ const Payment = () => {
 
   const onSubmit = (data) => {
     if (data) {
-      //send data
+      setShowModel(true);
     }
   };
 
@@ -61,7 +68,7 @@ const Payment = () => {
         <div className="m-2 p-2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={feildClasses}>
-              <Label labelfeild={'fullName'}>
+              <Label labelfeild="fullName">
                 {' '}
                 FullName*
                 <input
@@ -73,13 +80,13 @@ const Payment = () => {
                     pattern: /^[a-zA-Z]+$/gi
                   })}
                 />
-                {errors['fullName']?.type === 'required' && <ErrorSpan> Name on card is required</ErrorSpan>}
-                {errors['fullName']?.type === 'pattern' && <ErrorSpan>fullname includes only letters</ErrorSpan>}
+                {errors.fullName?.type === 'required' && <ErrorSpan> Name on card is required</ErrorSpan>}
+                {errors.fullName?.type === 'pattern' && <ErrorSpan>fullname includes only letters</ErrorSpan>}
               </Label>
             </div>
 
             <div className={feildClasses}>
-              <Label labelfeild={'cc-number'}>
+              <Label labelfeild="cc-number">
                 {' '}
                 Card number*
                 <Controller
@@ -107,7 +114,7 @@ const Payment = () => {
               </Label>
             </div>
             <div className={feildClasses}>
-              <Label labelfeild={'cc-exp'}>
+              <Label labelfeild="cc-exp">
                 {' '}
                 Expiry date*
                 <Controller
@@ -140,7 +147,7 @@ const Payment = () => {
             </div>
 
             <div className={feildClasses}>
-              <Label labelfeild={'cc-csc'}>
+              <Label labelfeild="cc-csc">
                 {' '}
                 Security Code*
                 <input
@@ -171,6 +178,8 @@ const Payment = () => {
           </form>
         </div>
       </div>
+      <ConfirmModal showModal={showModal} setShowModel={setShowModel} setConfirm={setConfirm} />
+      <ResultModal showResult={showResult} setShowResult={setShowResult} />
     </div>
   );
 };

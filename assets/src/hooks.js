@@ -50,17 +50,7 @@ export const postOrder = async (orderUrl, order, books) => {
       book: book['@id']
     };
   });
-  return axios
-    .post(orderUrl, order)
-    .then(() => {
-      alert('your order has been registered successfully !');
-      localStorage.removeItem('ORDER');
-      localStorage.removeItem('SHOPPING-CART');
-    })
-    .catch((e) => {
-      alert('server error !');
-      console.log(e);
-    });
+  return axios.post(orderUrl, order);
 };
 
 // add books quantity to cart function

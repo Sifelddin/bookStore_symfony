@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import CartPagination from '../components/CartPagination';
 import ConfirmModal from '../components/ConfirmModal';
+import ResultModal from '../components/ResultModal';
 import LinkSpan from '../components/uis/LinkSpan';
 import { Td, Th } from '../components/uis/Table';
 import { postOrder } from '../hooks';
@@ -12,12 +13,12 @@ const Summary = () => {
   const [booksPerPage] = useState(5);
   const [showModal, setShowModel] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [showResult, setShowResult] = useState(undefined);
 
   // get data from localstorage
   const books = JSON.parse(localStorage.getItem('SHOPPING-CART'));
   const order = JSON.parse(localStorage.getItem('ORDER'));
   const navigate = useNavigate();
-
   // check
   useEffect(() => {
     if (books === null) {
@@ -28,18 +29,12 @@ const Summary = () => {
     }
   }, [order, books]);
 
-  const register = () => {
-    if (order.isPrivate) {
-      navigate('../payment', { replace: true });
-    } else {
-      setShowModel(true);
-    }
-  };
+  const register = () => (order.isPrivate ? navigate('../payment', { replace: true }) : setShowModel(true));
   useEffect(() => {
     if (confirm) {
-      postOrder('/api/orders', order, books).then(() => {
-        //  navigate('/', { replace: true });
-      });
+      postOrder('/api/orders', order, books)
+        .then(() => setShowResult('your order has been registered succesfully .'))
+        .catch(() => setShowResult('server error : something went wrong!'));
     }
     setConfirm(false);
     setShowModel(false);
@@ -171,6 +166,7 @@ const Summary = () => {
         </div>
       )}
       <ConfirmModal showModal={showModal} setShowModel={setShowModel} setConfirm={setConfirm} />
+      <ResultModal showResult={showResult} setShowResult={setShowResult} />
     </div>
   );
 };
