@@ -18,7 +18,7 @@ class SupplierController extends AbstractController
     #[Route('/', name: 'app_supplier_index', methods: ['GET'])]
     public function index(SupplierRepository $supplierRepository): Response
     {
-        return $this->render('supplier/index.html.twig', [
+        return $this->render('dashboard/supplier/index.html.twig', [
             'suppliers' => $supplierRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ class SupplierController extends AbstractController
             return $this->redirectToRoute('app_supplier_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('supplier/new.html.twig', [
+        return $this->renderForm('dashboard/supplier/new.html.twig', [
             'supplier' => $supplier,
             'form' => $form,
         ]);
@@ -54,7 +54,7 @@ class SupplierController extends AbstractController
             return $this->redirectToRoute('app_supplier_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('supplier/edit.html.twig', [
+        return $this->renderForm('dashboard/supplier/edit.html.twig', [
             'supplier' => $supplier,
             'form' => $form,
         ]);

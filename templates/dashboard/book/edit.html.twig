@@ -8,9 +8,9 @@
 		<div class=" mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 			<img class="max-h-72 object-cover mx-auto" src={{ vich_uploader_asset(book)}} alt={{ book.title }}>
 
-			{{ include('book/_form.html.twig', {'button_label': 'Update'}) }}
+			{{ include('dashboard/book/_form.html.twig', {'button_label': 'Update'}) }}
 			<div class='flex justify-around items-center '>
-				{{ include('book/_delete_form.html.twig') }}
+				{{ include('dashboard/book/_delete_form.html.twig') }}
 			</div>
 		</div>
 	</div>

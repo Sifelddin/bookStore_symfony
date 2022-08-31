@@ -22,10 +22,19 @@ closeMenuBtn.addEventListener('click', () => {
   nav.classList.toggle('hidden');
 });
 
-const user = document.getElementById('user');
-const userActions = document.getElementById('userActions');
+const userMenu = document.getElementById('userMenu');
+const userNav = document.getElementById('userNav');
+const userActionsNav = document.getElementById('userActionsNav');
+console.log(userActionsNav);
+const userActionsMenu = document.getElementById('userActionsMenu');
 
-user?.addEventListener('click', (e) => {
+userMenu?.addEventListener('click', (e) => toggleClasses(e, userActionsMenu));
+userNav?.addEventListener('click', (e) => toggleClasses(e, userActionsNav));
+
+document.addEventListener('click', clickDocument(userActionsNav));
+document.addEventListener('click', clickDocument(userActionsMenu));
+
+function toggleClasses(e, userActions) {
   e.stopPropagation();
   if (userActions.classList.contains('hidden')) {
     userActions.classList.remove('hidden');
@@ -34,11 +43,11 @@ user?.addEventListener('click', (e) => {
     userActions.classList.add('hidden');
     userActions.classList.remove('block');
   }
-});
+}
 
-document.addEventListener('click', () => {
+function clickDocument(userActions) {
   if (userActions?.classList.contains('block')) {
     userActions.classList.remove('block');
     userActions.classList.add('hidden');
   }
-});
+}

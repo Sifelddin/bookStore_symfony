@@ -7,6 +7,7 @@ import Summary from './pages/Summary';
 import Book from './pages/Book';
 import Payment from './pages/Payment';
 import AuthContext from './contexts/OrderContext';
+import Error from './pages/Error';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/placeorder" element={<Summary />} />
           <Route path="/book/:slug/:id" element={<Book />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="*" element={<Error />} />
         </Routes>
       </AuthContext>
     </BrowserRouter>

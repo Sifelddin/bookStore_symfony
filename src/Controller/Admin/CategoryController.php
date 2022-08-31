@@ -23,7 +23,7 @@ class CategoryController extends AbstractController
     {
 
 
-        return $this->render('category/index.html.twig', [
+        return $this->render('dashboard/category/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
         ]);
     }
@@ -40,7 +40,7 @@ class CategoryController extends AbstractController
             $categoryRepository->add($category, true);
             return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('category/new.html.twig', [
+        return $this->renderForm('dashboard/category/new.html.twig', [
             'category' => $category,
             'form' => $form,
         ]);
@@ -71,7 +71,7 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('category/edit.html.twig', [
+        return $this->renderForm('dashboard/category/edit.html.twig', [
             'category' => $category,
             'form' => $form,
             'parentList' => $parentCategories,

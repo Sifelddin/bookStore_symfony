@@ -1,9 +1,10 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
+ {% set currentPath = app.request.attributes.get('_route') %} 
 <div class="relative bg-white shadow-md">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6">
-		<div class="flex justify-between items-center  py-4 md:justify-start md:space-x-10">
+	<div class="w-10/12 mx-auto px-4 sm:px-6">
+		<div class="flex justify-between items-center py-2 md:justify-start md:space-x-12">
 			<div class="flex justify-start lg:w-0 lg:flex-1">
-				<a href="{{ path('app_react') }}">
+				<a href="{{ path('app_store') }}">
 					<span class="sr-only">Workflow</span>
 					<img class="h-8 w-auto sm:h-12  rounded-full " src="{{ asset('build/images/book-logo2.jpg') }}" alt="logo img">
 				</a>
@@ -17,50 +18,44 @@
 					</svg>
 				</button>
 			</div>
-			<nav class="hidden md:flex space-x-10">
+			<nav class="hidden md:flex space-x-10 grow md:justify-end px-2 mx-2 ">
+				<div>
+				<a href="{{path('app_store')}}" class="text-base font-medium {{currentPath == 'app_store' ? 'text-gray-900' : 'text-gray-500'}} hover:text-gray-900 capitalize">
+					Store 
+				</a>
+				</div>
 				<div class="relative">
-					<a href="{{path('app_catalogue')}}" class="text-gray-500 group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
+					<a href="{{path('app_catalogue')}}" class="{{currentPath == 'app_catalogue' ? 'text-gray-900' : 'text-gray-500'}} group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
 						Catalogue
 					</a>
 				</div>
-
-				<a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">
-					Pricing
-				</a>
-				<a href="{{path('app_react')}}" class="text-base font-medium text-gray-500 hover:text-gray-900">
-					Store
-					<div class="relative">
-						<a href="{{path('app_panier')}}" class="text-gray-500 group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
+					<div class="relative capitalize">
+						<a href="{{path('app_panier')}}" class="{{currentPath == 'app_panier' ? 'text-gray-900' : 'text-gray-500'}} group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
 							panier
 						</a>
 					</div>
-
+					
+					 {% if is_granted('ROLE_ADMIN') %}
 					<div
 						class="relative">
 						<!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
-						<button type="button" class="text-gray-500 group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
-							<span>Contact</span>
-						</button>
-					</div>
-					<div
-						class="relative">
-						<!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
-						<a href="{{path('app_dashboard')}}" class="text-gray-500 group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
+						<a href="{{path('app_dashboard')}}" class="active:text-gray-900 {{currentPath == 'app_dashboard' ? 'text-gray-900' : 'text-gray-500'}}  group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
 							Dashboard
 						</a>
 					</div>
+					{% endif %} 
 				</nav>
 				{% if app.user %}
-					<div class="cursor-pointer relative" id='user'>
+					<div class="hidden md:flex items-center justify-end cursor-pointer relative mx-2" id='userNav'>
 						<div class=" inline-flex text-base font-medium text-gray-500 hover:text-gray-900">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 self-end" fill="none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="2">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
 							</svg>
-							<span>
+							<span class="capitalize">
 								{{app.user.firstName}}
 								{{app.user.lastName}}</span>
 						</div>
-						<div class='hidden absolute top-full right-0 left-0 bg-white p-2 rounded-md shadow-md' id='userActions'>
+						<div class='hidden absolute top-full right-0 left-0 bg-white p-2 rounded-md shadow-md' id='userActionsNav'>
 							<ul>
 								<a href={{path('app_logout')}}>
 									<li class="capitalize m-1 inline-flex text-base font-medium text-gray-500 hover:text-gray-900">logout</li>
@@ -78,11 +73,11 @@
 						</div>
 					</div>
 				{% else %}
-					<div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+					<div class="hidden md:flex items-center justify-end ">
 						<a href="{{ path('app_login')}}" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
 							Sign in
 						</a>
-						<a href="{{path('app_register')}}" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+						<a href="{{path('app_register')}}" class="ml-6 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
 							Sign up
 						</a>
 					</div>
@@ -92,12 +87,11 @@
 
 		<div id="nav" class="absolute top-0 inset-x-0 p-2 transition transform origin-top-right  hidden">
 			<div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
-				<div class="pt-5 pb-6 px-5">
 					<div class="flex items-center justify-between">
-						<div>
+						<div class="m-1" >
 							<img class="h-8 w-auto rounded-full" src="{{ asset('build/images/book-logo2.jpg') }}" alt="logo img">
 						</div>
-						<div class="-mr-2">
+						<div class="m-1">
 							<button type="button" id="close_menu" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
 								<span class="sr-only">Close menu</span>
 								<!-- Heroicon name: outline/x -->
@@ -107,45 +101,59 @@
 							</button>
 						</div>
 					</div>
-					<div class="mt-6">
-						<nav class="grid gap-y-8"></nav>
-					</div>
-				</div>
-				<div class="py-6 px-5 space-y-6">
-					<div class="flex flex-col items-center">
-						<a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-							Accueil
+				<div class="py-6 px-5 space-y-2 flex flex-col items-center">
+						<a href="{{path('app_store')}}" class="text-base font-medium {{currentPath == 'app_store' ? 'text-gray-900' : 'text-gray-500'}} hover:text-gray-900 capitalize">
+						Store 
 						</a>
-
-						<a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-							Pricing
+						<a href="{{path('app_catalogue')}}" class="{{currentPath == 'app_catalogue' ? 'text-gray-900' : 'text-gray-500'}} group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
+						Catalogue
 						</a>
-						<a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-							Docs
+						<a href="{{path('app_panier')}}" class="{{currentPath == 'app_panier' ? 'text-gray-900' : 'text-gray-500'}} group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false">
+							panier
 						</a>
-						<a href="{{path('app_react')}}" class="text-base font-medium text-gray-900 hover:text-gray-700">
-							Store
-						</a>
+						{% if is_granted('ROLE_ADMIN') %}
 						<a href="{{path('app_dashboard')}}" class="text-base font-medium text-gray-900 hover:text-gray-700">
 							Dashboard
 						</a>
-
-
-					</div>
-					<div>
-						{% if app.user %}
-							{% else %}
-								<a href="{{path('app_register')}}" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-									Sign up
-								</a>
 						{% endif %}
-						<p class="mt-6 text-center text-base font-medium text-gray-500">
-							Existing customer?
-							<a href="{{ app.user ? path('app_logout') : path('app_login')}}" class="text-indigo-600 hover:text-indigo-500">
-								{{ app.user ? 'Logout' :  'Sign in'}}
-							</a>
-						</p>
+					
+					{% if app.user %}
+					<div class="flex items-center justify-end cursor-pointer relative mx-2" id='userMenu'>
+						<div class=" inline-flex text-base font-medium text-gray-500 hover:text-gray-900">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 self-end" fill="none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="2">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+							</svg>
+							<span class="capitalize">
+								{{app.user.firstName}}
+								{{app.user.lastName}}</span>
+						</div>
+						<div class='hidden absolute top-full right-0 left-0 bg-white p-2 rounded-md shadow-md' id='userActionsMenu'>
+							<ul>
+								<a href={{path('app_logout')}}>
+									<li class="capitalize m-1 inline-flex text-base font-medium text-gray-500 hover:text-gray-900">logout</li>
+								</a>
+								<a href={{path('app_profile')}}>
+									<li class="capitalize m-1 inline-flex text-base font-medium text-gray-500 hover:text-gray-900">Profile</li>
+								</a>
+								{% if app.user.private is not null %}
+									<a href={{path('app_order_history')}}>
+										<li class="capitalize m-1 inline-flex text-base font-medium text-gray-500 hover:text-gray-900">orders history</li>
+									</a>
+								{% endif %}
+
+							</ul>
+						</div>
 					</div>
+				{% else %}
+					<div class="flex flex-col items-center justify-center space-y-1 ">
+						<a href="{{ path('app_login')}}" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+							Sign in
+						</a>
+						<a href="{{path('app_register')}}" class=" whitespace-nowrap inline-flex items-center justify-center px-2 py-1 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+							Sign up
+						</a>
+					</div>
+				{% endif %}
 				</div>
 			</div>
 		</div>

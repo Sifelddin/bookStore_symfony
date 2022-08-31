@@ -16,7 +16,7 @@ const Checkout = () => {
   // check user data
   useEffect(() => {
     if (books === null) {
-      navigate('../', { replace: true });
+      navigate('/', { replace: true });
     }
     if (!loading) {
       if (order && order.userClient !== userData['@id']) {

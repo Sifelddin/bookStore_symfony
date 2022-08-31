@@ -61,9 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[Assert\NotBlank]
-    #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',
-    )]
+    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $email;
@@ -113,16 +111,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(["read:user", 'patch:user', 'user:list'])]
     private $phone;
 
-    #[Assert\NotBlank]
-    #[Assert\Positive]
+    // #[Assert\NotBlank]
+    // #[Assert\Positive]
     #[Assert\Regex('/(\d+)(.\d+)?$/', match: true, message: "Coef should be a number !")]
-    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, updatable: true, options: ['default' => 1])]
+    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, options: ["default" => '1.00'])]
     #[Groups(["read:user", 'user:list', 'patch:status'])]
-    private $Coef = 1;
+    private $Coef = "1.00";
 
     #[ORM\Column(type: 'boolean', nullable: true, options: ["default" => true])]
     #[Groups(["read:user", 'user:list', 'patch:status'])]
-    private $private;
+    private $private = 1;
 
     #[Groups(['read:user'])]
     #[ORM\OneToMany(mappedBy: 'userClient', targetEntity: Order::class)]

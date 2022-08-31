@@ -18,11 +18,13 @@ class OrderController extends AbstractController
 {
 
 
-    #[Route('/{reactRouting}', name: 'app_react', priority: "-1", defaults: ["reactRouting" => null], requirements: ["reactRouting" => ".+"])]
+    #[Route('/{reactRouting}', name: 'app_store', priority: "-1", defaults: ["reactRouting" => null], requirements: ["reactRouting" => ".+"])]
     public function index(): Response
     {
-        return $this->render("api/index.html.twig");
+        return $this->render("store/index.html.twig");
     }
+
+
 
     #[Route('/checkout', name: 'app_api')]
     public function checkout(Request $request, OrderRepository $orderRepository): Response
@@ -36,7 +38,7 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $session->set('order',$order);
+            $session->set('order', $order);
             return $this->redirectToRoute('app_summary', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -50,51 +52,50 @@ class OrderController extends AbstractController
     public function summary(SessionInterface $session, BookRepository $bookRepository): Response
     {
 
-        $order = $session->get('order'); 
+        $order = $session->get('order');
         $user = $this->getUser();
 
-        $panier= $session->get('panier',[]);
+        $panier = $session->get('panier', []);
 
-        $panier2=[];
+        $panier2 = [];
 
-        foreach ($panier as $id => $quantity){
-            $panier2 []= [
-                'products'=>$bookRepository->find($id),
-                'quantity'=> $quantity
+        foreach ($panier as $id => $quantity) {
+            $panier2[] = [
+                'products' => $bookRepository->find($id),
+                'quantity' => $quantity
             ];
-
         }
-    
+
         return $this->render('catalogue/summary.html.twig', [
             'order' => $order,
             'user' => $user,
-            'items'=>$panier2
+            'items' => $panier2
         ]);
     }
 
 
     #[Route('/commande', name: 'new_order')]
-    public function commande(SessionInterface $session, OrderRepository $orderRepository,BookOrderRepository $bookOrderRepository,BookRepository $bookRepository ): Response
+    public function commande(SessionInterface $session, OrderRepository $orderRepository, BookOrderRepository $bookOrderRepository, BookRepository $bookRepository): Response
     {
 
-        $order = $session->get('order'); 
-        $panier= $session->get('panier',[]);
+        $order = $session->get('order');
+        $panier = $session->get('panier', []);
         //dd ($panier);
         $user = $this->getUser();
 
         $order->setUserClient($user);
         $order->setCoef($user->getCoef());
 
-         $orderRepository->add($order, true);
+        $orderRepository->add($order, true);
 
-        
 
-        foreach ($panier as $id => $quantity){
 
-            $book=$bookRepository->find($id);
-            $price=$book->getPrice();
+        foreach ($panier as $id => $quantity) {
+
+            $book = $bookRepository->find($id);
+            $price = $book->getPrice();
             $results = $orderRepository->findOneBy([], ['id' => 'DESC']);;
-            
+
             $bookOrder  = new BookOrder;
             $bookOrder->setQuantity($quantity);
             $bookOrder->setBook($book);
@@ -102,13 +103,8 @@ class OrderController extends AbstractController
             $bookOrder->setOrder($results);
 
             $bookOrderRepository->add($bookOrder, true);
-
-       }
+        }
 
         return $this->redirectToRoute('app_catalogue', [], Response::HTTP_SEE_OTHER);
-
     }
-
-            
-        
 }

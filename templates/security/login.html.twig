@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class=" min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 ">
+	<div class=" w-11/12 sm:w-full min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 mx-auto ">
 		<div class="flex flex-col w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 			<form method="post">
 				{% if error %}
@@ -27,18 +27,6 @@
 
 				<input
 				type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-				{#
-																								        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-																								        See https://symfony.com/doc/current/security/remember_me.html
-																								
-																								        <div class="checkbox mb-3">
-																								            <label>
-																								                <input type="checkbox" name="_remember_me"> Remember me
-																								            </label>
-																								        </div>
-																								    #}
-
 				<button class="inline-flex justify-center items-center px-4 py-2 mt-4 bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 " type="submit">
 					Sign in
 				</button>

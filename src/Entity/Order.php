@@ -18,7 +18,9 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
-#[ApiResource(order:["id" => "DESC" ],
+#[ApiResource(
+    ["security" => "is_granted('ROLE_USER')"],
+    order: ["id" => "DESC"],
     collectionOperations: [
         'post', 'get' => [
             'normalization_context' => ['groups' => ['read:list:orders']],

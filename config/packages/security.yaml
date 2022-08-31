@@ -21,11 +21,13 @@ security:
     main:
       lazy: true
       provider: app_user_provider
+      json_login:
+        check_path: api_login
       custom_authenticator: App\Security\LoginFormAuthenticator
       logout:
         path: app_logout
         # where to redirect after logout
-        target: app_react
+        target: app_store
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#the-firewall
@@ -36,10 +38,10 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   role_hierarchy:
-      ROLE_ADMIN:  [ROLE_USER,ROLE_COMMERCIAL,ROLE_CATALOGUE] 
-      ROLE_COMMERCIAL: ROLE_USER
-      ROLE_CATALOGUE: ROLE_USER
-      
+    ROLE_ADMIN: [ROLE_USER, ROLE_COMMERCIAL, ROLE_CATALOGUE]
+    ROLE_COMMERCIAL: ROLE_USER
+    ROLE_CATALOGUE: ROLE_USER
+
   access_control:
     #- { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/profile, roles: ROLE_USER }
