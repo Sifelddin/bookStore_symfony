@@ -7,7 +7,7 @@ import fetchData, { inputDivClasses, inputfeildClasses } from '../src/hooks';
 import Spinner from '../src/components/Spinner';
 
 const Form = () => {
-  const [user, setUser] = useState({ loading: true, data: null });
+  const [user, setUser] = useState({ loading: true, data: undefined });
   useEffect(() => {
     fetchData('/api/me', setUser);
   }, []);
@@ -32,6 +32,7 @@ const Form = () => {
     }
   };
   const { loading, data } = user;
+  console.log(loading);
 
   if (loading) {
     return <Spinner />;
@@ -41,7 +42,7 @@ const Form = () => {
     <div className=" h-screen w-full flex flex-col justify-center items-center">
       <div className=" sm:w-10/12 xl:w-3/5 md:w-4/5 p-3 bg-white rounded-md shadow-md">
         <h2 className="text-lg sm:text-2xl uppercase my-3 border-b-gray-200 border-solid border-b-2">
-          {`${data.firstname} ${data.lastname}`}
+          {`${data?.firstname} ${data?.lastname}`}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mx-auto sm:grid sm:grid-cols-2 sm:gap-x-2 items-center">
@@ -53,7 +54,7 @@ const Form = () => {
                     type="text"
                     id="Address"
                     className={inputfeildClasses}
-                    defaultValue={data.address}
+                    defaultValue={data?.address}
                     {...register('address', {
                       required: true,
                       minLength: 5,
@@ -73,7 +74,7 @@ const Form = () => {
                     type="text"
                     id="City"
                     className={inputfeildClasses}
-                    defaultValue={data.city}
+                    defaultValue={data?.city}
                     {...register('city', {
                       required: true,
                       minLength: 3,
@@ -95,7 +96,7 @@ const Form = () => {
                     type="text"
                     id="zipCode"
                     className={inputfeildClasses}
-                    defaultValue={data.zipCode}
+                    defaultValue={data?.zipCode}
                     {...register('zipCode', {
                       required: true,
                       pattern: /^[0-9]{5}$/
@@ -115,7 +116,7 @@ const Form = () => {
                     type="text"
                     id="shipCity"
                     className={inputfeildClasses}
-                    defaultValue={data.firstname}
+                    defaultValue={data?.firstname}
                     {...register('firstname', {
                       required: true,
                       minLength: 3,
@@ -136,7 +137,7 @@ const Form = () => {
                     name="billZipCode"
                     id="lastName"
                     className={inputfeildClasses}
-                    defaultValue={data.lastname}
+                    defaultValue={data?.lastname}
                     {...register('lastname', {
                       required: true,
                       minLength: 3,
@@ -155,7 +156,7 @@ const Form = () => {
                     type="text"
                     id="phone"
                     className={inputfeildClasses}
-                    defaultValue={data.phone}
+                    defaultValue={data?.phone}
                     {...register('phone', {
                       required: true
                     })}
@@ -171,7 +172,7 @@ const Form = () => {
                   type="text"
                   id="Email"
                   className={inputfeildClasses}
-                  defaultValue={data.email}
+                  defaultValue={data?.email}
                   {...register('email', {
                     required: true
                   })}

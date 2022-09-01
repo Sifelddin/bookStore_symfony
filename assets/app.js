@@ -25,7 +25,6 @@ closeMenuBtn.addEventListener('click', () => {
 const userMenu = document.getElementById('userMenu');
 const userNav = document.getElementById('userNav');
 const userActionsNav = document.getElementById('userActionsNav');
-console.log(userActionsNav);
 const userActionsMenu = document.getElementById('userActionsMenu');
 
 userMenu?.addEventListener('click', (e) => toggleClasses(e, userActionsMenu));

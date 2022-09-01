@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import Store from './pages/Store';
 import Checkout from './pages/Checkout';
 import Summary from './pages/Summary';

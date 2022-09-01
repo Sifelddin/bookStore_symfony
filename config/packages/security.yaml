@@ -18,17 +18,30 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
+
+    login:
+      pattern: ^/api/login
+      stateless: true
+      json_login:
+        check_path: api_login
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+    api:
+      pattern: ^/api
+      stateless: true
+      jwt: ~
+
     main:
       lazy: true
       provider: app_user_provider
-      json_login:
-        check_path: api_login
+      # json_login:
+      #  check_path: api_login
       custom_authenticator: App\Security\LoginFormAuthenticator
       logout:
         path: app_logout
         # where to redirect after logout
         target: app_store
-
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -44,6 +57,8 @@ security:
 
   access_control:
     #- { path: ^/admin, roles: ROLE_ADMIN }
+    # - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/profile, roles: ROLE_USER }
     - { path: ^/checkout, roles: ROLE_USER }
     - { path: ^/ordering, roles: ROLE_USER }
