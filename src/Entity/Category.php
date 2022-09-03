@@ -39,15 +39,22 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
                 'path' => '/v2/categories/all',
                 'paginationEnabled' => false,
             ],
-            "post"
+            "post" => [
+                "path" => "/v2/categories"
+            ]
         ],
         itemOperations: [
             "get" => [
                 'normalization_context' => ['groups' => 'cat:item']
-            ], "delete", "patch",
+            ], "delete" => [
+                "path" => "/v2/categories/{id}"
+            ]
+            , "patch" => [
+                "path" => "/v2/categories/{id}"
+            ],
             'image' => [
                 'method' => 'POST',
-                'path' => '/categories/{id}/image',
+                'path' => '/v2/categories/{id}/image',
                 'controller' => EmptyController::class,
                 'openapi_context' => [
                     'requestBody' => [

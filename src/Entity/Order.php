@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
         ],
         'all' => [
             'method' => 'get',
-            'path' => '/orders/all',
+            'path' => '/v2/orders/all',
             'paginationEnabled' => false,
             'normalization_context' => ['groups' => ['all:orders']],
 

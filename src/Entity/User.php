@@ -21,9 +21,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[ApiResource(
-
+    attributes: ["security" => "is_granted('ROLE_USER')"],
     collectionOperations: [
-        "get"
+        "get" => [
+            "path" => "/v2/users"
+        ]
     ],
     itemOperations: [
         'get' => [
@@ -43,7 +45,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         ],
         'status' => [
             'denormalization_context' => ['groups' => ['patch:status']],
-            'path' => '/users/{id}/status',
+            'path' => '/v2/users/{id}/status',
             'method' => 'patch',
         ]
 

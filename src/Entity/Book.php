@@ -27,17 +27,28 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
     ApiResource(
         attributes: ["pagination_items_per_page" => 5],
         collectionOperations: [
-            "get" => ['normalization_context' => ['groups' => 'book:list']], "post"
+            "get" => [
+                'normalization_context' => ['groups' => 'book:list']
+            ],
+             "post" => [
+                   "path" => "/v2/books",
+                   ["security" => "is_granted('ROLE_USER')"],
+             ] 
         ],
         itemOperations: [
             "get" => [
-                'normalization_context' => ['groups' => 'book:item']
-            ], "delete",
+                'normalization_context' => ['groups' => 'book:item'] 
+
+            ], "delete" => [
+                "path" => "/v2/books/{id}",
+                ["security" => "is_granted('ROLE_USER')"],
+            ],
 
             'image' => [
                 'method' => 'POST',
-                'path' => '/books/{id}/image',
+                'path' => '/v2/books/{id}/image',
                 'controller' => EmptyController::class,
+                ["security" => "is_granted('ROLE_USER')"],
                 'openapi_context' => [
                     'requestBody' => [
                         'content' => [
