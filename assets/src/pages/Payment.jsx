@@ -17,7 +17,7 @@ const Payment = () => {
   const order = JSON.parse(localStorage.getItem('ORDER'));
   const navigate = useNavigate();
   useEffect(() => {
-    if (order?.isPrivate !== false) {
+    if (!order?.isPrivate) {
       navigate('../placeorder');
     }
     if (books === null || order === null) {

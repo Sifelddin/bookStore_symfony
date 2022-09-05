@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ApiResource(
+    security: "is_granted('ROLE_USER')",
     routePrefix: '/v2',
     paginationItemsPerPage: 8,
     itemOperations: ['delete', 'put', 'get'],
@@ -29,7 +30,7 @@ class Supplier
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 255, minMessage: 'contactName should be more than 3 character long', maxMessage: 'contactName should be less than 255 character long')]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Groups(['write:post','book:item'])]
+    #[Groups(['write:post', 'book:item'])]
     private $contactName;
 
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Book::class)]

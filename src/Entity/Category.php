@@ -46,10 +46,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         itemOperations: [
             "get" => [
                 'normalization_context' => ['groups' => 'cat:item']
-            ], "delete" => [
+            ],
+            "get_v2" => [
+                'normalization_context' => ['groups' => 'cat:item'],
+                "method" => 'get',
                 "path" => "/v2/categories/{id}"
-            ]
-            , "patch" => [
+            ],
+            "delete" => [
+                "path" => "/v2/categories/{id}"
+            ], "patch" => [
                 "path" => "/v2/categories/{id}"
             ],
             'image' => [
@@ -88,7 +93,7 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['cat:list'])]
+    #[Groups(['cat:list', 'cat:item'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
