@@ -16,6 +16,7 @@
     // Prettier
     "react/prop-types": 0,
     "no-param-reassign": 0,
+    "no-restricted-globals": ["error", "event", "fdescribe"],
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     // Typescript
     "no-use-before-define": "off",

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from '../src/components/Pagination';
-import Spinner from '../src/components/Spinner';
-import { useAuth } from '../src/contexts/OrderContext';
-import fetchData from '../src/hooks';
+import Pagination from '../components/Pagination';
+import Spinner from '../components/Spinner';
+import { useAuth } from '../contexts/OrderContext';
+import fetchData from '../hooks';
 import OrderDetailts from './OrderDetailts';
 
 const OrdersList = () => {
@@ -75,7 +75,10 @@ const OrdersList = () => {
                     className="text-blue-500 cursor-pointer p-1 flex justify-around"
                   >
                     Details
-                    <a className="text-orange-500 cursor-pointer" href={`/files/orders/${order.id}/pdf`}>
+                    <a
+                      className="text-orange-600 hover:text-orange-800 cursor-pointer"
+                      href={`/files/orders/${order.id}/pdf`}
+                    >
                       {' '}
                       PDF
                     </a>

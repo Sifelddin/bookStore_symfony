@@ -34,6 +34,17 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
         ]
     ],
+    itemOperations: [
+        'get',
+        'order_v2' => [
+            "method" => 'get',
+            "path" => '/v2/orders/{id}',
+        ],
+        'put' => [
+            "method" => 'put',
+            "path" => '/v2/orders/{id}'
+        ]
+    ],
     denormalizationContext: ['groups' => ["write:order"]],
     normalizationContext: ['groups' => ['read:order']]
 )]

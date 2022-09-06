@@ -1,7 +1,7 @@
 import React from 'react';
 import { buttonClasses } from '../layouts/helpers';
 
-const ConfirmModal = ({ showModal, setShowModel, setConfirm }) => {
+const ConfirmModal = ({ showModal, setShowModel, setConfirm, message }) => {
   let modalBg =
     'min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-20 outline-none focus:outline-none bg-no-repeat bg-center bg-cover ';
   let modalClasses =
@@ -23,14 +23,28 @@ const ConfirmModal = ({ showModal, setShowModel, setConfirm }) => {
           <div className="text-center p-5 flex-auto justify-center">
             <h2 className="text-xl font-bold py-4 ">Are you sure?</h2>
 
-            <p> do you confim your order ?</p>
+            <p> {message}</p>
           </div>
 
           <div className="p-3 mt-2 text-center space-x-4 flex justify-around items-center ">
-            <button className={buttonClasses('green')} onClick={() => setConfirm(true)}>
+            <button
+              className={buttonClasses('green')}
+              onClick={() => {
+                if (setConfirm) {
+                  setConfirm(true);
+                }
+                setShowModel(false);
+              }}
+            >
               confirm
             </button>
-            <button className={buttonClasses('red')} onClick={() => setShowModel(false)}>
+            <button
+              className={buttonClasses('red')}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowModel(false);
+              }}
+            >
               cancel
             </button>
           </div>

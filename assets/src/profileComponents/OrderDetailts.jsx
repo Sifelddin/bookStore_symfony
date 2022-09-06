@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Spinner from '../src/components/Spinner';
-import fetchData, { Total, TotalHT, TotalTVA } from '../src/hooks';
+import Spinner from '../components/Spinner';
+import fetchData, { Total, TotalHT, TotalTVA } from '../hooks';
 import Tr from './UI/Tr';
 
 const OrderDetailts = ({ orderId }) => {
@@ -60,7 +60,7 @@ const OrderDetailts = ({ orderId }) => {
                       <td className="text-center text-sm">{book.book.title}</td>
                       <td className="text-center text-sm">{book.quantity}</td>
                       <td className="text-center text-sm">{book.unitPrice}€</td>
-                      <td className="text-center text-sm">{(10 / 100) * book.unitPrice}€</td>
+                      <td className="text-center text-sm">{((10 / 100) * book.unitPrice).toFixed(2)}€</td>
                     </tr>
                   );
                 })}

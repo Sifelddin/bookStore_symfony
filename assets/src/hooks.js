@@ -5,7 +5,6 @@ import MDate from 'mini-date-format';
 const fetchData = async (url, callback) => {
   try {
     const res = await axios.get(url);
-    console.log(res);
     callback({ loading: false, data: res.data });
     return res;
   } catch (err) {

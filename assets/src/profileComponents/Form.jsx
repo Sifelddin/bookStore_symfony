@@ -1,19 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import Label from '../src/components/uis/Label';
-import ErrorSpan from '../src/components/uis/ErrorSpan';
-import fetchData, { inputDivClasses, inputfeildClasses } from '../src/hooks';
-import Spinner from '../src/components/Spinner';
+import Label from '../components/uis/Label';
+import ErrorSpan from '../components/uis/ErrorSpan';
+import fetchData, { inputDivClasses, inputfeildClasses } from '../hooks';
+import Spinner from '../components/Spinner';
+import MessageModal from './UI/MessageModal';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Form = () => {
   const [user, setUser] = useState({ loading: true, data: undefined });
+  const [showModal, setShowModel] = useState(false);
+  const [showResult, setShowResult] = useState(null);
+
+  const serverErr = (field, message) => {
+    setError(field, { type: `errors server`, message });
+  };
+
   useEffect(() => {
     fetchData('/api/me', setUser);
   }, []);
-
   const {
     register,
+    setError,
     handleSubmit,
     formState: { errors }
   } = useForm();
@@ -24,15 +33,22 @@ const Form = () => {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/merge-patch+json' },
         data,
-        url: user.data['@id']
+        url: `/api/users/${user.data.id}`
       });
-      console.log(res);
+      if (res) {
+        setShowResult('your profile has been updated succesfully .');
+      }
     } catch (e) {
-      console.log(e);
+      if (e.response.data?.violations) {
+        e.response.data?.violations?.map((violation) => {
+          return serverErr(violation.propertyPath, violation.message);
+        });
+      } else {
+        setShowResult('server error : something went wrong!');
+      }
     }
   };
   const { loading, data } = user;
-  console.log(loading);
 
   if (loading) {
     return <Spinner />;
@@ -61,9 +77,10 @@ const Form = () => {
                       maxLength: 255
                     })}
                   />
-                  {errors.shipAddress?.type === 'required' && <ErrorSpan>Address is required</ErrorSpan>}
-                  {errors.shipAddress?.type === 'minLength' && <ErrorSpan> Address at least 5 characters</ErrorSpan>}
-                  {errors.shipAddress?.type === 'maxLength' && <ErrorSpan> Address maximum 255 characters</ErrorSpan>}
+                  {errors.address?.type === 'required' && <ErrorSpan>Address is required</ErrorSpan>}
+                  {errors.address?.type === 'minLength' && <ErrorSpan> Address at least 5 characters</ErrorSpan>}
+                  {errors.address?.type === 'maxLength' && <ErrorSpan> Address maximum 255 characters</ErrorSpan>}
+                  {errors.address?.type === 'errors server' && <ErrorSpan>{errors.address?.message}</ErrorSpan>}
                 </Label>
               </div>
 
@@ -85,7 +102,8 @@ const Form = () => {
                   {errors.city?.type === 'required' && <ErrorSpan> City is required !</ErrorSpan>}
                   {errors.city?.type === 'minLength' && <ErrorSpan>City at least 3 characters !</ErrorSpan>}
                   {errors.city?.type === 'maxLength' && <ErrorSpan>City maximum 100 characters !</ErrorSpan>}
-                  {errors.city?.type === 'pattern' && <ErrorSpan>only letter please !</ErrorSpan>}{' '}
+                  {errors.city?.type === 'pattern' && <ErrorSpan>only letter please !</ErrorSpan>}
+                  {errors.city?.type === 'errors server' && <ErrorSpan>{errors.city?.message}</ErrorSpan>}
                 </Label>
               </div>
 
@@ -104,6 +122,7 @@ const Form = () => {
                   />
                   {errors.zipCode?.type === 'required' && <ErrorSpan> zipCode is required</ErrorSpan>}
                   {errors.zipCode?.type === 'pattern' && <ErrorSpan>zipCode must be correct ex: 75380</ErrorSpan>}
+                  {errors.zipCode?.type === 'errors server' && <ErrorSpan>{errors.zipCode?.message}</ErrorSpan>}
                 </Label>
               </div>
             </div>
@@ -126,6 +145,7 @@ const Form = () => {
                   {errors.firstname?.type === 'required' && <ErrorSpan>City is required</ErrorSpan>}
                   {errors.firstname?.type === 'minLength' && <ErrorSpan>City at least 3 characters</ErrorSpan>}
                   {errors.firstname?.type === 'maxLength' && <ErrorSpan>City maximum 100 characters</ErrorSpan>}
+                  {errors.firstname?.type === 'errors server' && <ErrorSpan>{errors.firstname?.message}</ErrorSpan>}
                 </Label>
               </div>
 
@@ -147,6 +167,7 @@ const Form = () => {
                   {errors.lastname?.type === 'required' && <ErrorSpan>zipCode is required</ErrorSpan>}
                   {errors.lastname?.type === 'minLength' && <ErrorSpan>City at least 3 characters</ErrorSpan>}
                   {errors.lastname?.type === 'maxLength' && <ErrorSpan>City maximum 100 characters</ErrorSpan>}
+                  {errors.lastname?.type === 'errors server' && <ErrorSpan>{errors.lastname?.message}</ErrorSpan>}
                 </Label>
               </div>
               <div className={inputDivClasses}>
@@ -162,6 +183,7 @@ const Form = () => {
                     })}
                   />
                   {errors.phone?.type === 'required' && <ErrorSpan>Address is required</ErrorSpan>}
+                  {errors.phone?.type === 'errors server' && <ErrorSpan>{errors.phone?.message}</ErrorSpan>}
                 </Label>
               </div>
             </div>
@@ -178,19 +200,32 @@ const Form = () => {
                   })}
                 />
                 {errors.phone?.type === 'required' && <ErrorSpan>Address is required</ErrorSpan>}
+                {errors.email?.type === 'errors server' && <ErrorSpan>{errors.email?.message}</ErrorSpan>}
               </Label>
             </div>
           </div>
           <div className="w-full flex justify-center items-center p-2 mt-2">
             <button
+              onClick={(e) => {
+                e.preventDefault();
+                if (Object.entries(errors).length === 0) {
+                  setShowModel(true);
+                }
+              }}
               type="submit"
               className="inline-block rounded-md bg-green-500 px-6 py-2 font-semibold text-green-100 shadow-md duration-75 hover:bg-green-400"
             >
               Edit
             </button>
           </div>
+          <ConfirmModal
+            showModal={showModal}
+            setShowModel={setShowModel}
+            message="do you confim your modifications ?"
+          />
         </form>
       </div>
+      <MessageModal showResult={showResult} setShowResult={setShowResult} />
     </div>
   );
 };

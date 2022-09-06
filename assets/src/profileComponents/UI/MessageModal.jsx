@@ -1,19 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
-const ResultModal = ({ showResult, setShowResult }) => {
+const MessageModal = ({ showResult, setShowResult }) => {
   let modalBg =
     'min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-20 outline-none focus:outline-none bg-no-repeat bg-center bg-cover ';
   let modalClasses =
     'w-full max-w-lg p-5 relative mx-auto my-auto rounded-xl shadow-lg bg-white z-50 transition-all ease-in-out duration-300';
-  const navigate = useNavigate();
+
   const hundleClick = () => {
-    if (showResult.match(/succesfully/)) {
-      localStorage.removeItem('ORDER');
-      localStorage.removeItem('SHOPPING-CART');
-      navigate('/');
-    }
-    setShowResult(undefined);
+    setShowResult(null);
   };
 
   if (showResult) {
@@ -49,4 +43,4 @@ const ResultModal = ({ showResult, setShowResult }) => {
   );
 };
 
-export default ResultModal;
+export default MessageModal;

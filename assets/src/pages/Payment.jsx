@@ -178,7 +178,12 @@ const Payment = () => {
           </form>
         </div>
       </div>
-      <ConfirmModal showModal={showModal} setShowModel={setShowModel} setConfirm={setConfirm} />
+      <ConfirmModal
+        showModal={showModal}
+        setShowModel={setShowModel}
+        setConfirm={setConfirm}
+        message="do you confim your order ?"
+      />
       <ResultModal showResult={showResult} setShowResult={setShowResult} />
     </div>
   );

@@ -29,7 +29,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     ],
     itemOperations: [
         'get' => [
-            'normalization_context' => ['groups' => ['read:user']]
+            'normalization_context' => ['groups' => ['read:user']],
+            "method" => "GET",
+            "path" => "/v2/users/{id}",
         ],
         'me' => [
             'pagination_enabled' => false,
@@ -37,16 +39,16 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             'method' => 'get',
             'controller' => MeController::class,
             'read' => false,
-            ["security" => "is_granted('ROLE_USER')"],
         ],
         'patch' => [
             'denormalization_context' => ['groups' => ['patch:user']],
-            ["security" => "is_granted('ROLE_USER')"],
+            "method" => "patch",
+            "path" => "/users/{id}",
         ],
         'status' => [
             'denormalization_context' => ['groups' => ['patch:status']],
             'path' => '/v2/users/{id}/status',
-            'method' => 'patch',
+            'method' => 'put',
         ]
 
     ],
