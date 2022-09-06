@@ -42,7 +42,7 @@ const SubCategories = ({ catParent, setSubCategory }) => {
   }
 
   return (
-    <div className="p-1 md:pt-2 xl:p-3 bg-stone-50 my-2 shadow-md">
+    <div className="p-1 md:pt-2 xl:p-3 bg-orange-50 my-2 shadow-md">
       <div>
         <span className="uppercase text-gray-500 p-4 text-sm sm:text-base">
           total subCategories of <span className="text-gray-900 font-semibold">{catParent.name}</span> :{' '}

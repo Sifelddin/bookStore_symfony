@@ -8,8 +8,7 @@ const CartPagination = ({ currentPage, cartList, indexOfFirstBook, indexOfLastBo
           className="bg-blue-500 text-white rounded-md py-1 px-2 text-xs sm:text-sm"
           onClick={() => setCurrentPage(currentPage - 1)}
         >
-          {' '}
-          {'<<'} previous{' '}
+          {'<<'} previous
         </button>
       )}
       {cartList[indexOfLastBook] && (

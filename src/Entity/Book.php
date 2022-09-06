@@ -26,6 +26,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[
     ApiResource(
         attributes: ["pagination_items_per_page" => 5],
+        order: ["id" => "DESC"],
         collectionOperations: [
             "get" => [
                 'normalization_context' => ['groups' => 'book:list']

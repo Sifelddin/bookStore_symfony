@@ -14,7 +14,6 @@ const Store = () => {
   const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('SHOPPING-CART')) || []);
   const { loading: loadingUser, data: userData } = useAuth();
   const order = localStorage.getItem('ORDER');
-  console.log(userData);
   useEffect(() => {
     localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList));
     if (!cartList.length) {
@@ -36,7 +35,7 @@ const Store = () => {
   };
 
   return (
-    <div className="xl:w-10/12 w-11/12 mx-auto">
+    <div className="xl:w-10/12 w-11/12 mx-auto h-full overflow-hidden min-h-screen ">
       <Header showCart={setShowCart} cartList={cartList} />
       <div className="p-2 xl:p-0 text-sm sm:text-base md:text-lg">
         {cartList.length > 0 && <NavLink link="/ordering">ordering {'>>'} </NavLink>}

@@ -28,7 +28,7 @@ const Categories = ({ selectParentCategory }) => {
   return (
     <>
       <h2 className="text-base sm:text-xl text-center uppercase">Main Categories</h2>
-      <div className="p-1 xl:p-3 md:pt-3 bg-stone-50 my-2 shadow-md rounded-md">
+      <div className="p-1 xl:p-3 md:pt-3 bg-orange-50 my-2 shadow-md rounded-md">
         <span className="uppercase text-gray-500 pl-4 text-sm sm:text-base">
           total categories : <strong>{data['hydra:totalItems']}</strong>
         </span>
@@ -53,7 +53,7 @@ const Categories = ({ selectParentCategory }) => {
                   }}
                 />
 
-                <h3 className="mx-2 text-sm xl:text-base">{cat.name}</h3>
+                <h3 className="mx-2 text-sm xl:text-base capitalize">{cat.name}</h3>
               </div>
             );
           })}

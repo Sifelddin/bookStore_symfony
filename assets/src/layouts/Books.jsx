@@ -41,7 +41,7 @@ const Books = ({ subCategory, cartList, setCartList }) => {
   }
 
   return (
-    <div className=" bg-stone-50 my-2 pt-2 shadow-md rounded-md">
+    <div className=" bg-orange-50 my-2 pt-2 shadow-md rounded-md">
       {subCategory && (
         <span className="uppercase text-gray-500 p-4 text-sm sm:text-base">
           total books of {subCategory.name} category : <strong>{data?.['hydra:totalItems']}</strong>
@@ -60,17 +60,15 @@ const Books = ({ subCategory, cartList, setCartList }) => {
                     className="cursor-pointer w-20 md:w-24 h-auto table-cell  hover:scale-125 hover:-translate-x-0 duration-200"
                     src={`/images/books/${book.photo}`}
                     alt={book.title}
-                  />{' '}
+                  />
                 </Link>
               </div>
               <div className="ml-2">
                 <h3 className="text-base md:text-lg text-blue-500 hover:text-blue-800 duration-150 cursor-pointer">
-                  {' '}
                   <Link to={`book/${book.slug}/${book.id}`}>{book.title}</Link>
                 </h3>
                 <p className="text-gray-800">
-                  {' '}
-                  {user?.private === false ? 'Professional :' : ''}{' '}
+                  {user?.private === false ? 'Professional :' : ''}
                   <span className="text-sm md:text-lg text-red-400">{book.price}€</span>
                 </p>
                 <p className="text-gray-700 text-sm md:text-base"> Author : {book.author}</p>

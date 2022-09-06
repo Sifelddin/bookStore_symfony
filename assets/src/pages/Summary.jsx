@@ -48,7 +48,7 @@ const Summary = () => {
   const taxTotal = books?.reduce((a, c) => a + (c.qty * c.price * 10) / 100, 0);
 
   return (
-    <div className="lg:h-screen w-full flex flex-col justify-center items-center">
+    <div className="py-2 w-full flex flex-col justify-center items-center">
       <div className="w-11/12 xl:w-4/5 my-2">
         <Link to="/">
           <LinkSpan>{'<<'}store</LinkSpan>{' '}

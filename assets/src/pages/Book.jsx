@@ -37,7 +37,7 @@ const Book = () => {
   }
 
   return (
-    <div className="flex items-center justify-center w-full h-screen bg-slate-200">
+    <div className="flex items-center justify-center w-full  bg-slate-200 py-3">
       <div className="flex flex-col justify-center p-8 bg-white shadow-md sm:rounded-lg w-5/6 h-5/6  2xl:w-3/5 ">
         <div className="md:grid md:grid-cols-2 md:gap-2 flex flex-col items-center justify-center w-full overflow-hidden lg:overflow-auto">
           <div className="md:col-span-1 md:self-center pb-8 md:p-0">
@@ -70,14 +70,14 @@ const Book = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-around items-center mt-10 p-4">
+        <div className="flex justify-center items-center space-x-4 sm:space-x-10 mt-10 p-4">
           <Link to="/" className={buttonClasses('gray')}>
             back to list
           </Link>
 
           <button
             onClick={() => onAdd(data, setCartList, cartList)}
-            className=" flex justify-center items-center px-4 py-2 bg-green-400 border border-transparent rounded-md font-semibold text-xs md:text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+            className=" flex justify-center items-center px-2 py-1 md:px-4 md:py-2 bg-green-400 border border-transparent rounded-md font-semibold text-xs md:text-sm text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 sm:text-sm "
           >
             Add To Cart
           </button>

@@ -14,13 +14,13 @@ const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
   const currentList = cartList.slice(indexOfFirstBook, indexOfLastBook);
 
   let bg =
-    'fixed top-0 right-0 left-0 bottom-0 h-screen w-screen bg-gray-700/75 transition-all ease-in-out duration-300';
+    'fixed top-0 right-0 left-0 bottom-0 w-screen bg-gray-700/75 transition-all ease-in-out duration-300 min-h-screen';
   let cartClasses =
-    'bg-white sm:rounded-lg p-1 md:p-6 z-50 w-11/12 md:w-5/6 lg:w-4/6 transtion-all duration-500 mx-auto';
+    'bg-white rounded-md sm:rounded-lg p-1 md:p-4 z-50 w-11/12 md:w-5/6 lg:w-4/6 transtion-all duration-500 mx-auto ';
 
   if (showCart) {
     bg += ' z-20';
-    cartClasses += ' translate-y-10';
+    cartClasses += ' translate-y-6';
   } else {
     bg += ' -z-20';
     cartClasses += ' transtale-y-0';
@@ -34,7 +34,7 @@ const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
             {cartList.length === 0 && <h1 className="text-center text-xl"> shopping cart is empty </h1>}
             {cartList.length > 0 && (
               <>
-                <table className="w-full divide-y divide-gray-200 opacity-100 z-50">
+                <table className="w-full divide-y divide-gray-200 opacity-100 z-50 tra">
                   <thead className="bg-gray-50">
                     <tr>
                       <th
@@ -48,14 +48,19 @@ const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                       <Th>Qty</Th>
                       <Th>Total</Th>
                       <Th>Tax</Th>
-                      <Th>actions</Th>
+                      <th
+                        scope="col"
+                        className="p-1 sm:px-2 sm:py-3  text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
+                      >
+                        actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {currentList.map((book) => {
                       return (
                         <tr key={book.id}>
-                          <td className="hidden px-4 py-4 whitespace-nowrap md:table-cell h-28 w-28  rounded-full ring-2 ring-white ">
+                          <td className="hidden p-2 whitespace-nowrap md:table-cell h-20 w-20  rounded-full ring-2 ring-white ">
                             <img
                               className=" border-white h-full object-cover"
                               src={`images/books/${book.photo}`}
@@ -74,7 +79,7 @@ const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                                 className="px-2 sm:px-3 py-1  bg-green-700 border border-transparent rounded-md font-semibold text-white hover:bg-green-900 active:bg-green-900 focus:outline-none focus:border-gray-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 text-xs sm:text-sm"
                               >
                                 +
-                              </button>{' '}
+                              </button>
                               <button
                                 onClick={() => onRemove(book, setCartList, cartList)}
                                 className="px-2 sm:px-3 py-1 bg-orange-700 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-orange-900 active:bg-orange-900 focus:outline-none focus:border-orange-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 text-xs sm:text-sm"
@@ -94,9 +99,9 @@ const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                     })}
                   </tbody>
                 </table>
-                <div className="mt-2 px-5 border-t-2 border-gray-200 flex justify-between items-center">
-                  <span className="uppercase w-full text-sm  sm:text-lg">Total :</span>
-                  <span className="text-sm sm:text-lg">{globalTotal(cartList).toFixed(2)}€</span>
+                <div className="mt-2 px-10 border-t-2 border-gray-200 flex w-full justify-between items-center">
+                  <span className="uppercase text-sm sm:text-lg font-semibold">Total :</span>
+                  <span className="text-sm sm:text-lg font-semibold">{globalTotal(cartList).toFixed(2)}€</span>
                 </div>
               </>
             )}
@@ -109,8 +114,7 @@ const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
             />
           </div>
         </div>
-
-        <div className="p-4 flex justify-around items-center border-gray-200 ">
+        <div className="p-2 flex justify-around items-center border-gray-200 ">
           {cartList.length > 0 && (
             <a href="/ordering" className={buttonClasses('green')}>
               ordering
