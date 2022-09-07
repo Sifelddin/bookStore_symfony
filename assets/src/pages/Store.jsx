@@ -6,11 +6,13 @@ import Header from '../layouts/header';
 import Cart from '../layouts/cart';
 import NavLink from '../components/uis/NavLink';
 import { useAuth } from '../contexts/OrderContext';
+import SearchBar from '../layouts/SearchBar';
 
 const Store = () => {
   const [catParent, setCatParent] = useState(null);
   const [subCategory, setSubCategory] = useState(null);
   const [showCart, setShowCart] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('SHOPPING-CART')) || []);
   const { loading: loadingUser, data: userData } = useAuth();
   const order = localStorage.getItem('ORDER');
@@ -36,7 +38,7 @@ const Store = () => {
 
   return (
     <div className="xl:w-10/12 w-11/12 mx-auto h-full overflow-hidden min-h-screen ">
-      <Header showCart={setShowCart} cartList={cartList} />
+      <Header showCart={setShowCart} cartList={cartList} setShowSearchBar={setShowSearchBar} />
       <div className="p-2 xl:p-0 text-sm sm:text-base md:text-lg">
         {cartList.length > 0 && <NavLink link="/ordering">ordering {'>>'} </NavLink>}
         {order && <NavLink link="/placeorder"> summary {'>>'} </NavLink>}
@@ -50,8 +52,8 @@ const Store = () => {
           <Books subCategory={subCategory} cartList={cartList} setCartList={setCartList} />
         </div>
       </div>
-
       <Cart cartList={cartList} setShowCart={setShowCart} showCart={showCart} setCartList={setCartList} />
+      <SearchBar setShowSearchBar={setShowSearchBar} showSearchBar={showSearchBar} />
     </div>
   );
 };

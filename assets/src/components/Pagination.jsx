@@ -10,7 +10,7 @@ const Pagination = ({ data, setPageUrl }) => {
     data['hydra:totalItems'] > data['hydra:member'].length && (
       <div className="w-full flex justify-around">
         <button onClick={() => getUrlPerPage('hydra:first')} className={btnClasses}>
-          Lirst P
+          First P
         </button>
         {data['hydra:view']['hydra:previous'] && (
           <button onClick={() => getUrlPerPage('hydra:previous')} className={btnClasses}>

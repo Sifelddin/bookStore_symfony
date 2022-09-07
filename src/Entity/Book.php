@@ -31,6 +31,12 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
             "get" => [
                 'normalization_context' => ['groups' => 'book:list']
             ],
+            "search" => [
+                "method" => "get",
+                "path" => '/books/search',
+                'normalization_context' => ['groups' => 'book:list:search'],
+                'pagination_items_per_page' => 10,
+            ],
             "post" => [
                 "path" => "/v2/books",
                 "security" => "is_granted('ROLE_CATALOGUE')",
@@ -45,6 +51,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
                 "security" => "is_granted('ROLE_CATALOGUE')",
             ],
 
+// post request with contentType : multipart/form
             'image' => [
                 'method' => 'POST',
                 'path' => '/v2/books/{id}/image',
@@ -72,7 +79,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
         denormalizationContext: ['groups' => ["book:write"]]
     ),
 ]
-#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'slug' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'slug' => 'start'])]
 
 class Book
 {
@@ -80,7 +87,7 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['book:list', 'book:item', 'read:order'])]
+    #[Groups(['book:list', 'book:item', 'read:order','book:list:search'])]
     private $id;
 
     #[Assert\NotBlank]
@@ -91,7 +98,7 @@ class Book
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ["title"])]
-    #[Groups(['book:list', 'book:item'])]
+    #[Groups(['book:list', 'book:item','book:list:search'])]
     private $slug;
 
     #[Assert\NotBlank]
