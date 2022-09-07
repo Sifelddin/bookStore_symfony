@@ -21,30 +21,37 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[ApiResource(
-    attributes: ["security" => "is_granted('ROLE_USER')"],
     collectionOperations: [
+        // admin | commercial : get all users 
         "get" => [
-            "path" => "/v2/users"
+            "path" => "/v2/users",
+            "security" => "is_granted('ROLE_COMMERCIAL')"
         ]
     ],
     itemOperations: [
+        // admin | commercial : get user data and his orders 
         'get' => [
             'normalization_context' => ['groups' => ['read:user']],
             "method" => "GET",
             "path" => "/v2/users/{id}",
+            "security" => "is_granted('ROLE_COMMERCIAL')"
         ],
+        // user : for ordering and checking the profile and the orders history
         'me' => [
             'pagination_enabled' => false,
             'path' => '/me',
+            "security" => "is_granted('ROLE_USER')",
             'method' => 'get',
             'controller' => MeController::class,
             'read' => false,
         ],
+        //  user :  update the profile data
         'patch' => [
             'denormalization_context' => ['groups' => ['patch:user']],
             "method" => "patch",
             "path" => "/users/{id}",
         ],
+        //  admin | commercial : to update the status , role of each user and the coef
         'status' => [
             'denormalization_context' => ['groups' => ['patch:status']],
             'path' => '/v2/users/{id}/status',

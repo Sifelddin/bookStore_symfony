@@ -37,6 +37,7 @@ security:
       provider: app_user_provider
       # json_login:
       #  check_path: api_login
+
       custom_authenticator: App\Security\LoginFormAuthenticator
       logout:
         path: app_logout
@@ -65,6 +66,7 @@ security:
     - { path: ^/placeorder, roles: ROLE_USER }
     - { path: ^/payment, roles: ROLE_USER }
     - { path: ^/orders/history, roles: ROLE_USER }
+    - { path: ^/dashboard, roles: ROLE_ADMIN }
 
 when@test:
   security:

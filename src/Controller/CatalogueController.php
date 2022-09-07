@@ -18,9 +18,8 @@ class CatalogueController extends AbstractController
     public function index(CategoryRepository $categoriesRepository): Response
     {
         //$categories= $categoriesRepository->findAll();
-        $categories= $categoriesRepository->allParentCategory();
-        
-        //dd($categories);
+        $categories = $categoriesRepository->allParentCategory();
+
 
         return $this->render('catalogue/index.html.twig', [
             'categories' => $categories,
@@ -29,32 +28,32 @@ class CatalogueController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'subCatalogue')]
-    public function subCat(CategoryRepository $categoriesRepository , Category $cat): Response
+    public function subCat(CategoryRepository $categoriesRepository, Category $cat): Response
     {
 
         //dd($cat->getCategories());
-       
+
         $id = $cat->getId();
 
         //dd(  $categories= $categoriesRepository->isParent($id));
-        $categories= $categoriesRepository->isParent($id);
+        $categories = $categoriesRepository->isParent($id);
 
 
-        return $this->render("catalogue/subCatalogue.html.twig",[
+        return $this->render("catalogue/subCatalogue.html.twig", [
             'categories' => $categories,
-           
+
         ]);
     }
 
-    
+
     #[Route('/{slug}/books/', name: 'books')]
-    public function books(Category $cat,Request $request): Response
+    public function books(Category $cat, Request $request): Response
     {
 
         // $path=($request->getPathInfo());
         // //dd($path);
 
-        return $this->render("catalogue/books.html.twig",[
+        return $this->render("catalogue/books.html.twig", [
             'cat' => $cat
         ]);
     }
@@ -62,16 +61,16 @@ class CatalogueController extends AbstractController
     #[Route('/book/{slug}', name: 'book')]
     public function book(Book $book, CategoryRepository $catRepo): Response
     {
-    
-
-    $slug =$catRepo->find($book->getCategory()->getId())->getSlug();
-    // dd($slug);
 
 
-        return $this->render("catalogue/show.html.twig",[
+        $slug = $catRepo->find($book->getCategory()->getId())->getSlug();
+        // dd($slug);
+
+
+        return $this->render("catalogue/show.html.twig", [
             'book' => $book,
             'slug' => $slug
-           
+
         ]);
     }
 }

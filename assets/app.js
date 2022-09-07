@@ -30,8 +30,10 @@ const userActionsMenu = document.getElementById('userActionsMenu');
 userMenu?.addEventListener('click', (e) => toggleClasses(e, userActionsMenu));
 userNav?.addEventListener('click', (e) => toggleClasses(e, userActionsNav));
 
-document.addEventListener('click', clickDocument(userActionsNav));
-document.addEventListener('click', clickDocument(userActionsMenu));
+document.addEventListener('click', () => {
+  clickDocument(userActionsNav);
+  clickDocument(userActionsMenu);
+});
 
 function toggleClasses(e, userActions) {
   e.stopPropagation();

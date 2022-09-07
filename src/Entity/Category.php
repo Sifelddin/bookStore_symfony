@@ -40,7 +40,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
                 'paginationEnabled' => false,
             ],
             "post" => [
-                "path" => "/v2/categories"
+                "path" => "/v2/categories",
+                "security" => "is_granted('ROLE_CATALOGUE')"
             ]
         ],
         itemOperations: [
@@ -50,16 +51,17 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
             "get_v2" => [
                 'normalization_context' => ['groups' => 'cat:item'],
                 "method" => 'get',
-                "path" => "/v2/categories/{id}"
+                "path" => "/v2/categories/{id}",
+                "security" => "is_granted('ROLE_CATALOGUE')"
             ],
             "delete" => [
-                "path" => "/v2/categories/{id}"
-            ], "patch" => [
-                "path" => "/v2/categories/{id}"
+                "path" => "/v2/categories/{id}",
+                "security" => "is_granted('ROLE_CATALOGUE')"
             ],
             'image' => [
                 'method' => 'POST',
                 'path' => '/v2/categories/{id}/image',
+                "security" => "is_granted('ROLE_CATALOGUE')",
                 'controller' => EmptyController::class,
                 'openapi_context' => [
                     'requestBody' => [

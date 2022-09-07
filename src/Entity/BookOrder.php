@@ -4,15 +4,10 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookOrderRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookOrderRepository::class)]
 
-
-#[ApiResource(
-    denormalizationContext: ["groups" => ['write:order']]
-)]
 class BookOrder
 {
     #[ORM\Id]

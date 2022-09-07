@@ -15,7 +15,7 @@
 
             <div class="sm:flex sm:justify-start justify-center items-center  p-5 m-1 bg-white rounded-md shadow-sm hover:shadow-md hover:shadow-blue-200 transition-all duration-300 example-wrapper ">
                 <div class="flex cursor-pointer justify-center items-center">
-                    <a href='{{path('book',{"slug":book.slug}) }}'><img class=" justify-center items-center w-32 h-auto m-0 border-4 border-white" src="/uploads/images/{{book.photo}}"></a>
+                    <a href='{{path('book',{"slug":book.slug}) }}'><img class=" justify-center items-center w-32 h-auto m-0 border-4 border-white" src="/images/books/{{book.photo}}"></a>
                 </div>
                 <div class="ml-3 cursor-default sm:text-base text-sm justify-center items-center ">
                     <h3 class="sm:text-lg text-base text-blue-500 hover:text-blue-800 cursor-pointer sm:block  flex justify-center items-center"><a href='{{path('book',{"slug":book.slug}) }}'>{{book.title}}</a></h3>

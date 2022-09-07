@@ -19,30 +19,44 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 #[ApiResource(
-    security: "is_granted('ROLE_USER')",
+
     order: ["id" => "DESC"],
     collectionOperations: [
-        'post', 'get' => [
+        // ordering
+        'post' => [
+            "security" => "is_granted('ROLE_USER')"
+        ],
+        // user : check orders history
+        'get' => [
             'normalization_context' => ['groups' => ['read:list:orders']],
             'pagination_items_per_page' => 5,
+            "security" => "is_granted('ROLE_USER')"
         ],
+        // dashboard graphics 
         'all' => [
             'method' => 'get',
             'path' => '/v2/orders/all',
             'paginationEnabled' => false,
             'normalization_context' => ['groups' => ['all:orders']],
-
+            "security" => "is_granted('ROLE_USER')"
         ]
     ],
     itemOperations: [
-        'get',
+        // user : order details
+        'get' => [
+            "security" => "is_granted('ROLE_USER') and object.getUserClient() == user"
+        ],
+        // admin : commercial : order details
         'order_v2' => [
             "method" => 'get',
             "path" => '/v2/orders/{id}',
+            "security" => "is_granted('ROLE_COMMERCIAL')"
         ],
+        // admin : commercial : order update order (payment date and discount)
         'put' => [
             "method" => 'put',
-            "path" => '/v2/orders/{id}'
+            "path" => '/v2/orders/{id}',
+            "security" => "is_granted('ROLE_COMMERCIAL')"
         ]
     ],
     denormalizationContext: ['groups' => ["write:order"]],

@@ -31,25 +31,25 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
             "get" => [
                 'normalization_context' => ['groups' => 'book:list']
             ],
-             "post" => [
-                   "path" => "/v2/books",
-                   ["security" => "is_granted('ROLE_USER')"],
-             ] 
+            "post" => [
+                "path" => "/v2/books",
+                "security" => "is_granted('ROLE_CATALOGUE')",
+            ]
         ],
         itemOperations: [
             "get" => [
-                'normalization_context' => ['groups' => 'book:item'] 
+                'normalization_context' => ['groups' => 'book:item']
 
             ], "delete" => [
                 "path" => "/v2/books/{id}",
-                ["security" => "is_granted('ROLE_USER')"],
+                "security" => "is_granted('ROLE_CATALOGUE')",
             ],
 
             'image' => [
                 'method' => 'POST',
                 'path' => '/v2/books/{id}/image',
                 'controller' => EmptyController::class,
-                ["security" => "is_granted('ROLE_USER')"],
+                "security" => "is_granted('ROLE_CATALOGUE')",
                 'openapi_context' => [
                     'requestBody' => [
                         'content' => [

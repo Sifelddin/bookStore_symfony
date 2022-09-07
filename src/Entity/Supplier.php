@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ApiResource(
-    security: "is_granted('ROLE_USER')",
+    security: "is_granted('ROLE_CATALOGUE')",
     routePrefix: '/v2',
     paginationItemsPerPage: 8,
     itemOperations: ['delete', 'put', 'get'],
