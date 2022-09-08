@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
     order: ["id" => "DESC"],
     collectionOperations: [
-        // ordering
+        // client user : ordering
         'post' => [
             "security" => "is_granted('ROLE_USER')"
         ],
@@ -77,37 +77,37 @@ class Order
     #[ORM\Column(type: 'date', nullable: true)]
     private $shippedDate;
 
-    #[Groups(['write:order', 'read:order', 'read:list:orders'])]
+    #[Groups(['write:order', 'read:order'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $shipAddress;
 
-    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
+    #[Groups(['write:order', 'read:order'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $shipCity;
 
-    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
+    #[Groups(['write:order', 'read:order'])]
     #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $shipZipCode;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    #[Groups(['read:list:orders', 'write:order', 'read:order', 'read:user'])]
+    #[Groups(['write:order', 'read:order', 'read:list:orders', 'read:user'])]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd-m-Y'])]
     private $paymentDate;
 
-    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
+    #[Groups(['write:order',  'read:order'])]
     #[Assert\NotBlank()]
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2)]
     private $coef;
 
-    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
+    #[Groups(['write:order',  'read:order'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $billAddress;
 
-    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
+    #[Groups(['write:order',  'read:order'])]
     #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $billZipCode;
 
-    #[Groups(['write:order', 'read:list:orders', 'read:order'])]
+    #[Groups(['write:order',  'read:order'])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $billCity;
 

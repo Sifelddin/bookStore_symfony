@@ -50,6 +50,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             'denormalization_context' => ['groups' => ['patch:user']],
             "method" => "patch",
             "path" => "/users/{id}",
+            "security" => "is_granted('ROLE_USER')",
         ],
         //  admin | commercial : to update the status , role of each user and the coef
         'status' => [

@@ -1,7 +1,7 @@
 // add green border style to a selected category and remove it from none selected categories
 export const addStyles = (cat, categoriesRefs) => {
   const styles = ['border-green-400', 'shadow-green-300'];
-  categoriesRefs.current.map((ref) => {
+  categoriesRefs?.current.map((ref) => {
     return cat.target.id === ref.id ? ref.classList.add(...styles) : ref.classList.remove(...styles);
   });
 };

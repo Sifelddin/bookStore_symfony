@@ -27,7 +27,7 @@ const OrdersList = () => {
   if (loading) {
     return <Spinner />;
   }
-
+  console.log(data);
   return (
     <div className="h-screen flex flex-col justify-start items-center ">
       <div className="mx-auto w-4/5 bg-white mt-6">

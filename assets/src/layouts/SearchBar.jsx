@@ -1,17 +1,20 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import Spinner from '../components/Spinner';
 import fetchData from '../hooks';
 
 const SearchBar = ({ showSearchBar, setShowSearchBar }) => {
   const [searchString, setSearchString] = useState('');
   const [resultValues, setResultValue] = useState({ loading: true, data: undefined });
   // make input focus when search bar popup and render filtredData array empty when closing the search bar
-
+  const searchField = useRef();
   useEffect(() => {
     if (showSearchBar && searchString) {
       fetchData(`/api/books/search?page=1&slug=${searchString}`, setResultValue);
+    } else {
+      searchField.current.value = '';
+      setSearchString(searchField.current.value);
+      setResultValue({ loading: true, data: undefined });
     }
   }, [searchString, showSearchBar]);
 
@@ -32,16 +35,15 @@ const SearchBar = ({ showSearchBar, setShowSearchBar }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
   };
-  const { loading, data } = resultValues;
-  console.log(loading, data);
+  const { data } = resultValues;
   return (
     <div role="presentation" onClick={() => setShowSearchBar(false)} className={containerClasses}>
       <div className="w-10/12 md:w-6/12">
         <form role="presentation" onClick={(e) => e.stopPropagation()} className="w-full" onSubmit={handleSubmit}>
           <div className={SearchBarClasses}>
             <input
+              ref={searchField}
               className="focus:ring-indigo-500 text-lg focus:border-indigo-500 block w-full pl-8 pr-7 sm:text-md border-gray-300 rounded-md"
               type="text"
               placeholder="Rechercher un contenu..."
@@ -52,12 +54,20 @@ const SearchBar = ({ showSearchBar, setShowSearchBar }) => {
             </button>
           </div>
         </form>
-        {loading && searchString ? (
-          <Spinner />
-        ) : (
-          data?.['hydra:member'].map((book) => {
-            return <li>{book.slug}</li>;
-          })
+        {data?.['hydra:member'].length > 0 && (
+          <div className="bg-white z-30 mt-7 w-full rounded-md text-lg p-2">
+            <ul>
+              {data?.['hydra:member'].map((book) => {
+                return (
+                  <Link key={book.id} to={`book/${book.slug}/${book.id}`}>
+                    <li className="transition-all duration-300 p-1 text-black hover:text-gray-800 hover:bg-slate-200 rounded-md capitalize">
+                      <span className="text-gray-600 capitalize ">Book Title |</span> {book.slug}
+                    </li>
+                  </Link>
+                );
+              })}
+            </ul>
+          </div>
         )}
       </div>
     </div>

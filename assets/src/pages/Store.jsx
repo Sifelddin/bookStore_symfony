@@ -14,7 +14,7 @@ const Store = () => {
   const [showCart, setShowCart] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('SHOPPING-CART')) || []);
-  const { loading: loadingUser, data: userData } = useAuth();
+  const { data: userData } = useAuth();
   const order = localStorage.getItem('ORDER');
   useEffect(() => {
     localStorage.setItem('SHOPPING-CART', JSON.stringify(cartList));
@@ -24,11 +24,9 @@ const Store = () => {
     }
   }, [cartList]);
 
-  if (!loadingUser) {
-    if (userData === null) {
-      // remove order from localStorage if the user is not logged in
-      localStorage.removeItem('ORDER');
-    }
+  if (userData === undefined) {
+    // remove order from localStorage if the user is not logged in
+    localStorage.removeItem('ORDER');
   }
 
   const selectParentCategory = (e) => {

@@ -26,7 +26,7 @@ const Form = () => {
     handleSubmit,
     formState: { errors }
   } = useForm();
-
+  console.log(user.data);
   const onSubmit = async (data) => {
     try {
       const res = await axios({

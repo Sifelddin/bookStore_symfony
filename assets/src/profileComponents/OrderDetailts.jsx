@@ -54,6 +54,7 @@ const OrderDetailts = ({ orderId }) => {
               </thead>
               <tbody>
                 {data?.bookOrders.map((book) => {
+                  console.log(book);
                   return (
                     <tr key={book.id}>
                       <td className="text-center text-sm">{book.book.id}</td>

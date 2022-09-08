@@ -36,13 +36,13 @@ const SubCategories = ({ catParent, setSubCategory }) => {
   if (loading) {
     return <Spinner />;
   }
-  let catsClasses = 'grid md:grid-cols-4 p-2 mt-2 w-full grid-cols-2 sm:grid-cols-3';
+  let catsClasses = 'grid md:grid-cols-4 p-2 mt-2 w-full grid-cols-2 sm:grid-cols-3 border-t-2';
   if (data['hydra:totalItems'] > 8) {
     catsClasses += ' border-b-2';
   }
 
   return (
-    <div className="p-1 md:pt-2 xl:p-3 bg-orange-50 my-2 shadow-md">
+    <div className="p-1 md:pt-2 xl:p-3 bg-orange-50 my-2 shadow-md ">
       <div>
         <span className="uppercase text-gray-500 p-4 text-sm sm:text-base">
           total subCategories of <span className="text-gray-900 font-semibold">{catParent.name}</span> :{' '}
@@ -67,7 +67,16 @@ const SubCategories = ({ catParent, setSubCategory }) => {
                   src={`images/categories/${cat.photo}`}
                   alt={cat.title}
                 />
-                <h3 className="mx-1 text-sm 2xl:text-base capitalize">{cat.name}</h3>
+                <h3
+                  id={cat.id}
+                  role="presentation"
+                  onClick={(e) => {
+                    addStyles(e, categoriesRefs);
+                  }}
+                  className="mx-1 text-sm 2xl:text-base capitalize text-stone-700 hover:text-indigo-900 font-medium cursor-pointer"
+                >
+                  {cat.name}
+                </h3>
               </div>
             );
           })}

@@ -20,7 +20,7 @@ const Categories = ({ selectParentCategory }) => {
   if (loading) {
     return <Spinner />;
   }
-  let catsClasses = 'mt-2 p-2 w-full lg:block grid md:grid-cols-4 grid-cols-2 sm:grid-cols-3';
+  let catsClasses = 'mt-2 p-2 w-full lg:block grid md:grid-cols-4 grid-cols-2 sm:grid-cols-3  border-t-2';
   if (data['hydra:totalItems'] > 8) {
     catsClasses += ' border-b-2';
   }
@@ -38,7 +38,7 @@ const Categories = ({ selectParentCategory }) => {
               <div className="flex items-center m-1" key={cat.id}>
                 <img
                   id={cat.id}
-                  className=" md:block w-14 h-14 xl:w-16 xl:h-16 rounded-full m-0 border-2  shadow-md cursor-pointer"
+                  className=" md:block w-14 h-14 xl:w-16 xl:h-16 rounded-full m-0 border-2  shadow-md cursor-pointer "
                   ref={(e) => addToRefs(e, categoriesRefs)}
                   onClick={(e) => {
                     addStyles(e, categoriesRefs);
@@ -47,13 +47,18 @@ const Categories = ({ selectParentCategory }) => {
                   role="presentation"
                   src={`images/categories/${cat.photo}`}
                   alt={cat.name}
-                  onKeyPress={(e) => {
+                />
+                <h3
+                  id={cat.id}
+                  role="presentation"
+                  onClick={(e) => {
                     addStyles(e, categoriesRefs);
                     selectParentCategory(cat);
                   }}
-                />
-
-                <h3 className="mx-2 text-sm xl:text-base capitalize">{cat.name}</h3>
+                  className="mx-2 text-sm xl:text-lg capitalize text-stone-700 hover:text-indigo-900 font-medium cursor-pointer "
+                >
+                  {cat.name}
+                </h3>
               </div>
             );
           })}

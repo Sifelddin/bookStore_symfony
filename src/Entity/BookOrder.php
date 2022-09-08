@@ -13,6 +13,7 @@ class BookOrder
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:order'])]
     private $id;
 
     #[Groups(['write:order', 'read:order', 'read:user', 'all:orders'])]

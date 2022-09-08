@@ -77,7 +77,7 @@ const Payment = () => {
                   className={inputClasses}
                   {...register('fullName', {
                     required: true,
-                    pattern: /^[a-zA-Z]+$/gi
+                    pattern: /^([a-zA-Z])+\s?([a-zA-Z])+$/gi
                   })}
                 />
                 {errors.fullName?.type === 'required' && <ErrorSpan> Name on card is required</ErrorSpan>}
