@@ -10,6 +10,14 @@ Take a look at : [bookstore](https://bookstore.amorce.org/)
 
 this project is built based on [symfony](https://symfony.com/) framework along with [mysql](https://www.mysql.com/) database
 
+Symfony : Symfony is a set of reusable PHP components and a PHP framework for web projects
+
+##### main installed bundles in this symfony project :
+
+- doctrine-bundle : Object Relational Mapper (ORM) for managing database [doctrine-bundle](https://github.com/doctrine/DoctrineBundle)
+- Api-paltform : for setting up the api-rest [api-platform](https://api-platform.com/)
+
+you can check the list of bundles in **composer.json** file of this project
 
 ### Front end packages : 
 
