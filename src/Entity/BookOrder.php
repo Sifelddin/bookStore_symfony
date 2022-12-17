@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookOrderRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookOrderRepository::class)]
-
+#[ApiResource(security: "is_granted('ROLE_USER')")]
 class BookOrder
 {
     #[ORM\Id]

@@ -69,7 +69,7 @@ const Books = ({ subCategory, cartList, setCartList }) => {
                 </h3>
                 <p className="text-gray-800">
                   {user?.private === false ? 'Professional :' : ''}
-                  <span className="text-sm md:text-lg text-red-400">{book.price}€</span>
+                  <span className="text-sm md:text-lg text-red-400">{Number(book.price).toFixed(2)}€</span>
                 </p>
                 <p className="text-gray-700 text-sm md:text-base"> Author : {book.author}</p>
                 <button

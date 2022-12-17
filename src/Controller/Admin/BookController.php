@@ -4,11 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Book;
 use App\Form\BookType;
-use App\Service\FileUploader;
 use App\Repository\BookRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

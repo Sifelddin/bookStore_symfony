@@ -16,15 +16,10 @@ class FilesController extends AbstractController
     {
         foreach ($this->getUser()->getOrders() as $ord) {
             if ($ord->getId() === $order->getId()) {
-
                 $html =  $this->renderView('pdf.html.twig', ['order' => $order]);
-
                 $options = new Options();
-
                 $options->set('isRemoteEnabled', true);
-
                 $dompdf = new Dompdf($options);
-
                 $dompdf->loadHtml($html);
                 $dompdf->render();
                 $dompdf->stream("test.pdf", ['Attachment' => false]);

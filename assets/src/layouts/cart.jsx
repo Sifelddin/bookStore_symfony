@@ -68,7 +68,7 @@ const Cart = ({ cartList, showCart, setShowCart, setCartList }) => {
                             />
                           </td>
                           <Td>{book.title}</Td>
-                          <Td>{book.price}€</Td>
+                          <Td>{Number(book.price).toFixed(2)}€</Td>
                           <Td>{book.qty}</Td>
                           <Td>{bookTotal(book).toFixed(2)}€</Td>
                           <Td>{taxTotal(book).toFixed(2)}€</Td>
